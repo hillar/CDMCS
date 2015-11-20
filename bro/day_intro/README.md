@@ -1,6 +1,6 @@
 # BRO
 
-[logo]: https://www.bro.org/images/bro-eyes.png
+![logo](https://www.bro.org/images/bro-eyes.png)
 
 ## https://www.bro.org
 

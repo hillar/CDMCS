@@ -1,6 +1,6 @@
 # Moloch
 
-[owl]: http://molo.ch/moloch_2x2.png
+![owl](http://molo.ch/moloch_2x2.png)
 
 ## http://molo.ch/
 
@@ -18,5 +18,7 @@
 > Impatient
 
 > git clone https://github.com/aol/moloch.git
+
 > cd moloch
+
 > ./easybutton-singlehost.sh
