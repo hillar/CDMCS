@@ -25,7 +25,7 @@ Network Forensics](http://slides.com/hillar/network-forensics#/)
 
 ## Go to the material
 
-.| [Suricata](./suricata) | [Bro](./bro) | [Moloch](./moloch)  
+.| [Suricata](./suricata/README.md) | [Bro](./bro/README.md) | [Moloch](./moloch/README.md)  
 --- | --- | --- | ---
 day 0 :: intro| [*](./suricata/day_intro/README.md) | [*](./bro/day_intro/README.md) | [*](./moloch/day_intro/README.md)
 day 1  :: single box| [*](./suricata/day1/README.md) | [*](./bro/day1/README.md) | [*](./moloch/day1/README.md)
