@@ -8,7 +8,8 @@
 
 ## Day 1 :: Single Box
 
- * [build from source](./suricata/day1/BuildFromSource.md)
+ * [build from source](./suricata/day_1/BuildFromSource.md)
+
  * []()
  * []()
  * []()
