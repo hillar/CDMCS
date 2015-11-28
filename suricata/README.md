@@ -34,7 +34,7 @@
 ## Day 3 :: Advanced usage
 
 * [Lua Output](/suricata/day_3/LuaOutput.md)
-* []()
+* [Lua scripted rules](/suricata/day_3/LuaRules.md)
 * []()
 * []()
 * []()
