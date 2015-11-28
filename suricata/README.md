@@ -35,7 +35,7 @@
 
 * [Lua Output](/suricata/day_3/LuaOutput.md)
 * [Lua scripted rules](/suricata/day_3/LuaRules.md)
-* []()
+* [Internal counters](/suricata/day_3/DumpCounters.md)
 * []()
 * []()
 * []()
