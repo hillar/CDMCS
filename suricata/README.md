@@ -33,7 +33,7 @@
 
 ## Day 3 :: Advanced usage
 
-* []()
+* [Lua Output](/suricata/day_3/LuaOutput.md)
 * []()
 * []()
 * []()
