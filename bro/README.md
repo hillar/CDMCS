@@ -8,7 +8,7 @@
 
 ## Day 1 :: Single Box
 
- * [build from source]( /bro/day_1/BuildFromSource.md)
+ * [build from source](/bro/day_1/BuildFromSource.md)
  * []()
  * []()
  * []()
@@ -19,7 +19,8 @@
 
 ## Day 2 :: Cluster
 
-* [Basic Cluster Configuration]()
+* [Cluster Basics](/bro/day_2/ClusterBasics.md)
+* [Basic Cluster Configuration](/bro/day_2/ClusterConf.md)
 * []()
 * []()
 * []()
