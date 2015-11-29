@@ -19,7 +19,7 @@
 
 ## Day 2 :: Cluster
 
-* [deployment]()
+* [Basic Cluster Configuration]()
 * []()
 * []()
 * []()
