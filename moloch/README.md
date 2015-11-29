@@ -10,9 +10,9 @@
 
  * [build from source](/moloch/day_1/BuildFromSource.md)
  * [settings](/moloch/day_1/Settings.md)
- * []()
- * []()
- * []()
+ * [right-click]()
+ * [Tagger]()
+ * [Wise]()
  * []()
  * []()
  * []()
@@ -33,9 +33,9 @@
 ## Day 3 :: Advanced usage
 
 * [Connecting clusters](/moloch/day_3/Cluster2Cluster.md)
-* []()
-* []()
-* []()
+* [Plugins]()
+* [Multi-Viewer]()
+* [API]()
 * []()
 * []()
 * []()
