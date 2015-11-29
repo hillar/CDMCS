@@ -8,8 +8,8 @@
 
 ## Day 1 :: Single Box
 
- * [build from source]( /moloch/day_1/BuildFromSource.md)
- * []()
+ * [build from source](/moloch/day_1/BuildFromSource.md)
+ * [settings](/moloch/day_1/Settings.md)
  * []()
  * []()
  * []()
