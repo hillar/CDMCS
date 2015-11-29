@@ -32,7 +32,7 @@
 
 ## Day 3 :: Advanced usage
 
-* []()
+* [Connecting clusters](/moloch/day_3/Cluster2Cluster.md)
 * []()
 * []()
 * []()
