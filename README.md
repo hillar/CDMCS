@@ -27,10 +27,10 @@ Network Forensics](http://slides.com/hillar/network-forensics#/)
 
 .| [Suricata](./suricata/README.md) | [Bro](./bro/README.md) | [Moloch](./moloch/README.md)  
 --- | --- | --- | ---
-day 0 :: intro| [*](./suricata/day_intro/README.md) | [*](./bro/day_intro/README.md) | [*](./moloch/day_intro/README.md)
-day 1  :: single box| [*](./suricata/day1/README.md) | [*](./bro/day1/README.md) | [*](./moloch/day1/README.md)
-day 2 :: cluster| [*](./suricata/day2/README.md) | [*](./bro/day2/README.md) | [*](./moloch/day2/README.md)
-day 3 :: advanced| [*](./suricata/day3/README.md)| [*](./bro/day3/README.md)| [*](./moloch/day3/README.md)
+day 0 :: intro| [*](./suricata/day_intro/README.md) | [*](./bro/day_intro/README.md) | [*](/moloch/README.md#day-0)
+day 1  :: single box| [*](./suricata/day1/README.md) | [*](./bro/day1/README.md) | [*](/moloch/README.md#day-1--single-box)
+day 2 :: cluster| [*](./suricata/day2/README.md) | [*](./bro/day2/README.md) | [*](/moloch/README.md#day-2--cluster)
+day 3 :: advanced| [*](./suricata/day3/README.md)| [*](./bro/day3/README.md)| [*](/moloch/README.md#day-3--advanced-usage)
 day +1 :: wrapup| [*](./suricata/day_last/README.md)| [*](./bro/day_last/README.md) | [*](./moloch/day_last/README.md)
 
 ## Current Classes
