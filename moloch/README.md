@@ -19,7 +19,7 @@
 
 ## Day 2 :: Cluster
 
-* [deployment]()
+* [Multiple Hosts configuration](/moloch/day_2/MultipleHostConfig.md)
 * []()
 * []()
 * []()
