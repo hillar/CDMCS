@@ -63,4 +63,22 @@ discovery.zen.ping.unicast.hosts: ["node1", "node2", "node3", "node4"]
  ```
 
 
- 
+ * start
+
+
+ ```
+ #!/bin/sh
+ TDIR=/opt/elasticsearch
+ ES=1.7.3
+ ES_HEAP_SIZE=20G
+
+cd /${TDIR}/elasticsearch-${ES}
+ulimit -a
+export JAVA_OPTS="-XX:+UseCompressedOops"
+export ES_HOSTNAME=`hostname -s`a
+ES_HEAP_SIZE=${ES_HEAP_SIZE} bin/elasticsearch -Des.config=/srv/moloch/elasticsearch.yml
+sleep 2
+export ES_HOSTNAME=`hostname -s`b
+ES_HEAP_SIZE=${ES_HEAP_SIZE} bin/elasticsearch -Des.config=/${TDIR}/elasticsearch-${ES}/etc/elasticsearch.yml
+
+ ```
