@@ -8,6 +8,7 @@ METRICS_SERVER=$1
 wget -q https://s3.amazonaws.com/influxdb/influxdb_nightly_amd64.deb
 sudo dpkg -i influxdb_nightly_amd64.deb
 sed -i -e 's,localhost,'${METRICS_SERVER}',g' /etc/influxdb/influxdb.conf
+service influxdb start
 
 ```
 
@@ -21,7 +22,22 @@ sudo dpkg -i telegraf_0.2.3_amd64.deb
 sed -i -e 's,http://localhost,http://'${METRICS_SERVER}',g' /etc/opt/telegraf/telegraf.conf
 sed -i -e 's,interval = "10s",interval = "1s",g' /etc/opt/telegraf/telegraf.conf
 sed -i -e 's,flush_interval = "1s",flush_interval = "60s",g' /etc/opt/telegraf/telegraf.conf
+service telegraf start
 
+```
+
+
+## grafana
+
+
+```
+METRICS_SERVER=$1
+wget -q https://grafanarel.s3.amazonaws.com/builds/grafana_latest_amd64.deb
+sudo dpkg -i grafana_latest_amd64.deb
+sudo update-rc.d grafana-server defaults 95 10
+;domain = localhost
+sed -i -e 's,domain = localhost,domain = '${METRICS_SERVER}',g' /etc/grafana/grafana.ini
+service grafana-server start
 
 
 ```
