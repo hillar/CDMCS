@@ -41,3 +41,19 @@ service grafana-server start
 
 
 ```
+
+## kapacitor
+
+
+```
+METRICS_SERVER=$1
+wget -q https://s3.amazonaws.com/influxdb/kapacitor_0.1.1-1_amd64.deb
+sudo dpkg -i kapacitor_0.1.1-1_amd64.deb
+sed -i -e 's,hostname = "localhost",hostname = "'${METRICS_SERVER}'",g' /etc/kapacitor/kapacitor.conf
+urls = ["http://localhost:8086"]
+sed -i -e 's,urls = urls = ["http://localhost:8086"],urls = ["http://'${METRICS_SERVER}':8086"],g' /etc/kapacitor/kapacitor.conf
+service kapacitor start
+
+kapacitor define -name cpu_alert -type stream -tick ./cpu_alert.tick -dbrp telegraf.default
+
+```
