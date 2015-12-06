@@ -3,8 +3,25 @@
 ## influxdb
 
 ```
-METRICS-SERVER=$1
+
+METRICS_SERVER=$1
 wget -q https://s3.amazonaws.com/influxdb/influxdb_nightly_amd64.deb
 sudo dpkg -i influxdb_nightly_amd64.deb
-sed -i -e "s,localhost,METRICS-SERVER,g" /etc/influxdb/influxdb.conf
+sed -i -e 's,localhost,'${METRICS_SERVER}',g' /etc/influxdb/influxdb.conf
+
+```
+
+## telegraf
+
+```
+
+METRICS_SERVER=$1
+wget -q https://s3.amazonaws.com/get.influxdb.org/telegraf/telegraf_0.2.3_amd64.deb
+sudo dpkg -i telegraf_0.2.3_amd64.deb
+sed -i -e 's,http://localhost,http://'${METRICS_SERVER}',g' /etc/opt/telegraf/telegraf.conf
+sed -i -e 's,interval = "10s",interval = "1s",g' /etc/opt/telegraf/telegraf.conf
+sed -i -e 's,flush_interval = "1s",flush_interval = "60s",g' /etc/opt/telegraf/telegraf.conf
+
+
+
 ```
