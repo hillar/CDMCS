@@ -1,0 +1,10 @@
+# collect some metrics
+
+## influxdb
+
+```
+METRICS-SERVER=$1
+wget -q https://s3.amazonaws.com/influxdb/influxdb_nightly_amd64.deb
+sudo dpkg -i influxdb_nightly_amd64.deb
+sed -i -e "s,localhost,METRICS-SERVER,g" /etc/influxdb/influxdb.conf
+```

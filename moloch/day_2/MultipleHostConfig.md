@@ -1,7 +1,8 @@
 # Multiple Host Configuration
 
-see https://github.com/aol/moloch/wiki/Multiple-Host-HOWTO
-https://github.com/aol/moloch/wiki/Architecture#multiple-hosts-monitoring-multiple-network-segments
+see
+ * https://github.com/aol/moloch/wiki/Multiple-Host-HOWTO
+ * https://github.com/aol/moloch/wiki/Architecture#multiple-hosts-monitoring-multiple-network-segments
 
 
 ## elasticsearch
@@ -36,7 +37,7 @@ cd elasticsearch-${ES}
  * set config
 
 
- ```
+```
 
  # /${TDIR}/elasticsearch-${ES}/etc/elasticsearch.yml
 
@@ -60,17 +61,17 @@ discovery.zen.minimum_master_nodes: 4
 discovery.zen.ping.multicast.enabled: false
 discovery.zen.ping.unicast.hosts: ["node1", "node2", "node3", "node4"]
 
- ```
+```
 
 
  * start
 
 
- ```
- #!/bin/sh
- TDIR=/opt/elasticsearch
- ES=1.7.3
- ES_HEAP_SIZE=20G
+```
+#!/bin/sh
+TDIR=/opt/elasticsearch
+ES=1.7.3
+ES_HEAP_SIZE=20G
 
 cd /${TDIR}/elasticsearch-${ES}
 ulimit -a
@@ -81,4 +82,4 @@ sleep 2
 export ES_HOSTNAME=`hostname -s`b
 ES_HEAP_SIZE=${ES_HEAP_SIZE} bin/elasticsearch -Des.config=/${TDIR}/elasticsearch-${ES}/etc/elasticsearch.yml
 
- ```
+```
