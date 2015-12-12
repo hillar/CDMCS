@@ -1,6 +1,59 @@
 # ElasticSearch cluster nodes
 
+## looping over vm's
 ```
+HOSTS = {
+   #[count, cpu, mem,  provision_scripts ]
+   # ! sum of count must be less than 10
+   # you can have more than one script per vm ;)
+   "elastic" => [4,4,16,[$dummy, $elastic]],
+   "capture" => [3,4,4,[$dummy]],
+   "viever" => [2,2,1,[$dummy]],
+}
+
+...
+
+counter = 1
+  (1..TEAMS).each do |teamnumber|
+    inteam = 0
+    HOSTS.each do | (_name, cfg) |
+      boxcount, cpu, mem, scripts = cfg
+      (1..boxcount).each do |boxno|
+        counter = counter + 1; # global counter, used to index free mgmgt ip set
+        inteam = inteam + 1 # in team counter to set ip
+        name = "cdmcs-"+teamnumber.to_s+"-"+_name +"-"+boxno.to_s
+        nic1 = MGMT + FREE[counter].to_s
+        nic2 = MOLO  + (START + teamnumber*10 + inteam).to_s
+        nic0 = MOLO  + (START + teamnumber*10 + 1).to_s # first box first ip used for cluster settings
+        #puts nic1 +" "+nic2+" "+ name
+        File.open('lastrun.txt','a').puts nic1 +" "+nic2+" "+ name
+        config.vm.define name do |machine|
+            machine.vm.hostname = name
+            machine.vm.network 'private_network', ip: nic1
+            #vmtools mess up ubuntu 14 network ;(
+            machine.vm.provision "shell",
+              inline: $fix_network, :args => "#{nic1} #{nic2} #{name} #{teamnumber} #{_name}"
+            machine.vm.provision "shell",
+                inline: $all, :args => "#{nic2}"
+            scripts.each do |provision_script|
+              machine.vm.provision "shell",
+                inline: provision_script, :args => "#{nic2} #{name} #{teamnumber} #{inteam} #{nic0}"
+            end
+            machine.vm.box = 'vsphere'
+            require '../vagrantkeys/vsphere.rb'
+            include VSphereKeys
+            machine.vm.provider :vsphere do |vsphere|
+              vsphere.memory_mb = mem * 1024
+              ...
+
+
+
+```
+
+## setting up node
+```
+# inline: provision_script, :args => "#{nic2} #{name} #{teamnumber} #{inteam} #{nic0}"
+
 CLUSTER=moloch-$3
 NAME=$2
 IP=$1
