@@ -10,7 +10,10 @@
 
 > Suricata will automatically detect protocols such as HTTP on any port and apply the proper detection and logging logic. Suricata can log HTTP requests, log and store TLS certificates, extract files from flows and store them to disk.
 
+
 ## https://github.com/inliniac/suricata
 
 >
 >> git clone git://phalanx.openinfosecfoundation.org/oisf.git
+
+## http://jasonish-suricata.readthedocs.org/en/latest/index.html
