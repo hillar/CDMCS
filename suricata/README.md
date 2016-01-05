@@ -20,7 +20,7 @@
 
 ## Day 2 :: Cluster
 
-* [deployment]()
+* [set up Minions](/suricata/day_2/SetUpMinions.md)
 * []()
 * []()
 * []()
