@@ -22,7 +22,7 @@
 
 * [Set up Minions](/suricata/day_2/SetUpMinions.md)
 * [Set up Master](/suricata/day_2/SetUpMaster.md)
-* []()
+* [Set up Metrix](/suricata/day_2/SetUpMetrics.md)
 * []()
 * []()
 * []()
