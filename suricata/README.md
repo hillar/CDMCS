@@ -2,7 +2,7 @@
 ## Day 0
 
  * [Intro]()
- * [apt-get install]()
+ * [apt-get install](/suricata/day_intro/AptGetInstall.md))
  * [basic config]()
  * [basic logging]()
 

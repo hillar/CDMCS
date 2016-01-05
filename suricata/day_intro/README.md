@@ -17,3 +17,6 @@
 >> git clone git://phalanx.openinfosecfoundation.org/oisf.git
 
 ## http://jasonish-suricata.readthedocs.org/en/latest/index.html
+
+
+## http://blog.inliniac.net/2015/01/08/suricata-has-been-added-to-debian-backports/
