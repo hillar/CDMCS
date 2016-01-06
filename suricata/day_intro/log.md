@@ -16,3 +16,5 @@ root@secx:~# tree /var/log/suricata/
 3 directories, 6 files
 ```
 ----
+
+[next: configuration](/suricata/day_intro/AppProtos.md)

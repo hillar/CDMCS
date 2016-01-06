@@ -48,6 +48,11 @@ suricata -c suricata.yaml -s signatures.rules -i eth0
 
 ```
 
+#### see
+
+ * http://jasonish-suricata.readthedocs.org/en/latest/command-line-options.html
+ * https://redmine.openinfosecfoundation.org/projects/suricata/wiki/Command_Line_Options
+
 ----
 
 [next: /etc/suricata/*](/suricata/day_intro/etc.md)

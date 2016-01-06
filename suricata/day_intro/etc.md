@@ -80,3 +80,5 @@ root@secx:~# tree /etc/suricata/
 ----
 
 [next: /var/log/suricata/*](/suricata/day_intro/log.md)
+
+[jump to: configuration](/suricata/day_intro/BasicConf.md)
