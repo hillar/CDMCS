@@ -9,24 +9,24 @@
 ## Day 1 :: Single Box
 
  * [build from source](/suricata/day_1/BuildFromSource.md)
+ * [Config](/suricata/day_1/Config.md)
+ * [Rule Management](/suricata/day_1/RuleManagement.md)
+ * [Rule Profiling](/suricata/day_1/RuleProfiling.md)
+ * [Thresholding](/suricata/day_1/RuleProfiling.md)
+ * [Reputation]()
+ * [Extraction]()
+ * [Outputs]()
 
- * [Config]()
- * [rules]()
- * [rule management](/suricata/day_1/RuleManagement.md)
- * []()
- * []()
- * []()
- * []()
 
 ## Day 2 :: Cluster
 
-* [Set up Minions](/suricata/day_2/SetUpMinions.md)
-* [Set up Master](/suricata/day_2/SetUpMaster.md)
-* [Set up Metrix](/suricata/day_2/SetUpMetrics.md)
-* []()
-* []()
-* []()
-* []()
+* [Minions](/suricata/day_2/SetUpMinions.md)
+* [Master](/suricata/day_2/SetUpMaster.md)
+* [Metrix](/suricata/day_2/SetUpMetrics.md)
+* [Outputs]()
+* [Config]()
+* [Rules]()
+* [Viewer]()
 * []()
 
 
@@ -39,8 +39,8 @@
 * [Loading many pcaps]()
 * [Converting logs to pcap](/suricata/day_3/Eve2Pcap.md)
 * [Multi Tenancy](/suricata/day_3/MultiTenancy.md)
-* []()
-* []()
+* [Tuning Considerations]()
+* [pf_packet, af_ring, ..]()
 
 ## Day +1
 
