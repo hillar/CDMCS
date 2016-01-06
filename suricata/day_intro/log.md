@@ -17,4 +17,4 @@ root@secx:~# tree /var/log/suricata/
 ```
 ----
 
-[next: configuration](/suricata/day_intro/AppProtos.md)
+[next: app layer protocols](/suricata/day_intro/AppProtos.md)
