@@ -79,4 +79,4 @@ root@secx:~# tree /etc/suricata/
 
 ----
 
-[next: /var/log/suricata/*](log.md)
+[next: /var/log/suricata/*](/suricata/day_intro/log.md)

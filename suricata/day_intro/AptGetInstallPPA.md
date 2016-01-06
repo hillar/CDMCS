@@ -181,4 +181,4 @@ Stopping suricata:  done.
 ```
 ----
 
-[next: help](help.md)
+[next: help](/suricata/day_intro/help.md)

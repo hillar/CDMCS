@@ -94,4 +94,4 @@ Generic build parameters:
 
 ----
 
-[next: add PPA](AppGetinstallPPA.md)
+[next: add PPA](/suricata/day_intro/AppGetinstallPPA.md)

@@ -1,8 +1,8 @@
 
 ## Day 0
 
- * [Intro]()
- * [apt-get install](/suricata/day_intro/AptGetInstall.md))
+ * [Intro](/suricata/day_intro/README.md)
+ * [apt-get install](/suricata/day_intro/AptGetInstall.md)
  * [basic config]()
  * [basic logging]()
 

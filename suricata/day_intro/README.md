@@ -20,4 +20,4 @@
 
 ----
 
- [next: install](AppGetInstall.md)
+ [next: install](/suricata/day_intro/AptGetInstall.md)

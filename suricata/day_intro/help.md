@@ -50,4 +50,4 @@ suricata -c suricata.yaml -s signatures.rules -i eth0
 
 ----
 
-[next: /etc/suricata/*](etc.md)
+[next: /etc/suricata/*](/suricata/day_intro/etc.md)
