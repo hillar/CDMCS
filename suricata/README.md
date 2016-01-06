@@ -11,12 +11,13 @@
  * [build from source](/suricata/day_1/BuildFromSource.md)
  * [Config](/suricata/day_1/Config.md)
  * [Rule Management](/suricata/day_1/RuleManagement.md)
- * [Rule Profiling](/suricata/day_1/RuleProfiling.md)
- * [Thresholding](/suricata/day_1/RuleProfiling.md)
+  * [Profiling](/suricata/day_1/RuleProfiling.md)
+  * [Thresholding](/suricata/day_1/RuleThresholding.md)
+
  * [Reputation]()
  * [Extraction]()
  * [Outputs]()
-
+ * []()
 
 ## Day 2 :: Cluster
 
@@ -24,6 +25,7 @@
 * [Master](/suricata/day_2/SetUpMaster.md)
 * [Metrix](/suricata/day_2/SetUpMetrics.md)
 * [Outputs]()
+
 * [Config]()
 * [Rules]()
 * [Viewer]()
@@ -37,6 +39,7 @@
 * [Lua scripted rules](/suricata/day_3/LuaRules.md)
 * [Internal counters](/suricata/day_3/DumpCounters.md)
 * [Loading many pcaps]()
+
 * [Converting logs to pcap](/suricata/day_3/Eve2Pcap.md)
 * [Multi Tenancy](/suricata/day_3/MultiTenancy.md)
 * [Tuning Considerations]()
@@ -44,7 +47,7 @@
 
 ## Day +1
 
-* []()
+* [Threat Management XYZ]()
 * []()
 * []()
 * []()
