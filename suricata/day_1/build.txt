@@ -1,4 +1,4 @@
-sudo apt-get install git
+sudo apt-get -y install git
 sudo apt-get -y install libpcre3 libpcre3-dbg libpcre3-dev build-essential autoconf automake libtool libpcap-dev libnet1-dev libyaml-0-2 libyaml-dev pkg-config zlib1g zlib1g-dev libcap-ng-dev libcap-ng0 make libmagic-dev
 
 mkdir /home/student
@@ -11,8 +11,8 @@ git clone https://github.com/OISF/libhtp.git -b 0.5.x
 
 ./configure --help
 
-sudo apt-get install libluajit-5.1-dev
-sudo apt-get install libjansson-dev
+sudo apt-get -y install libluajit-5.1-dev
+sudo apt-get -y install libjansson-dev
 
 ./configure --enable-profiling --enable-luajit
 make
@@ -22,3 +22,79 @@ ldconfig
 
 which suricata
 suricata -V
+
+
+
+-------
+timings
+
+root@secx:/home/student# time git clone git://phalanx.openinfosecfoundation.org/oisf.git
+Cloning into 'oisf'...
+remote: Counting objects: 42199, done.
+remote: Compressing objects: 100% (11985/11985), done.
+remote: Total 42199 (delta 34540), reused 36620 (delta 30167)
+Receiving objects: 100% (42199/42199), 11.52 MiB | 5.37 MiB/s, done.
+Resolving deltas: 100% (34540/34540), done.
+Checking connectivity... done.
+
+real	0m15.843s
+user	0m14.480s
+sys	0m11.340s
+
+root@secx:/home/student#
+root@secx:/home/student# cd oisf
+root@secx:/home/student/oisf# time git clone https://github.com/OISF/libhtp.git -b 0.5.x
+Cloning into 'libhtp'...
+remote: Counting objects: 9963, done.
+remote: Total 9963 (delta 0), reused 0 (delta 0), pack-reused 9963
+Receiving objects: 100% (9963/9963), 9.92 MiB | 4.70 MiB/s, done.
+Resolving deltas: 100% (6031/6031), done.
+Checking connectivity... done.
+
+real	0m4.960s
+user	0m3.040s
+sys	0m1.496s
+
+root@secx:/home/student/oisf# time ./autogen.sh
+Found libtoolize
+....
+contrib/tile_pcie_logd/Makefile.am: installing './depcomp'
+autoreconf: Leaving directory `.'
+You can now run "./configure" and then "make".
+
+real	0m44.248s
+user	0m38.708s
+sys	0m1.744s
+
+
+
+
+
+root@secx:/home/student/oisf# time ./configure --enable-profiling --enable-luajit
+checking whether make supports nested variables... yes
+...
+To install Suricata into /usr/bin/suricata, have the config in
+/etc/suricata and use /var/log/suricata as log dir, use:
+./configure --prefix=/usr/ --sysconfdir=/etc/ --localstatedir=/var/
+
+real	0m28.414s
+user	0m13.768s
+sys	0m6.928s
+
+
+root@secx:/home/student/oisf# time make
+make  all-recursive
+...
+changing mode of build/scripts-2.7/suricatasc from 644 to 755
+make[3]: Leaving directory `/home/student/oisf/scripts/suricatasc'
+make[3]: Entering directory `/home/student/oisf/scripts'
+make[3]: Nothing to be done for `all-am'.
+make[3]: Leaving directory `/home/student/oisf/scripts'
+make[2]: Leaving directory `/home/student/oisf/scripts'
+make[2]: Entering directory `/home/student/oisf'
+make[2]: Leaving directory `/home/student/oisf'
+make[1]: Leaving directory `/home/student/oisf'
+
+real	5m12.557s
+user	4m39.172s
+sys	0m27.876s
