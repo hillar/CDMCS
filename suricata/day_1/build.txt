@@ -23,6 +23,11 @@ ldconfig
 which suricata
 suricata -V
 
+root@secx:/home/student/oisf# cp rules/*.rules /usr/local/etc/suricata/rules/
+root@secx:/home/student/oisf# suricata -T -c /usr/local/etc/suricata/suricata.yaml
+[41734] 7/1/2016 -- 21:08:33 - (suricata.c:1509) <Info> (ParseCommandLine) -- Running suricata under test mode
+[41734] 7/1/2016 -- 21:08:34 - (suricata.c:1073) <Notice> (SCPrintVersion) -- This is Suricata version 3.0dev (rev 44a444b)
+[41734] 7/1/2016 -- 21:08:58 - (suricata.c:2351) <Notice> (main) -- Configuration provided was successfully loaded. Exiting.
 
 
 -------
@@ -98,3 +103,19 @@ make[1]: Leaving directory `/home/student/oisf'
 real	5m12.557s
 user	4m39.172s
 sys	0m27.876s
+
+
+
+root@secx:/home/student/oisf# time make install-full
+Making install in libhtp
+.....
+If a library like libhtp.so is not found, you can run suricata with:
+'LD_LIBRARY_PATH=/usr/local/lib /usr/local/bin/suricata -c /usr/local/etc/suricata//suricata.yaml -i eth0'.
+
+While rules are installed now, it's highly recommended to use a rule manager for maintaining rules.
+The two most common are Oinkmaster and Pulledpork. For a guide see:
+https://redmine.openinfosecfoundation.org/projects/suricata/wiki/Rule_Management_with_Oinkmaster
+
+real	0m5.317s
+user	0m3.344s
+sys	0m0.316s
