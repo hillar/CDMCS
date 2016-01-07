@@ -57,6 +57,14 @@ make
 sudo make install
 ```
 
+* [make install-full](/suricata/day_1/MakeInstallFull.md)
+
+
 ```
 sudo ldconfig
+```
+
+```
+root@secx:/home/student/oisf# suricata -V
+This is Suricata version 3.0dev (rev 44a444b)
 ```

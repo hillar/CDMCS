@@ -12,7 +12,13 @@ git clone https://github.com/OISF/libhtp.git -b 0.5.x
 ./configure --help
 
 sudo apt-get install libluajit-5.1-dev
+sudo apt-get install libjansson-dev
 
 ./configure --enable-profiling --enable-luajit
-
 make
+make install-full
+
+ldconfig
+
+which suricata
+suricata -V

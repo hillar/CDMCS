@@ -1,5 +1,8 @@
 # ./configure --enable-profiling --enable-luajit
 
+* apt-get install libluajit-5.1-dev
+* apt-get install libjansson-dev
+
 ```
 root@secx:/home/student/oisf# ./configure --enable-profiling --enable-luajit
 checking whether make supports nested variables... yes
@@ -30,12 +33,12 @@ Suricata Configuration:
   DAG enabled:                             no
   Napatech enabled:                        no
 
-  Unix socket enabled:                     no
+  Unix socket enabled:                     yes
   Detection enabled:                       yes
 
   libnss support:                          no
   libnspr support:                         no
-  libjansson support:                      no
+  libjansson support:                      yes
   hiredis support:                         no
   Prelude support:                         no
   PCRE jit:                                yes
@@ -83,5 +86,4 @@ and rules and provide you a ready-to-run suricata.
 To install Suricata into /usr/bin/suricata, have the config in
 /etc/suricata and use /var/log/suricata as log dir, use:
 ./configure --prefix=/usr/ --sysconfdir=/etc/ --localstatedir=/var/
-
 ```
