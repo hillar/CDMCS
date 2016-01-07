@@ -3,8 +3,8 @@
 
  * [Intro](/suricata/day_intro/README.md)
  * [apt-get install](/suricata/day_intro/AptGetInstall.md)
-  * default
-  * PPA
+  * [default](/suricata/day_intro/AptGetInstall.md)
+  * [PPA](/suricata/day_intro/AptGetInstallPPA.md)
  * [basic config](/suricata/day_intro/BasicConf.md)
  * [basic logging](/suricata/day_intro/BasicLogging.md)
 

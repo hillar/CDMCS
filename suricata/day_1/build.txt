@@ -1,0 +1,18 @@
+sudo apt-get install git
+sudo apt-get -y install libpcre3 libpcre3-dbg libpcre3-dev build-essential autoconf automake libtool libpcap-dev libnet1-dev libyaml-0-2 libyaml-dev pkg-config zlib1g zlib1g-dev libcap-ng-dev libcap-ng0 make libmagic-dev
+
+mkdir /home/student
+cd /home/student/
+
+git clone git://phalanx.openinfosecfoundation.org/oisf.git
+cd oisf
+git clone https://github.com/OISF/libhtp.git -b 0.5.x
+./autogen.sh
+
+./configure --help
+
+sudo apt-get install libluajit-5.1-dev
+
+./configure --enable-profiling --enable-luajit
+
+make

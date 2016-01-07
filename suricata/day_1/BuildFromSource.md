@@ -23,7 +23,7 @@ zlib1g-dev \
 libcap-ng-dev \
 libcap-ng0 \
 make \
-libmagic-dev \
+libmagic-dev
 ```
 
 
@@ -45,6 +45,9 @@ git clone https://github.com/OISF/libhtp.git -b 0.5.x
 ```
 ./configure
 ```
+
+* [configure --help](/suricata/day_1/ConfigureHelp.md)
+* [configure --enable-profiling --enable-luajit](/suricata/day_1/ConfigureProfilingLuaJit.md)
 
 ```
 make
