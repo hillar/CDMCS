@@ -16,7 +16,7 @@
   * [Profiling](/suricata/day_1/RuleProfiling.md)
   * [Thresholding](/suricata/day_1/RuleThresholding.md)
 
- * [Reputation]()
+ * [Reputation](/suricata/day_1/Reputation.md)
  * [Extraction]()
   * SSL monitor
   * DNS probe
