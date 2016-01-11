@@ -45,7 +45,7 @@
 * [Lua Output](/suricata/day_3/LuaOutput.md)
 * [Lua scripted rules](/suricata/day_3/LuaRules.md)
 * [Internal counters](/suricata/day_3/DumpCounters.md)
-* [Loading many pcaps]()
+* [Loading many pcaps](/suricata/day_3/LoadPcaps.md)
 
 * [Converting logs to pcap](/suricata/day_3/Eve2Pcap.md)
 * [Multi Tenancy](/suricata/day_3/MultiTenancy.md)
