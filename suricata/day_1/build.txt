@@ -30,6 +30,8 @@ root@secx:/home/student/oisf# suricata -T -c /usr/local/etc/suricata/suricata.ya
 [41734] 7/1/2016 -- 21:08:58 - (suricata.c:2351) <Notice> (main) -- Configuration provided was successfully loaded. Exiting.
 
 
+for i in rx tx sg tso ufo gso gro lro; do ethtool -K eth0 $i off; done
+
 -------
 timings
 
