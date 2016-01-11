@@ -119,3 +119,13 @@ https://redmine.openinfosecfoundation.org/projects/suricata/wiki/Rule_Management
 real	0m5.317s
 user	0m3.344s
 sys	0m0.316s
+
+
+root@secx:~# time suricata -T -c /usr/local/etc/suricata/suricata.yaml -i eth0
+[2566] 11/1/2016 -- 18:45:43 - (suricata.c:1509) <Info> (ParseCommandLine) -- Running suricata under test mode
+[2566] 11/1/2016 -- 18:45:43 - (suricata.c:1073) <Notice> (SCPrintVersion) -- This is Suricata version 3.0dev (rev 44a444b)
+[2566] 11/1/2016 -- 18:46:06 - (suricata.c:2351) <Notice> (main) -- Configuration provided was successfully loaded. Exiting.
+
+real	0m23.237s
+user	0m22.736s
+sys	0m0.476s

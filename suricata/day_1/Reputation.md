@@ -30,3 +30,8 @@ The reputation file lists a reputation score for hosts in the categories.
 ```
 <ip>,<cat>,<score>
 ```
+
+#### Reload
+
+Only the reputation files will be reloaded, the categories file won’t be.
+If categories change, Suricata should be restarted.
