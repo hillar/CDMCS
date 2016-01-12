@@ -31,6 +31,11 @@ The reputation file lists a reputation score for hosts in the categories.
 <ip>,<cat>,<score>
 ```
 
+#### Rule file
+```
+iprep:<side to check>,<cat>,<operator>,<value>
+```
+
 #### Reload
 
 Only the reputation files will be reloaded, the categories file won’t be.
