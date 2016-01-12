@@ -6,14 +6,7 @@ see
 * https://redmine.openinfosecfoundation.org/projects/suricata/wiki/IPReputationFormat
 * https://redmine.openinfosecfoundation.org/projects/suricata/wiki/IPReputationRules
 
-#### configuration
 
-```
-#reputation-categories-file: /usr/local/etc/suricata/iprep/categories.txt
-#default-reputation-path: /usr/local/etc/suricata/iprep
-#reputation-files:
-# - reputation.list
-```
 
 #### Categories file
 
@@ -34,6 +27,19 @@ The reputation file lists a reputation score for hosts in the categories.
 #### Rule file
 ```
 iprep:<side to check>,<cat>,<operator>,<value>
+```
+
+#### configuration
+
+```
+#reputation-categories-file: /usr/local/etc/suricata/iprep/categories.txt
+#default-reputation-path: /usr/local/etc/suricata/iprep
+#reputation-files:
+# - reputation.list
+
+default-rule-path: /usr/local/etc/suricata/rules
+rule-files:
+ - ../iprep/iprep.rules
 ```
 
 #### Reload
