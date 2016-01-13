@@ -7,6 +7,7 @@ With the constraint not to use any non official system code (plain system and ke
 see
 
 * https://home.regit.org/2012/07/suricata-to-10gbps-and-beyond/
+* http://pevma.blogspot.se/2013/12/suricata-and-grand-slam-of-open-source.html
 
 ----
 
