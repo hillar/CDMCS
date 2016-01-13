@@ -20,3 +20,13 @@ Suricata can alert via sylog
 ## alerts
 
 ## stuff
+
+```
+root@secx:/usr/local/var/log/suricata# cat eve.json | perl -ne 'print "$1\n" if /\"event_type\":\"(.*?)\"/' | sort | uniq -c
+   1060 alert
+  29841 dns
+  12351 fileinfo
+  12438 http
+   8219 ssh
+  44329 stats
+```
