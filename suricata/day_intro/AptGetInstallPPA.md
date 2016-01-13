@@ -179,6 +179,14 @@ root@secx:~# service suricata stop
 Stopping suricata:  done.
 
 ```
+
+### start it "manually"
+
+```
+root@secx:~# suricata -c /etc/suricata/suricata.yaml -i eth0 -v
+```
+* http://pevma.blogspot.se/2013/12/suri-20beta2-very-informative-when-you.html
+
 ----
 
 [next: help](/suricata/day_intro/help.md)
