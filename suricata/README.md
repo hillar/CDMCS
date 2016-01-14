@@ -7,6 +7,7 @@
   * [PPA](/suricata/day_intro/AptGetInstallPPA.md)
  * [basic config](/suricata/day_intro/BasicConf.md)
  * [basic logging](/suricata/day_intro/BasicLogging.md)
+ * [view events](/suricata/day_intro/EveView.md)
 
 ## Day 1 :: Single Box
 
