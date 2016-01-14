@@ -52,6 +52,7 @@
 * [Multi Tenancy](/suricata/day_3/MultiTenancy.md)
 * [Tuning Considerations]()
 * [pf_packet, af_ring, ..]()
+* [evil bit](/suricata/day_3/EvilBit.md)
 
 ## Day +1
 
