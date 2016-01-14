@@ -51,7 +51,7 @@
 * [Converting logs to pcap](/suricata/day_3/Eve2Pcap.md)
 * [Multi Tenancy](/suricata/day_3/MultiTenancy.md)
 * [Tuning Considerations]()
-* [pf_packet, af_ring, ..]()
+* [pf_packet, af_ring, ..](/suricata/day_3/NICAccess.md)
 * [evil bit](/suricata/day_3/EvilBit.md)
 
 ## Day +1
