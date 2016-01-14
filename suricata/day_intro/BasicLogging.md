@@ -30,3 +30,7 @@ root@secx:/usr/local/var/log/suricata# cat eve.json | perl -ne 'print "$1\n" if 
    8219 ssh
   44329 stats
 ```
+
+----
+
+[next: view events](/suricata/day_intro/EveView.md)
