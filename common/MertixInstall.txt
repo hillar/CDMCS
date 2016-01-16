@@ -1,0 +1,87 @@
+#METRICS_SERVER=$1
+
+METRICS_SERVER=$(hostname -f)
+
+INSTALL_DIR=/provision
+
+mkdir -p ${INSTALL_DIR}/influxdb
+cd ${INSTALL_DIR}/influxdb
+if [ ! -f "influxdb_nightly_amd64.deb" ]; then
+   wget -q https://s3.amazonaws.com/influxdb/influxdb_nightly_amd64.deb
+fi
+if [ ! -f "influxdb_nightly_amd64.deb" ]; then
+  echo "$(date) ${NAME} $0[$$]: {influxdb: {status:ERROR, msg: missing influxdb_nightly_amd64.deb}"
+  exit -1
+else
+  dpkg -i influxdb_nightly_amd64.deb
+  sed -i -e 's,localhost,'${METRICS_SERVER}',g' /etc/influxdb/influxdb.conf
+  service influxdb restart
+fi
+
+TLGF=0.2.4
+
+mkdir -p ${INSTALL_DIR}/telegraf
+cd ${INSTALL_DIR}/telegraf
+if [ ! -f "telegraf_${TLGF}_amd64.deb" ]; then
+  wget -q https://s3.amazonaws.com/get.influxdb.org/telegraf/telegraf_${TLGF}_amd64.deb
+fi
+if [ ! -f "telegraf_${TLGF}_amd64.deb" ]; then
+    echo "$(date) ${NAME} $0[$$]: {telegaf: {status:ERROR, msg: missing telegraf_${TLGF}_amd64.deb}"
+    exit -1
+else
+  dpkg -i telegraf_${TLGF}_amd64.deb > /dev/null
+  sed -i -e 's,http://localhost,http://'${METRICS_SERVER}',g' /etc/opt/telegraf/telegraf.conf
+  sed -i -e 's,interval = "10s",interval = "1s",g' /etc/opt/telegraf/telegraf.conf
+  sed -i -e 's,flush_interval = "1s",flush_interval = "60s",g' /etc/opt/telegraf/telegraf.conf
+  service telegraf start
+fi
+
+
+
+KPCTR=0.2.4
+
+mkdir -p ${INSTALL_DIR}/kapacitor
+cd ${INSTALL_DIR}/kapacitor
+if [ ! -f "kapacitor_${KPCTR}-1_amd64.deb" ]; then
+  wget -q https://s3.amazonaws.com/influxdb/kapacitor_${KPCTR}-1_amd64.deb
+fi
+if [ ! -f "kapacitor_${KPCTR}-1_amd64.deb" ]; then
+  echo "$(date) ${NAME} $0[$$]: {kapacitor: {status:WARNING, msg: missing kapacitor_${KPCTR}-1_amd64.deb}"
+  #exit -1
+else
+  dpkg -i kapacitor_${KPCTR}-1_amd64.deb
+  sed -i -e 's,hostname = "localhost",hostname = "'${METRICS_SERVER}'",g' /etc/kapacitor/kapacitor.conf
+  urls = ["http://localhost:8086"]
+  #sed -i -e 's,urls = urls = ["http://localhost:8086"],urls = ["http://'${METRICS_SERVER}':8086"],g' /etc/kapacitor/kapacitor.conf
+  service kapacitor start
+  kapacitor define -name cpu_alert -type stream -tick ./cpu_alert.tick -dbrp telegraf.default
+fi
+
+CHRNGRF=0.4.0
+
+mkdir -p ${INSTALL_DIR}/chronograf
+cd ${INSTALL_DIR}/chronograf
+if [ ! -f "chronograf_${CHRNGRF}_amd64.deb" ]; then
+  wget https://s3.amazonaws.com/get.influxdb.org/chronograf/chronograf_${CHRNGRF}_amd64.deb
+fi
+if [ ! -f "chronograf_${CHRNGRF}_amd64.deb" ]; then
+  echo "$(date) ${NAME} $0[$$]: {chronograf: {status:WARNING, msg: missing chronograf_${CHRNGRF}_amd64.deb}"
+else
+  dpkg -i chronograf_${CHRNGRF}_amd64.deb
+fi
+
+mkdir -p ${INSTALL_DIR}/grafana
+cd ${INSTALL_DIR}/grafana
+if [ ! -f "grafana_latest_amd64.deb" ]; then
+  wget -q https://grafanarel.s3.amazonaws.com/builds/grafana_latest_amd64.deb
+fi
+if [ ! -f "grafana_latest_amd64.deb" ]; then
+  echo "$(date) ${NAME} $0[$$]: {grafana: {status:WARNING, msg: missing grafana_latest_amd64.deb}"
+  #exit -1
+else
+  sudo dpkg -i grafana_latest_amd64.deb
+  sudo update-rc.d grafana-server defaults 95 10
+  ;domain = localhost
+  sed -i -e 's,domain = localhost,domain = '${METRICS_SERVER}',g' /etc/grafana/grafana.ini
+  service grafana-server start
+fi

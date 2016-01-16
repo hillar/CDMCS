@@ -1,74 +1,78 @@
 # collect some metrics
 
+```
+METRICS_SERVER=$(hostname -f)
+```
+
 ## influxdb
+
+see
+* https://github.com/influxdata/influxdb#features
+* https://github.com/influxdata/influxdb-r
 
 ```
 
-METRICS_SERVER=$1
+
 wget -q https://s3.amazonaws.com/influxdb/influxdb_nightly_amd64.deb
 sudo dpkg -i influxdb_nightly_amd64.deb
 sed -i -e 's,localhost,'${METRICS_SERVER}',g' /etc/influxdb/influxdb.conf
-service influxdb start
+service influxdb restart
 
 ```
 
 ## telegraf
 
+see https://github.com/influxdata/telegraf#telegraf-
+
 ```
+TLGF=0.2.4
 
-INSTALL_DIR=/provision
-TLGF=0.2.3
-METRICS_SERVER=$1
-
-mkdir -p ${INSTALL_DIR}/telegraf
-cd ${INSTALL_DIR}/telegraf
-if [ ! -f "telegraf_${TLGF}_amd64.deb" ]; then
-  echo "installing https://s3.amazonaws.com/get.influxdb.org/telegraf/telegraf_${TLGF}_amd64.deb"
-  wget -q https://s3.amazonaws.com/get.influxdb.org/telegraf/telegraf_${TLGF}_amd64.deb
-  if [ ! -f "telegraf_${TLGF}_amd64.deb" ]; then
-    echo "$(date) ${NAME} $0[$$]: {telegaf: {status:ERROR, msg: missing telegraf_${TLGF}_amd64.deb}"
-    exit -1
-  fi
-  sudo dpkg -i telegraf_${TLGF}_amd64.deb > /dev/null
-else
-  service telegraf stop
-  echo "reconfiguring telegraf"
-fi
+wget -q https://s3.amazonaws.com/get.influxdb.org/telegraf/telegraf_${TLGF}_amd64.deb
+sudo dpkg -i telegraf_${TLGF}_amd64.deb
 sed -i -e 's,http://localhost,http://'${METRICS_SERVER}',g' /etc/opt/telegraf/telegraf.conf
 sed -i -e 's,interval = "10s",interval = "1s",g' /etc/opt/telegraf/telegraf.conf
 sed -i -e 's,flush_interval = "1s",flush_interval = "60s",g' /etc/opt/telegraf/telegraf.conf
-service telegraf start
-
-```
-
-
-## grafana
-
-
-```
-METRICS_SERVER=$1
-wget -q https://grafanarel.s3.amazonaws.com/builds/grafana_latest_amd64.deb
-sudo dpkg -i grafana_latest_amd64.deb
-sudo update-rc.d grafana-server defaults 95 10
-;domain = localhost
-sed -i -e 's,domain = localhost,domain = '${METRICS_SERVER}',g' /etc/grafana/grafana.ini
-service grafana-server start
-
+service telegraf restart
 
 ```
 
 ## kapacitor
 
+see https://github.com/influxdata/kapacitor#basic-example
+
 
 ```
-METRICS_SERVER=$1
-wget -q https://s3.amazonaws.com/influxdb/kapacitor_0.1.1-1_amd64.deb
-sudo dpkg -i kapacitor_0.1.1-1_amd64.deb
+KPCTR=0.2.4
+
+wget -q https://s3.amazonaws.com/influxdb/kapacitor_${KPCTR}-1_amd64.deb
+sudo dpkg -i kapacitor_${KPCTR}-1_amd64.deb
 sed -i -e 's,hostname = "localhost",hostname = "'${METRICS_SERVER}'",g' /etc/kapacitor/kapacitor.conf
 urls = ["http://localhost:8086"]
 sed -i -e 's,urls = urls = ["http://localhost:8086"],urls = ["http://'${METRICS_SERVER}':8086"],g' /etc/kapacitor/kapacitor.conf
-service kapacitor start
+service kapacitor restart
 
 kapacitor define -name cpu_alert -type stream -tick ./cpu_alert.tick -dbrp telegraf.default
 
+```
+
+## chronograf
+
+see https://docs.influxdata.com/chronograf/v0.4/
+
+```
+wget https://s3.amazonaws.com/get.influxdb.org/chronograf/chronograf_0.4.0_amd64.deb
+sudo dpkg -i chronograf_0.4.0_amd64.deb
+```
+
+## grafana
+
+see http://grafana.org
+
+
+```
+wget -q https://grafanarel.s3.amazonaws.com/builds/grafana_latest_amd64.deb
+sudo dpkg -i grafana_latest_amd64.deb
+sudo update-rc.d grafana-server defaults 95 10
+sed -i -e 's,domain = localhost,domain = '${METRICS_SERVER}',g' /etc/grafana/grafana.ini
+service grafana-server start
 ```
