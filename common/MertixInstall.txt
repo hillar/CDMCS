@@ -62,12 +62,13 @@ CHRNGRF=0.4.0
 mkdir -p ${INSTALL_DIR}/chronograf
 cd ${INSTALL_DIR}/chronograf
 if [ ! -f "chronograf_${CHRNGRF}_amd64.deb" ]; then
-  wget https://s3.amazonaws.com/get.influxdb.org/chronograf/chronograf_${CHRNGRF}_amd64.deb
+  wget -q https://s3.amazonaws.com/get.influxdb.org/chronograf/chronograf_${CHRNGRF}_amd64.deb
 fi
 if [ ! -f "chronograf_${CHRNGRF}_amd64.deb" ]; then
   echo "$(date) ${NAME} $0[$$]: {chronograf: {status:WARNING, msg: missing chronograf_${CHRNGRF}_amd64.deb}"
 else
   dpkg -i chronograf_${CHRNGRF}_amd64.deb
+  sed -i -e 's,Bind = "127.0.0.1:10000",Bind = "'${METRICS_SERVER}':10000",g' /opt/chronograf/config.toml 
 fi
 
 mkdir -p ${INSTALL_DIR}/grafana
