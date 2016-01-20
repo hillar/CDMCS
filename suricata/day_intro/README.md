@@ -18,6 +18,11 @@
  *  https://github.com/inliniac/suricata
  *  http://jasonish-suricata.readthedocs.org/en/latest/index.html
 
+
+ #### please remember
+
+ * https://redmine.openinfosecfoundation.org/projects/suricata/wiki/Self_Help_Diagrams
+
 ----
 
  [next: install](/suricata/day_intro/AptGetInstall.md)
