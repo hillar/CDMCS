@@ -113,3 +113,41 @@ outputs.14.file-log.force-md5 = yes
 app-layer.protocols.smtp.mime.body-md5 = no
 
 ```
+
+
+## push files to elasticsearch for content index
+
+see
+
+* http://tika.apache.org/1.11/formats.html#Full_list_of_Supported_Formats
+
+```
+curl -XDELETE http://localhost:9200/suricata
+```
+
+```
+curl -XPOST http://localhost:9200/suricata -d '{
+  "mappings": {
+    "file": {
+      "properties": {
+        "content": { "type": "attachment" }
+}}}}'
+```
+
+```
+curl -XPOST http://localhost:9200/suricata/file/86601 -d "
+{
+  \"content\": \"$(openssl base64 -in file.86601)\"
+}
+"
+```
+
+```
+curl -XPOST http://localhost:9200/suricata/file/_search -d '
+{
+  "query": {
+    "query_string": {
+      "query": "kustutatud"
+}}}
+'
+```
