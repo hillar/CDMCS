@@ -9,10 +9,6 @@ see
 
 ### config
 ```
-# File extraction depends on a lot of things to be fully done:
-# - stream reassembly depth. For optimal results, set this to 0 (unlimited)
-# - http request / response body sizes. Again set to 0 for optimal results.
-# - rules that contain the "filestore" keyword.
 - file-store:
     enabled: yes       # set to yes to enable
     log-dir: files    # directory to store the files
@@ -32,6 +28,7 @@ see
 
 ```
 
+#### stream reassembly depth. Set this to 0 (unlimited)
 ```
 stream:
   memcap: 32mb
@@ -43,6 +40,7 @@ stream:
 
 ```
 
+#### http request / response body sizes. Set those to 0 (unlimited)
 ```
 
     libhtp:
@@ -59,7 +57,7 @@ stream:
 
 
 
-### rules
+#### rules that contain the "filestore" keyword.
 
 ```
 # grep filestore /usr/local/etc/suricata/rules/* | grep -v "#"
