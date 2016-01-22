@@ -31,7 +31,7 @@ iprep:<side to check>,<cat>,<operator>,<value>
 
 #### configuration
 
-```
+```yaml
 #reputation-categories-file: /usr/local/etc/suricata/iprep/categories.txt
 #default-reputation-path: /usr/local/etc/suricata/iprep
 #reputation-files:
