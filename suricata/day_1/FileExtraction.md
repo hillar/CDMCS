@@ -8,7 +8,7 @@ see
 * https://redmine.openinfosecfoundation.org/projects/suricata/wiki/MD5
 
 ### config
-```
+``` yaml
 - file-store:
     enabled: yes       # set to yes to enable
     log-dir: files    # directory to store the files
@@ -29,7 +29,7 @@ see
 ```
 
 #### stream reassembly depth. Set this to 0 (unlimited)
-```
+``` yaml
 stream:
   memcap: 32mb
   checksum-validation: yes      # reject wrong csums
@@ -41,7 +41,7 @@ stream:
 ```
 
 #### http request / response body sizes. Set those to 0 (unlimited)
-```
+``` yaml
 
     libhtp:
 
@@ -125,7 +125,7 @@ see
 curl -XDELETE http://localhost:9200/suricata
 ```
 
-```
+``` bash
 curl -XPOST http://localhost:9200/suricata -d '{
   "mappings": {
     "file": {
@@ -134,7 +134,7 @@ curl -XPOST http://localhost:9200/suricata -d '{
 }}}}'
 ```
 
-```
+``` bash
 curl -XPOST http://localhost:9200/suricata/file/86601 -d "
 {
   \"content\": \"$(openssl base64 -in file.86601)\"
@@ -142,7 +142,7 @@ curl -XPOST http://localhost:9200/suricata/file/86601 -d "
 "
 ```
 
-```
+``` bash
 curl -XPOST http://localhost:9200/suricata/file/_search -d '
 {
   "query": {
