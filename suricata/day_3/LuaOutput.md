@@ -10,7 +10,7 @@ see (old) https://gist.github.com/hillar/aeae0b6d12de4ccd8ced#file-suricata_flow
 
 ## enable in config
 
-```
+``` yaml
 outputs:
   - lua:
       enabled: yes
