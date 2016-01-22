@@ -8,7 +8,7 @@ https://github.com/StamusNetworks/Scirius
 
 ## Config
 
-```
+``` yaml
 default-rule-path: /etc/suricata/rules/
 rule-files:
   - backdoor.rules
