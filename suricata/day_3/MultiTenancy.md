@@ -15,7 +15,7 @@ and also
 
 ## configuration
 
-```
+``` yaml
 multi-detect:
   enabled: yes
   #selector: direct # direct or vlan
