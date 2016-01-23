@@ -42,5 +42,7 @@ day +1 :: wrapup| [*](/suricata/README.md#day-1)| [*](/bro/README.md#day-1) | [*
 ## Teachers
 
  * [hillar](https://github.com/hillar)
+ * [regit](https://github.com/regit)
+ 
  
 ## Thanks
