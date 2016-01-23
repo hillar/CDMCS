@@ -40,3 +40,5 @@ day +1 :: wrapup| [*](/suricata/README.md#day-1)| [*](/bro/README.md#day-1) | [*
  * Moloch :: [Large-Scale Packet Capture Analysis Course](https://ccdcoe.org/cyber-defence-monitoring-course-suite-module-3.html)
 
 ## Teachers
+
+ * [hillar](https://github.com/hillar)
