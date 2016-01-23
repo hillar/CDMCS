@@ -43,6 +43,8 @@ day +1 :: wrapup| [*](/suricata/README.md#day-1)| [*](/bro/README.md#day-1) | [*
 
  * [hillar](https://github.com/hillar)
  * [regit](https://github.com/regit)
+ * [markuskont](https://github.com/markuskont)
+ * [mpihelgas](https://github.com/mpihelgas)
  
  
 ## Thanks
