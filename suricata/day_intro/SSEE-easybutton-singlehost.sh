@@ -96,7 +96,7 @@ mkdir -p /etc/logstash
 wget -q https://raw.githubusercontent.com/StamusNetworks/Amsterdam/master/src/config/logstash/logstash.conf -O /etc/logstash/logstash.conf
 echo "127.0.0.1 elasticsearch" >> /etc/hosts
 cd /opt/logstash-2.1.0/bin/
-./logstash -f /etc/logstash/logstash.conf > /var/log/scirius.log 2>&1 &
+./logstash -f /etc/logstash/logstash.conf > /var/log/logstash.log 2>&1 &
 
 #kibana
 cd /tmp
