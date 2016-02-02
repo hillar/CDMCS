@@ -9,6 +9,14 @@
 # for testing !
 # you probably don't want to use this for a real deployment.
 
+# student:cdmcs hillar$ time vagrant up
+# Bringing machine 'Amstelredamme' up with 'virtualbox' provider...
+# ==> Amstelredamme: Importing base box 'ubu14'...
+# ...
+# real	5m20.461s
+# user	0m4.858s
+# sys	0m1.954s
+
 if [ "$(id -u)" != "0" ]; then
    echo "ERROR - This script must be run as root" 1>&2
    exit 1
