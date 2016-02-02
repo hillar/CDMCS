@@ -1,5 +1,7 @@
 # Cyber Defence Monitoring Course Suite (CDMCS)
 
+![sAYCyber!](/saynomore.png)
+
 This material has been designed to be taught in a classroom environment.
 
 The material is missing some of the contextual concepts and ideas that will be covered in class.
@@ -45,7 +47,7 @@ day +1 :: wrapup| [*](/suricata/README.md#day-1)| [*](/bro/README.md#day-1) | [*
  * [regit](https://github.com/regit)
  * [markuskont](https://github.com/markuskont)
  * [mpihelgas](https://github.com/mpihelgas)
- 
- 
+
+
 ## Thanks
  [pevma](https://github.com/pevma), [inliniac](https://github.com/inliniac), [jasonish](https://github.com/jasonish)
