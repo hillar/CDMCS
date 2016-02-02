@@ -115,7 +115,6 @@ cd /opt/
 wget https://bintray.com/artifact/download/jasonish/evebox/evebox-linux-amd64.zip
 unzip evebox-linux-amd64.zip
 ./evebox-linux-amd64/evebox --version
-./evebox-linux-amd64/evebox
 echo "http.cors.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
 echo "http.cors.allow-origin: \"/.*/\"" >> /etc/elasticsearch/elasticsearch.yml
 service elasticsearch restart
