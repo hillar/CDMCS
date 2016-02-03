@@ -19,3 +19,43 @@ Flow output records:
 * TCP
  * flags seen
  * state at flow end
+
+```yaml
+# bi-directional flows
+- flow
+```
+
+
+```json
+ {
+  "_index": "logstash-2016.02.03",
+  "_type": "SELKS",
+  "_id": "AVKox_drE4DnavQE_df3",
+  "_score": null,
+  "_source": {
+    "timestamp": "2016-02-03T22:17:03.002103+0200",
+    "flow_id": 140023364304784,
+    "event_type": "flow",
+    "src_ip": "10.242.3.7",
+    "src_port": 7653,
+    "dest_ip": "39.255.255.25",
+    "dest_port": 1900,
+    "proto": "UDP",
+    "flow": {
+      "pkts_toserver": 1,
+      "pkts_toclient": 0,
+      "bytes_toserver": 143,
+      "bytes_toclient": 0,
+      "start": "2016-02-03T22:16:32.263423+0200",
+      "end": "2016-02-03T22:16:32.263423+0200",
+      "age": 0,
+      "state": "new",
+      "reason": "timeout"
+    },
+    "@version": "1",
+    "@timestamp": "2016-02-03T20:17:03.002Z",
+    "host": "rtws-yellow-1-medium-1",
+    "path": "/var/log/suricata/eve.json",
+    "type": "SELKS"
+  },
+```
