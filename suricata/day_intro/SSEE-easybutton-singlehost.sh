@@ -107,7 +107,7 @@ unzip evebox-linux-amd64.zip
 echo "http.cors.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
 echo "http.cors.allow-origin: \"/.*/\"" >> /etc/elasticsearch/elasticsearch.yml
 service elasticsearch restart
-./evebox-linux-amd64/evebox > /var/log/evebox.log 2>&1 &
+/opt/evebox-linux-amd64/evebox > /var/log/evebox.log 2>&1 &
 
 grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" /etc/suricata/rules/scirius.rules|rev|sort|uniq|rev|while read i; do wget -q -T 1 -t 1 $i; done  &
 
