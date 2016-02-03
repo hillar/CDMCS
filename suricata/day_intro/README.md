@@ -25,4 +25,4 @@
 
 ----
 
- [next: install](/suricata/day_intro/AptGetInstall.md)
+ [next: install](/suricata/day_intro/Amsterdam.md)
