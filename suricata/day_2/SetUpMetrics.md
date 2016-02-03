@@ -13,3 +13,7 @@ syweb
 nagios
 
 ...
+
+----
+
+[next : elastic](/suricata/day_2/SetUpElastic.md)
