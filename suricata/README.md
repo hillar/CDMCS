@@ -14,6 +14,7 @@
 * 11:00 - 11:45 Rules [management](/suricata/day_1/RuleManagement.md),  [thresholding](/suricata/day_1/RuleThresholding.md), [reputation](/suricata/day_1/Reputation.md)
 
 
+
 * 13:00 - 13:45 [Logs](/suricata/day_1/SingleHostLogs.md)
 * 14:00 - 14:45 Extraction, [TLS monitor](/suricata/day_1/TLSMonitor.md) , [DNS probe](/suricata/day_1/DNSProbe.md) , [flow probe](/suricata/day_1/FlowProbe.md)
 * 15:00 - 15:45 Extraction [file](/suricata/day_1/FileExtraction.md)   
@@ -22,9 +23,10 @@
 
 ## Day 2 :: Cluster
 
-* 09:00 - 09:45 [Minions](/suricata/day_2/SetUpMinions.md)
-* 10:00 - 10:45 [Master](/suricata/day_2/SetUpMaster.md)
-* 11:00 - 11:45 [Metrix](/suricata/day_2/SetUpMetrics.md)
+* 09:00 - 09:45 [intro](/suricata/day_2/README.md),[Metrix](/suricata/day_2/SetUpMetrics.md),[Elastic](/suricata/day_2/SetUpElastic.md)
+* 10:00 - 10:45 [Minions](/suricata/day_2/SetUpMinions.md)
+* 11:00 - 11:45 [Master](/suricata/day_2/SetUpMaster.md)
+
 
 
 * 13:00 - 13:45
@@ -38,6 +40,7 @@
 * 09:00 - 09:45 [pf_packet, af_ring, ..](/suricata/day_3/NICAccess.md)  
 * 10:00 - 10:45 [Loading many pcaps](/suricata/day_3/LoadPcaps.md)
 * 11:00 - 11:45 [Multi Tenancy](/suricata/day_3/MultiTenancy.md)
+
 
 
 * 13:00 - 13:45
