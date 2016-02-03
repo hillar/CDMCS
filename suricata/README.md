@@ -9,7 +9,7 @@
 
 ## Day 1 :: Single Box
 
-* 09:00 - 09:45 [build from source](/suricata/day_1/BuildFromSource.md)
+* 09:00 - 09:45 [intro](/suricata/day_1/README.md),[build from source](/suricata/day_1/BuildFromSource.md)
 * 10:00 - 10:45 [Config](/suricata/day_1/SingleHostConfig.md)
 * 11:00 - 11:45 Rules [management](/suricata/day_1/RuleManagement.md),  [thresholding](/suricata/day_1/RuleThresholding.md), [reputation](/suricata/day_1/Reputation.md)
 
