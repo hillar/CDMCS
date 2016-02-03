@@ -5,7 +5,30 @@ see
 * https://www.stamus-networks.com/2015/07/24/finding-self-signed-tls-certificates-suricata-and-luajit-scripting/
 * https://resources.sei.cmu.edu/asset_files/Presentation/2016_017_001_449890.pdf
 
-TLS Logging Example
+
+#### eve
+```json
+{
+  "_index": "logstash-2016.02.03",
+  "_type": "SELKS",
+  "_id": "AVKnLZNJBzrbu4sSBuRs",
+  "_score": 1,
+  "_source": {
+    "timestamp": "2016-02-03T14:48:46.484856+0200",
+    "event_type": "engine",
+    "engine": {
+      "message": "enabling 'eve-log' module 'tls'"
+    },
+    "@version": "1",
+    "@timestamp": "2016-02-03T12:48:46.484Z",
+    "host": "rtws-yellow-1-medium-1",
+    "path": "/var/log/suricata/suricata.json",
+    "type": "SELKS"
+  }
+}
+```
+
+#### TLS Logging Example
 
 ```json
 
