@@ -45,11 +45,6 @@ ln -sf /opt/selks/scirius-master /opt/selks/scirius
 cd /opt/selks/scirius
 pip install -r requirements.txt
 ln -s /etc/scirius/local_settings.py /opt/selks/scirius/scirius/
-#stealing amsterdam scirius conf
-wget -q https://raw.githubusercontent.com/StamusNetworks/Amsterdam/master/src/docker/scirius/django/scirius.json -O /opt/selks/scirius/scirius.json
-mkdir -p /opt/selks/bin/
-wget -q https://raw.githubusercontent.com/StamusNetworks/Amsterdam/master/src/docker/scirius/django/scirius.sh -O /opt/selks/bin/scirius.sh
-chmod ugo+x /opt/selks/bin/scirius.sh
 pip install -U six
 pip install urllib3 --upgrade
 #stealing from /opt/selks/bin/scirius.sh
@@ -106,7 +101,7 @@ ln -sf /opt/kibana-4.3.1-linux-x64 /opt/kibana
 #evebox
 apt-get -y install unzip
 cd /opt/
-wget https://bintray.com/artifact/download/jasonish/evebox/evebox-linux-amd64.zip
+wget -q https://bintray.com/artifact/download/jasonish/evebox/evebox-linux-amd64.zip
 unzip evebox-linux-amd64.zip
 ./evebox-linux-amd64/evebox --version
 echo "http.cors.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
@@ -114,6 +109,6 @@ echo "http.cors.allow-origin: \"/.*/\"" >> /etc/elasticsearch/elasticsearch.yml
 service elasticsearch restart
 ./evebox-linux-amd64/evebox > /var/log/evebox.log 2>&1 &
 
-grep -o '[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}' /etc/suricata/rules/scirius.rules|rev|sort|uniq|rev|while read i; do wget -q -T 1 -t 1 $i; done  &
+grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" /etc/suricata/rules/scirius.rules|rev|sort|uniq|rev|while read i; do wget -q -T 1 -t 1 $i; done  &
 
 netstat -lnpte
