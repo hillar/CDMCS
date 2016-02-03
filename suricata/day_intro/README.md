@@ -25,4 +25,4 @@
 
 ----
 
- [next: install](/suricata/day_intro/Amsterdam.md)
+ [next: all the nice/graphical thing for start](/suricata/day_intro/Amsterdam.md)

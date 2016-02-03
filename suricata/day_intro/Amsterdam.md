@@ -1,6 +1,6 @@
 # Amsterdam
 
-Docker based Suricata, Elasticsearch, Logstash, Kibana, Scirius
+Docker based Suricata, Scirius, Evebox
 
 see https://github.com/StamusNetworks/Amsterdam
 
