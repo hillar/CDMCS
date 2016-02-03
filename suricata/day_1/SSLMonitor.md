@@ -33,35 +33,31 @@ see
 ```json
 
 {
-    "timestamp": "2016-01-06T11:20:31.431359+0100",
-    "flow_id": 105716325071680,
-    "
-    in_iface ":"
-    eth0 ","
-    event_type ":"
-    tls ","
-    src_ip ":"
-    192.168 .1 .6 ","
-    src_port ":48952,"
-    dest_ip ":"
-    173.194 .65 .132 ","
-    dest_port ":443,"
-    proto ":"
-    TCP ","
-    tls ":{"
-    subject ":"
-    C = US,
-    ST = California,
-    L = Mountain View,
-    O = Google Inc,
-    CN = * .googleusercontent.com ",
-    "issuerdn": "C=US, O=Google Inc, CN=Google Internet Authority G2",
-    "fingerprint": "
-    b2: e7: 5 a: d1: e4: 3 a: a9: a8: 37: f5: 13: b0: 1 a: 88: 70: a2: 60: fe: 8 a: 4 a ", "
-    sni ":"
-    lh3.
-    googleusercontent.com ","
-    version ":"
-    TLS 1.2 "}}
-
+  "_index": "logstash-2016.02.03",
+  "_type": "SELKS",
+  "_id": "AVKo7VVns9d5M18pys8A",
+  "_score": null,
+  "_source": {
+    "timestamp": "2016-02-03T22:57:50.899152+0200",
+    "flow_id": 139854564246144,
+    "in_iface": "eth1",
+    "event_type": "tls",
+    "src_ip": "10.242.11.11",
+    "src_port": 52226,
+    "dest_ip": "103.234.36.144",
+    "dest_port": 443,
+    "proto": "TCP",
+    "tls": {
+      "subject": "CN=www.kzjcxnoy2jwvznhlr.net",
+      "issuerdn": "CN=www.aczcjywnbjiuoy.com",
+      "fingerprint": "a8:e5:5d:6c:d6:0a:2b:09:d9:9b:b2:6f:51:0c:7a:4c:11:55:93:b4",
+      "version": "TLS 1.2"
+    },
+    "@version": "1",
+    "@timestamp": "2016-02-03T20:57:50.899Z",
+    "host": "rtws-yellow-1-medium-3",
+    "path": "/var/log/suricata/eve.json",
+    "type": "SELKS"
+  }
+}
 ```
