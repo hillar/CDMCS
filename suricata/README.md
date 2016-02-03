@@ -1,10 +1,10 @@
 
 ## Day 0
 
-* 13:00 - 13:45 [Intro](/suricata/day_intro/README.md), vagrant, docker
+* 13:00 - 13:45 [Intro](/suricata/day_intro/README.md), vagrant, docker, [Amsterdam](/suricata/day_intro/Amsterdam.md)
 * 14:00 - 14:45 [apt-get install](/suricata/day_intro/AptGetInstall.md), [PPA](/suricata/day_intro/AptGetInstallPPA.md)
-* 15:00 - 15:45 [basic config](/suricata/day_intro/BasicConf.md),
-* 16:00 - 16:45 [basic logging](/suricata/day_intro/BasicLogging.md), [view events](/suricata/day_intro/EveView.md)
+* 15:00 - 15:45 [basic config](/suricata/day_intro/BasicConf.md),[basic logging](/suricata/day_intro/BasicLogging.md), [view events](/suricata/day_intro/EveView.md)
+* 16:00 - 16:45 [writing first rule](/suricata/day_intro/SimpleRule.md)
 
 
 ## Day 1 :: Single Box
@@ -15,7 +15,7 @@
 
 
 * 13:00 - 13:45 [Logs](/suricata/day_1/SingleHostLogs.md)
-* 14:00 - 14:45 Extraction, SSL monitor, DNS probe, flow probe
+* 14:00 - 14:45 Extraction, [SSL monitor](/suricata/day_1/SSLMonitor.md) , [DNS probe](/suricata/day_1/DNSProbe.md) , [flow probe](/suricata/day_1/FlowProbe.md)
 * 15:00 - 15:45 Extraction [file](/suricata/day_1/FileExtraction.md)   
 * 16:00 - 16:45 [Tuning Considerations](/suricata/day_1/SingleBoxtuning.md), [rule profiling](/suricata/day_1/RuleProfiling.md),
 
@@ -42,12 +42,11 @@
 
 * 13:00 - 13:45
 * 14:00 - 14:45
-* 15:00 - 15:45
-* 16:00 - 16:45
+* 15:00 - 15:45 [Lua Output](/suricata/day_3/LuaOutput.md)
+* 16:00 - 16:45 [Lua scripted rules](/suricata/day_3/LuaRules.md)
 
 
-* [Lua Output](/suricata/day_3/LuaOutput.md)
-* [Lua scripted rules](/suricata/day_3/LuaRules.md)
+
 * [Internal counters](/suricata/day_3/DumpCounters.md)
 * [Converting logs to pcap](/suricata/day_3/Eve2Pcap.md)
 * [evil bit](/suricata/day_3/EvilBit.md)
