@@ -1,0 +1,14 @@
+digraph G {
+{rank=min gigamon}
+gigamon->{suri1 suri2 suri3} -> {ela1 ela2 ela3}->viewer [color="red"]
+master->{suri1 suri2 suri3 ela1 ela2 ela3 viewer} [style="dotted", color="green" ]
+{suri1 suri2 suri3 ela1 ela2 ela3 viewer}->syslog [style="dotted", color="blue" ]
+{rank=max master syslog}
+gigamon [label="traffic mirror"]
+suri1 [label="suricata 1"]
+suri2 [label="suricata .."]
+suri3 [label="suricata N"]
+viewer [label=" evebox + kibana + grafana"]
+master [label="salt master + sirius"]
+syslog [label="syslog + influxdb"]
+}
