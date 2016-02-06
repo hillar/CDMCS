@@ -1,6 +1,15 @@
 #!/bin/bash
 
+SALT_MASTER=$1
+METRICS_SERVER=$2
+
 INSTALL_DIR=/provision
+
+echo "LC_ALL=en_US.UTF-8" >> /etc/environment
+apt-get -y install salt-minion
+echo "master: ${SALT_MASTER}" >> /etc/salt/minion
+service salt-minion restart
+
 
 TLGF=0.10.2
 
