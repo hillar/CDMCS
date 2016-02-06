@@ -24,7 +24,7 @@ if [ ! -f "elasticsearch-${ES}.deb" ]; then
 else
   echo -e "Y" | dpkg -i elasticsearch-${ES}.deb
   service elasticsearch stop
-  /usr/share/elasticsearch/bin/plugin -install mobz/elasticsearch-head
+  /usr/share/elasticsearch/bin/plugin install mobz/elasticsearch-head
 
   echo "cluster.name: ${CLUSTER}" > /etc/elasticsearch/elasticsearch.yml
   echo "node.name: ${NAME} " >> /etc/elasticsearch/elasticsearch.yml
