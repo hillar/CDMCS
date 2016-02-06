@@ -38,29 +38,24 @@ else
   echo "discovery.zen.minimum_master_nodes: 2" >> /etc/elasticsearch/elasticsearch.yml
   echo "discovery.zen.ping.multicast.enabled: false" >> /etc/elasticsearch/elasticsearch.yml
   echo 'discovery.zen.ping.unicast.hosts: ["'${UNICASTHOSTS}'"]' >> /etc/elasticsearch/elasticsearch.yml
-  if [ "$TYPE" -eq "master" ];
+  if [ "$TYPE" == "master" ];
   then
-
-    echo "node.master=true >> /etc/elasticsearch/elasticsearch.yml
-    echo "node.data=false" >> /etc/elasticsearch/elasticsearch.yml
-    echo "http.enabled=true" >> /etc/elasticsearch/elasticsearch.yml
+    echo "node.master: true" >> /etc/elasticsearch/elasticsearch.yml
+    echo "node.data: false" >> /etc/elasticsearch/elasticsearch.yml
+    echo "http.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
   else
-      if [ "$TYPE" -eq "client" ];
+      if [ "$TYPE" == "client" ];
       then
-        echo "node.master=false" >> /etc/elasticsearch/elasticsearch.yml
-        echo "node.data=false" >> /etc/elasticsearch/elasticsearch.yml
-        echo "http.enabled=true" >> /etc/elasticsearch/elasticsearch.yml
+        echo "node.master: false" >> /etc/elasticsearch/elasticsearch.yml
+        echo "node.data: false" >> /etc/elasticsearch/elasticsearch.yml
+        echo "http.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
       else
-        echo "node.master=false" >> /etc/elasticsearch/elasticsearch.yml
-        echo "node.data=true" >> /etc/elasticsearch/elasticsearch.yml
-        echo "http.enabled=false" >> /etc/elasticsearch/elasticsearch.yml
+        # defaults to data node
+        echo "node.master: false" >> /etc/elasticsearch/elasticsearch.yml
+        echo "node.data: true" >> /etc/elasticsearch/elasticsearch.yml
+        echo "http.enabled: false" >> /etc/elasticsearch/elasticsearch.yml
       fi
   fi
-
-  1. master :: node.master=true, node.data=false, http.enabled=true
-  1. data :: node.master=false, node.data=true, http.enabled=false
-  1. client :: node.master=false, node.data=false, http.enabled=true
-
   service elasticsearch start
 
   echo "[elasticsearch]" >> /etc/opt/telegraf/telegraf.conf
