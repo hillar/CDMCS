@@ -6,7 +6,7 @@ NET_START = 100
 TEAMS = 1
 # (SURICOUNT + ELACOUNT) MUST BE LESS THAN 8
 SURICOUNT = 1
-ELACOUNT = 1
+ELACOUNT = 2
 
 
 # -------------------------------------------------
@@ -31,11 +31,7 @@ Vagrant.configure(2) do |config|
   config.ssh.username = VM_USER # the one used to create the VM
   config.ssh.password = VM_PASSWORD # the one used to create the VM
 
-  config.vm.define 'teacher' do |teacher|
-    teacher.vm.hostname = 'teacher'
-    teacher.vm.network 'private_network', ip: TEACHER
-    teacher.vm.provision "shell", path: "./scripts/install-salt-master.sh"
-  end
+
 
   counter = 0
   (1..TEAMS).each do |teamnumber|
@@ -43,55 +39,101 @@ Vagrant.configure(2) do |config|
     ip_master = NET  + (NET_START + teamnumber*10 + 1).to_s
     ip_viewer = NET  + (NET_START + teamnumber*10 + 9).to_s
     ip_first_ela = NET  + (NET_START + teamnumber*10 + 8).to_s
-    name_syslog = 'team-' + teamnumber.to_s + '-syslog'
-    name_master = 'team-' + teamnumber.to_s + '-master'
-    name_viever = 'team-' + teamnumber.to_s + '-viewer'
-    require './keys/vsphere.rb'
+    name_syslog = 'student-' + teamnumber.to_s + '-syslog'
+    name_master = 'student-' + teamnumber.to_s + '-master'
+    name_viever = 'student-' + teamnumber.to_s + '-viewer'
+
+    require '../../../../../tests/bb/keys/vsphere.rb'
     include VSphereKeys
     config.vm.provider :vsphere do |vsphere|
-      vsphere.memory_mb = 2 * 1024
-      vsphere.cpu_count = 2
       vsphere.host = VSPHERE_HOST
       vsphere.compute_resource_name = VSPHERE_CLUSTER
-      vsphere.template_name = VSPHERE_TEMPLATE_PATH + '/ubu_template'
-      vsphere.vm_base_path = VSPHERE_VM_PATH + '/Student_' + teamnumber.to_s
-      vsphere.customization_spec_name = 'nic1'
+      vsphere.template_name = VSPHERE_TEMPLATE_PATH + 'ubuClust1nic1'
+      vsphere.vm_base_path = VSPHERE_VM_PATH + 'Student_' + teamnumber.to_s
+      vsphere.customization_spec_name = 'linux_1nics'
       vsphere.user = VSPHERE_USER
       vsphere.password = VSPHERE_PASSWORD
       vsphere.insecure = true
     end
 
+    elas = []
+    (1..ELACOUNT).each do |boxno|
+      ip = NET  + (NET_START + teamnumber*10 + 9 - boxno).to_s
+      elas.push(ip)
+    end
+    (1..ELACOUNT).each do |boxno|
+      name = 'student-' + teamnumber.to_s + '-elastic-' + boxno.to_s
+      ip = NET  + (NET_START + teamnumber*10 + 9 - boxno).to_s
+      #elas.push(ip)
+      config.vm.define name do |box|
+        box.vm.hostname = name
+        box.vm.network 'private_network', ip: ip
+        box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_master}"
+        box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
+        box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "'#{elas.to_s}'"
+        box.vm.provider :vsphere do |vsphere|
+          vsphere.memory_mb = 2 * 1024
+          vsphere.cpu_count = 4
+        end
+      end
+    end
+    puts elas.to_s
+
+    suris = []
+    (1..SURICOUNT).each do |boxno|
+      name = 'student-' + teamnumber.to_s + '-suri-' + boxno.to_s
+      ip = NET  + (NET_START + teamnumber*10 + 1 + boxno).to_s
+      suris.push(ip)
+      config.vm.define name do |box|
+        box.vm.hostname = name
+        box.vm.network 'private_network', ip: ip
+        box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_master}"
+        box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
+        box.vm.provision "shell", path: "./scripts/install-suri.sh", args: "#{elas}"
+        box.vm.provider :vsphere do |vsphere|
+          vsphere.memory_mb = 2 * 1024
+          vsphere.cpu_count = 4
+        end
+      end
+    end
+    puts suris.to_s
+
     config.vm.define name_syslog do |box|
-      box.vm.hostname = 'cdmcs-' + name_syslog
+      box.vm.hostname = name_syslog
       box.vm.network 'private_network', ip: ip_syslog
+      box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_master}"
+      box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
+      box.vm.provision "shell", path: "./scripts/install-syslog-server.sh"
+      box.vm.provision "shell", path: "./scripts/install-metrix-server.sh"
+      box.vm.provider :vsphere do |vsphere|
+        vsphere.memory_mb = 2 * 1024
+        vsphere.cpu_count = 4
+      end
+    end
+
+    config.vm.define name_master do |box|
+      box.vm.hostname = name_master
+      box.vm.network 'private_network', ip: ip_master
+      box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{TEACHER}"
       box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
       box.vm.provision "shell", path: "./scripts/install-salt-master.sh"
       box.vm.provision "shell", path: "./scripts/install-scirius.sh"
     end
 
-    config.vm.define name_master do |box|
-      box.vm.hostname = 'cdmcs-' + name_master
-      box.vm.network 'private_network', ip: ip_master
-      box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
-      box.vm.provision "shell", path: "./scripts/install-syslog-server.sh"
-      box.vm.provision "shell", path: "./scripts/install-metrix-server.sh"
-    end
-
     config.vm.define name_viever do |box|
-      box.vm.hostname = 'cdmcs-' + name_viever
+      box.vm.hostname = name_viever
       box.vm.network 'private_network', ip: ip_viewer
+      box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_master}"
       box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
       box.vm.provision "shell", path: "./scripts/install-evebox.sh", args: "#{ip_first_ela}"
       box.vm.provision "shell", path: "./scripts/install-kibana.sh", args: "#{ip_first_ela}"
     end
 
-    (1..SURICOUNT).each do |boxno|
-      puts boxno
-    end
-
-    (1..ELACOUNT).each do |boxno|
-      puts boxno
-
-    end
+  end # teams
+  #finally add teaacher as master for students masters
+  config.vm.define 'teacher' do |teacher|
+    teacher.vm.hostname = 'teacher'
+    teacher.vm.network 'private_network', ip: TEACHER
+    teacher.vm.provision "shell", path: "./scripts/install-salt-master.sh"
   end
 end
