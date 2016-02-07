@@ -35,3 +35,4 @@ else
   sed -i -e 's,domain = localhost,domain = '${IP}',g' /etc/grafana/grafana.ini
   service grafana-server start
 fi
+netstat -lntpe | grep grafana

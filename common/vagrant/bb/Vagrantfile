@@ -5,8 +5,8 @@ NET = "10.242.11."
 NET_START = 100
 TEAMS = 1
 # (SURICOUNT + ELACOUNT) MUST BE LESS THAN 8
-SURICOUNT = 1
-ELACOUNT = 2
+SURICOUNT = 3
+ELACOUNT = 3
 
 
 # -------------------------------------------------
@@ -33,6 +33,7 @@ Vagrant.configure(2) do |config|
 
   (1..TEAMS).each do |teamnumber|
 
+    File.open('lastrun.txt','a').puts "# "+teamnumber.to_s + " ---------------"
     ip_syslog = NET  + (NET_START + teamnumber*10).to_s
     ip_master = NET  + (NET_START + teamnumber*10 + 1).to_s
     ip_viewer = NET  + (NET_START + teamnumber*10 + 9).to_s
@@ -69,14 +70,14 @@ Vagrant.configure(2) do |config|
         box.vm.network 'private_network', ip: ip
         box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_master}"
         box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
-        box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "'#{elas.to_s}'"
+        box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip} #{name} #{'student-' + teamnumber.to_s} #{boxno} '#{elas.join(",")}' data"
         box.vm.provider :vsphere do |vsphere|
-          vsphere.memory_mb = 2 * 1024
+          vsphere.memory_mb = 4 * 1024
           vsphere.cpu_count = 4
         end
       end
+      File.open('lastrun.txt','a').puts ip +" "+name
     end
-    puts elas.to_s
 
     suris = []
     (1..SURICOUNT).each do |boxno|
@@ -88,14 +89,16 @@ Vagrant.configure(2) do |config|
         box.vm.network 'private_network', ip: ip
         box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_master}"
         box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
+        box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip} #{name} #{'student-' + teamnumber.to_s} #{boxno} '#{elas.join(",")}' master"
+
         box.vm.provision "shell", path: "./scripts/install-suri.sh", args: "#{elas}"
         box.vm.provider :vsphere do |vsphere|
           vsphere.memory_mb = 2 * 1024
           vsphere.cpu_count = 4
         end
       end
+      File.open('lastrun.txt','a').puts ip +" "+name
     end
-    puts suris.to_s
 
     config.vm.define name_syslog do |box|
       box.vm.hostname = name_syslog
@@ -110,6 +113,18 @@ Vagrant.configure(2) do |config|
         vsphere.cpu_count = 4
       end
     end
+    File.open('lastrun.txt','a').puts ip_syslog +" "+name_syslog
+
+    config.vm.define name_viever do |box|
+      box.vm.hostname = name_viever
+      box.vm.network 'private_network', ip: ip_viewer
+      box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_master}"
+      box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
+      box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip_viewer} #{name_viever} #{'student-' + teamnumber.to_s} #{boxno} '#{elas.join(",")}' client"
+      box.vm.provision "shell", path: "./scripts/install-evebox.sh", args: "#{ip_viewer}"
+      box.vm.provision "shell", path: "./scripts/install-kibana.sh", args: "#{ip_viewer}"
+    end
+    File.open('lastrun.txt','a').puts ip_viewer + " " + name_viever
 
     config.vm.define name_master do |box|
       box.vm.hostname = name_master
@@ -117,17 +132,10 @@ Vagrant.configure(2) do |config|
       box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{TEACHER}"
       box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
       box.vm.provision "shell", path: "./scripts/install-salt-master.sh"
-      box.vm.provision "shell", path: "./scripts/install-scirius.sh"
+      box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip_master} #{name_master} #{'student-' + teamnumber.to_s} #{boxno} '#{elas.join(",")}' client"
+      box.vm.provision "shell", path: "./scripts/install-scirius.sh", args: "#{ip_master}"
     end
-
-    config.vm.define name_viever do |box|
-      box.vm.hostname = name_viever
-      box.vm.network 'private_network', ip: ip_viewer
-      box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_master}"
-      box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
-      box.vm.provision "shell", path: "./scripts/install-evebox.sh", args: "#{ip_first_ela}"
-      box.vm.provision "shell", path: "./scripts/install-kibana.sh", args: "#{ip_first_ela}"
-    end
+    File.open('lastrun.txt','a').puts ip_master +" "+name_master
 
   end # teams
   #finally add teaacher as master for students masters
@@ -135,5 +143,7 @@ Vagrant.configure(2) do |config|
     teacher.vm.hostname = 'teacher'
     teacher.vm.network 'private_network', ip: TEACHER
     teacher.vm.provision "shell", path: "./scripts/install-salt-master.sh"
+    # root@teacher:~# salt student-1-master cmd.run 'salt "*" pkg.version salt-minion'
   end
+  File.open('lastrun.txt','a').puts TEACHER + " teacher"
 end
