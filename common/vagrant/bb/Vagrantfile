@@ -1,0 +1,97 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+NET = "10.242.11."
+NET_START = 100
+TEAMS = 1
+# (SURICOUNT + ELACOUNT) MUST BE LESS THAN 8
+SURICOUNT = 1
+ELACOUNT = 1
+
+
+# -------------------------------------------------
+
+TEACHER = NET  + (NET_START + 9 ).to_s
+
+$run4all = <<SCRIPT
+echo "running on every vm"
+echo "$1 $2 $3 $4"
+SCRIPT
+
+# flush lastrun.txt
+time = Time.now
+File.open('lastrun.txt','w').puts "# " + time.inspect
+
+Vagrant.configure(2) do |config|
+  config.vm.box = "vsphere"
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  require './keys/vm.rb'
+  include VMKeys
+  config.ssh.username = VM_USER # the one used to create the VM
+  config.ssh.password = VM_PASSWORD # the one used to create the VM
+
+  config.vm.define 'teacher' do |teacher|
+    teacher.vm.hostname = 'teacher'
+    teacher.vm.network 'private_network', ip: TEACHER
+    teacher.vm.provision "shell", path: "./scripts/install-salt-master.sh"
+  end
+
+  counter = 0
+  (1..TEAMS).each do |teamnumber|
+    ip_syslog = NET  + (NET_START + teamnumber*10).to_s
+    ip_master = NET  + (NET_START + teamnumber*10 + 1).to_s
+    ip_viewer = NET  + (NET_START + teamnumber*10 + 9).to_s
+    ip_first_ela = NET  + (NET_START + teamnumber*10 + 8).to_s
+    name_syslog = 'team-' + teamnumber.to_s + '-syslog'
+    name_master = 'team-' + teamnumber.to_s + '-master'
+    name_viever = 'team-' + teamnumber.to_s + '-viewer'
+    require './keys/vsphere.rb'
+    include VSphereKeys
+    config.vm.provider :vsphere do |vsphere|
+      vsphere.memory_mb = 2 * 1024
+      vsphere.cpu_count = 2
+      vsphere.host = VSPHERE_HOST
+      vsphere.compute_resource_name = VSPHERE_CLUSTER
+      vsphere.template_name = VSPHERE_TEMPLATE_PATH + '/ubu_template'
+      vsphere.vm_base_path = VSPHERE_VM_PATH + '/Student_' + teamnumber.to_s
+      vsphere.customization_spec_name = 'nic1'
+      vsphere.user = VSPHERE_USER
+      vsphere.password = VSPHERE_PASSWORD
+      vsphere.insecure = true
+    end
+
+    config.vm.define name_syslog do |box|
+      box.vm.hostname = 'cdmcs-' + name_syslog
+      box.vm.network 'private_network', ip: ip_syslog
+      box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
+      box.vm.provision "shell", path: "./scripts/install-salt-master.sh"
+      box.vm.provision "shell", path: "./scripts/install-scirius.sh"
+    end
+
+    config.vm.define name_master do |box|
+      box.vm.hostname = 'cdmcs-' + name_master
+      box.vm.network 'private_network', ip: ip_master
+      box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
+      box.vm.provision "shell", path: "./scripts/install-syslog-server.sh"
+      box.vm.provision "shell", path: "./scripts/install-metrix-server.sh"
+    end
+
+    config.vm.define name_viever do |box|
+      box.vm.hostname = 'cdmcs-' + name_viever
+      box.vm.network 'private_network', ip: ip_viewer
+      box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
+      box.vm.provision "shell", path: "./scripts/install-evebox.sh", args: "#{ip_first_ela}"
+      box.vm.provision "shell", path: "./scripts/install-kibana.sh", args: "#{ip_first_ela}"
+    end
+
+    (1..SURICOUNT).each do |boxno|
+      puts boxno
+    end
+
+    (1..ELACOUNT).each do |boxno|
+      puts boxno
+
+    end
+  end
+end
