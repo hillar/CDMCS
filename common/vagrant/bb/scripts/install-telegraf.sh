@@ -10,6 +10,8 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
+service telegraf stop
+
 MASTER=$1
 IP=$(ifconfig eth0 2>/dev/null|grep 'inet addr'|cut -f2 -d':'|cut -f1 -d' ')
 HOSTNAME=$(hostname -f)
@@ -39,5 +41,5 @@ else
   echo "[[inputs.net]]" >> /etc/telegraf/telegraf.conf
   echo "[[inputs.netstat]]" >> /etc/telegraf/telegraf.conf
 
-  service telegraf start
+  service telegraf restart
 fi
