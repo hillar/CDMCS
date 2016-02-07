@@ -120,7 +120,7 @@ Vagrant.configure(2) do |config|
       box.vm.network 'private_network', ip: ip_viewer
       box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_master}"
       box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
-      box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip_viewer} #{name_viever} #{'student-' + teamnumber.to_s} #{boxno} '#{elas.join(",")}' client"
+      box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip_viewer} #{name_viever} #{'student-' + teamnumber.to_s} 0 '#{elas.join(",")}' client"
       box.vm.provision "shell", path: "./scripts/install-evebox.sh", args: "#{ip_viewer}"
       box.vm.provision "shell", path: "./scripts/install-kibana.sh", args: "#{ip_viewer}"
     end
@@ -132,7 +132,7 @@ Vagrant.configure(2) do |config|
       box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{TEACHER}"
       box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
       box.vm.provision "shell", path: "./scripts/install-salt-master.sh"
-      box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip_master} #{name_master} #{'student-' + teamnumber.to_s} #{boxno} '#{elas.join(",")}' client"
+      box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip_master} #{name_master} #{'student-' + teamnumber.to_s} 0 '#{elas.join(",")}' client"
       box.vm.provision "shell", path: "./scripts/install-scirius.sh", args: "#{ip_master}"
     end
     File.open('lastrun.txt','a').puts ip_master +" "+name_master
