@@ -1,6 +1,21 @@
 #!/bin/bash
-echo "$0 got params: 1:$1 2:$2 3:$3 4:$4 5:$5 6:$6 7:$7"
+#!/bin/bash
+#
+# this script
+# 1) installs elasticsearch as
+#  a) master no data
+#  b) client no data
+#  c) dana no http
+# 2) set unicast hosts
+# 3) sets cluster
+# 4) add elasticsearch to telegraf config
+#
 
+
+if [ "$(id -u)" != "0" ]; then
+   echo "ERROR - This script must be run as root" 1>&2
+   exit 1
+fi
 
 IP=$1
 NAME=$2
