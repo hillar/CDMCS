@@ -72,7 +72,8 @@ Vagrant.configure(2) do |config|
         box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
         box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip} #{name} #{'student-' + teamnumber.to_s} #{boxno} '#{elas.join(",")}' data"
         box.vm.provider :vsphere do |vsphere|
-          vsphere.memory_mb = 4 * 1024
+          vsphere.name = name
+          vsphere.memory_mb = 16 * 1024
           vsphere.cpu_count = 4
         end
       end
@@ -93,7 +94,8 @@ Vagrant.configure(2) do |config|
 
         box.vm.provision "shell", path: "./scripts/install-suri.sh", args: "#{elas}"
         box.vm.provider :vsphere do |vsphere|
-          vsphere.memory_mb = 2 * 1024
+          vsphere.memory_mb = 8 * 1024
+          vsphere.name = name
           vsphere.cpu_count = 4
         end
       end
@@ -109,8 +111,9 @@ Vagrant.configure(2) do |config|
       box.vm.provision "shell", path: "./scripts/install-grafana.sh", args: "#{ip_syslog}"
       box.vm.provision "shell", path: "./scripts/install-syslog-server.sh"
       box.vm.provider :vsphere do |vsphere|
-        vsphere.memory_mb = 2 * 1024
-        vsphere.cpu_count = 4
+        vsphere.name = name_syslog
+        vsphere.memory_mb = 16 * 1024
+        vsphere.cpu_count = 8
       end
     end
     File.open('lastrun.txt','a').puts ip_syslog +" "+name_syslog
@@ -123,6 +126,11 @@ Vagrant.configure(2) do |config|
       box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip_viewer} #{name_viever} #{'student-' + teamnumber.to_s} 0 '#{elas.join(",")}' client"
       box.vm.provision "shell", path: "./scripts/install-evebox.sh", args: "#{ip_viewer}"
       box.vm.provision "shell", path: "./scripts/install-kibana.sh", args: "#{ip_viewer}"
+      box.vm.provider :vsphere do |vsphere|
+        vsphere.name = name_viever
+        vsphere.memory_mb = 2 * 1024
+        vsphere.cpu_count = 4
+      end
     end
     File.open('lastrun.txt','a').puts ip_viewer + " " + name_viever
 
@@ -134,16 +142,26 @@ Vagrant.configure(2) do |config|
       box.vm.provision "shell", path: "./scripts/install-salt-master.sh"
       box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip_master} #{name_master} #{'student-' + teamnumber.to_s} 0 '#{elas.join(",")}' client"
       box.vm.provision "shell", path: "./scripts/install-scirius.sh", args: "#{ip_master}"
+      box.vm.provider :vsphere do |vsphere|
+        vsphere.name = name_master
+        vsphere.memory_mb = 2 * 1024
+        vsphere.cpu_count = 2
+      end
     end
     File.open('lastrun.txt','a').puts ip_master +" "+name_master
 
   end # teams
   #finally add teaacher as master for students masters
-  config.vm.define 'teacher' do |teacher|
-    teacher.vm.hostname = 'teacher'
-    teacher.vm.network 'private_network', ip: TEACHER
-    teacher.vm.provision "shell", path: "./scripts/install-salt-master.sh"
-    # root@teacher:~# salt student-1-master cmd.run 'salt "*" pkg.version salt-minion'
+  config.vm.define 'teacher' do |box|
+    box.vm.hostname = 'teacher'
+    box.vm.network 'private_network', ip: TEACHER
+    box.vm.provision "shell", path: "./scripts/install-salt-master.sh"
+    # root@teacher:~# salt "*" cmd.run 'salt "*" cmd.run "netstat -ntple"'
+    box.vm.provider :vsphere do |vsphere|
+      vsphere.name = 'teacher'
+      vsphere.memory_mb = 2 * 1024
+      vsphere.cpu_count = 2
+    end
   end
   File.open('lastrun.txt','a').puts TEACHER + " teacher"
 end
