@@ -23,7 +23,7 @@ time = Time.now
 File.open('lastrun.txt','w').puts "# " + time.inspect
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "vsphere"
+  #config.vm.box = "vsphere"
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
   require './keys/vm.rb'
@@ -31,10 +31,8 @@ Vagrant.configure(2) do |config|
   config.ssh.username = VM_USER # the one used to create the VM
   config.ssh.password = VM_PASSWORD # the one used to create the VM
 
-
-
-  counter = 0
   (1..TEAMS).each do |teamnumber|
+
     ip_syslog = NET  + (NET_START + teamnumber*10).to_s
     ip_master = NET  + (NET_START + teamnumber*10 + 1).to_s
     ip_viewer = NET  + (NET_START + teamnumber*10 + 9).to_s
@@ -46,6 +44,7 @@ Vagrant.configure(2) do |config|
     require '../../../../../tests/bb/keys/vsphere.rb'
     include VSphereKeys
     config.vm.provider :vsphere do |vsphere|
+      config.vm.box = "vsphere"
       vsphere.host = VSPHERE_HOST
       vsphere.compute_resource_name = VSPHERE_CLUSTER
       vsphere.template_name = VSPHERE_TEMPLATE_PATH + 'ubuClust1nic1'
@@ -103,8 +102,9 @@ Vagrant.configure(2) do |config|
       box.vm.network 'private_network', ip: ip_syslog
       box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_master}"
       box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
+      box.vm.provision "shell", path: "./scripts/install-influxdb.sh", args: "#{ip_syslog}"
+      box.vm.provision "shell", path: "./scripts/install-grafana.sh", args: "#{ip_syslog}"
       box.vm.provision "shell", path: "./scripts/install-syslog-server.sh"
-      box.vm.provision "shell", path: "./scripts/install-metrix-server.sh"
       box.vm.provider :vsphere do |vsphere|
         vsphere.memory_mb = 2 * 1024
         vsphere.cpu_count = 4
