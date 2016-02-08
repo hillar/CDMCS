@@ -37,5 +37,6 @@ else
   curl -s -G http://localhost:8086/query --data-urlencode "q=CREATE RETENTION POLICY one_day_only ON telegraf DURATION 1d REPLICATION 1 DEFAULT"
   #sed -i -e 's,localhost,'${METRICS_SERVER}',g' /etc/influxdb/influxdb.conf
   #service influxdb restart
+  service telegraf restart
 fi
 netstat -lntpe | grep influx
