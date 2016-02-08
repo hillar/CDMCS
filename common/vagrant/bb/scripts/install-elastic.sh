@@ -39,9 +39,9 @@ if [ ! -f "elasticsearch-${ES}.deb" ]; then
     echo "$(date) ${NAME} $0[$$]: {elastic: {status:ERROR, msg: missing elasticsearch-${ES}.deb}"
     exit -1
 else
-  echo -e "Y" | dpkg -i elasticsearch-${ES}.deb
+  echo -e "Y" | dpkg -i elasticsearch-${ES}.deb 2>&1 > /dev/null
   service elasticsearch stop
-  /usr/share/elasticsearch/bin/plugin install mobz/elasticsearch-head
+  /usr/share/elasticsearch/bin/plugin install mobz/elasticsearch-head 2>&1 > /dev/null
   echo "# generated ${date} by $0" > /etc/elasticsearch/elasticsearch.yml
   echo "cluster.name: ${CLUSTER}" >> /etc/elasticsearch/elasticsearch.yml
   echo "node.name: ${NAME} " >> /etc/elasticsearch/elasticsearch.yml

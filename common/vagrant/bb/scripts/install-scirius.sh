@@ -15,13 +15,13 @@ SURIS=$1
 # see https://github.com/StamusNetworks/scirius#installation-and-setup
 DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y wget python-pip python-dev git gcc
 cd /tmp/
-wget https://github.com/StamusNetworks/scirius/archive/master.tar.gz
+wget -q https://github.com/StamusNetworks/scirius/archive/master.tar.gz
 mkdir -p /opt/selks/sciriusdata
 cd /opt/selks
 tar zxf /tmp/master.tar.gz
 ln -sf /opt/selks/scirius-master /opt/selks/scirius
 cd /opt/selks/scirius
-pip install -r requirements.txt
+pip install -r requirements.txt  
 ln -s /etc/scirius/local_settings.py /opt/selks/scirius/scirius/
 pip install -U six
 pip install urllib3 --upgrade

@@ -19,9 +19,9 @@ SCIRIUS=$2
 ethtool -K $ETH tx off sg off gro off gso off lro off tso off
 
 #suricata
-add-apt-repository -y ppa:oisf/suricata-stable
-apt-get update
-apt-get -y install suricata
+add-apt-repository -y ppa:oisf/suricata-stable 2>&1 > /dev/null
+apt-get update 2>&1 > /dev/null
+apt-get -y install suricata 2>&1 > /dev/null
 service suricata stop
 #stealing amsterdam suricata conf
 wget -q https://raw.githubusercontent.com/StamusNetworks/Amsterdam/master/src/config/suricata/suricata.yaml -O /etc/suricata/suricata.yaml

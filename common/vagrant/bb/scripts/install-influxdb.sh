@@ -29,10 +29,10 @@ if [ ! -f "influxdb_${INFLX}-1_amd64.deb" ]; then
   echo "$(date) ${NAME} $0[$$]: {influxdb: {status:ERROR, msg: missing influxdb_${INFLX}-1_amd64.deb}"
   exit -1
 else
-  echo -e "Y"|dpkg -i influxdb_${INFLX}-1_amd64.deb
+  echo -e "Y"|dpkg -i influxdb_${INFLX}-1_amd64.deb 2>&1 > /dev/null
   #prepare for telegraf
-  curl -G http://localhost:8086/query --data-urlencode "q=CREATE DATABASE telegraf"
-  curl -G http://localhost:8086/query --data-urlencode "q=CREATE RETENTION POLICY one_day_only ON telegraf DURATION 1d REPLICATION 1 DEFAULT"
+  curl -s -G http://localhost:8086/query --data-urlencode "q=CREATE DATABASE telegraf"
+  curl -s -G http://localhost:8086/query --data-urlencode "q=CREATE RETENTION POLICY one_day_only ON telegraf DURATION 1d REPLICATION 1 DEFAULT"
   #sed -i -e 's,localhost,'${METRICS_SERVER}',g' /etc/influxdb/influxdb.conf
   #service influxdb restart
 fi

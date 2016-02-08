@@ -15,9 +15,9 @@ fi
 echo "installing salt-master on ${hostname} ..."
 
 echo "LC_ALL=en_US.UTF-8" >> /etc/environment
-add-apt-repository -y ppa:saltstack/salt
-apt-get update
-apt-get -y install salt-master
+add-apt-repository -y ppa:saltstack/salt 2>&1 > /dev/null
+apt-get update 2>&1 > /dev/null
+apt-get -y install salt-master 2>&1 > /dev/null
 echo "waiting for minions.."
 sleep 11
 salt-key -L
