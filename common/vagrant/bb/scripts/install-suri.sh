@@ -26,3 +26,10 @@ service suricata stop
 #stealing amsterdam suricata conf
 wget -q https://raw.githubusercontent.com/StamusNetworks/Amsterdam/master/src/config/suricata/suricata.yaml -O /etc/suricata/suricata.yaml
 wget -q https://raw.githubusercontent.com/StamusNetworks/Amsterdam/master/src/config/suricata/threshold.config -O /etc/suricata/threshold.config
+
+#  - interface: eth0
+sed -i -e 's,- interface: eth0,- interface: eth1,g' /etc/suricata/suricata.yaml
+#fake scirius rules
+#todo: get it from master
+touch /etc/suricata/rules/scirius.rules
+service suricata start
