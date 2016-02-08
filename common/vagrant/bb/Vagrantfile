@@ -15,8 +15,6 @@ PREFIX = "RTWS-Yellow"
 TEACHER = NET  + (NET_START + 9 ).to_s
 
 $run4all = <<SCRIPT
-echo "running on every vm"
-echo "$1 $2 $3 $4"
 ETH0=$1
 NAME=$2
 echo "fixing net interfasec file ${ETHO} ${NAME} "
