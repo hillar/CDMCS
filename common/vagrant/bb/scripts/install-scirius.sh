@@ -1,5 +1,15 @@
 #!/bin/bash
-echo "$0 got params: $1 $2 $3 $4"
+#
+# this script
+# 1) installs scirius
+# 2) add 1..n Suricata's
+#
+if [ "$(id -u)" != "0" ]; then
+   echo "ERROR - This script must be run as root" 1>&2
+   exit 1
+fi
+
+SURIS=$1
 
 # Scirius
 # see https://github.com/StamusNetworks/scirius#installation-and-setup
@@ -25,9 +35,14 @@ python manage.py addsource "ETOpen Ruleset" https://rules.emergingthreats.net/op
 python manage.py addsource "SSLBL abuse.ch" https://sslbl.abuse.ch/blacklist/sslblacklist.rules http sig
 python manage.py defaultruleset "Default SELKS ruleset"
 python manage.py disablecategory "Default SELKS ruleset" stream-events
-python manage.py addsuricata $(hostname) "Suricata on SELKS" /etc/suricata/rules "Default SELKS ruleset"
+for suri in $(echo $SURIS | tr "," "\n")
+do
+python manage.py addsuricata $(suri) "Suricata on SELKS" /etc/suricata/rules "Default SELKS ruleset"
+done
 python manage.py updatesuricata
 suricata -T -c /etc/suricata/suricata.yaml
 # set u:p  to admin:password
 echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@localhost', 'admin')" | python manage.py shell
-python manage.py runserver 0.0.0.0:8000 > /var/log/scirius.log 2>&1 &
+python manage.py runserver 0.0.0.0:7000 > /var/log/scirius.log 2>&1 &
+cd /etc/suricata/rules/
+python -m SimpleHTTPServer > /var/log/scirius_rules.log 2>&1 &
