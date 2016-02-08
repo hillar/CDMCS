@@ -5,8 +5,8 @@ NET = "10.242.11."
 NET_START = 10
 TEAMS = 1
 # (SURICOUNT + ELACOUNT) MUST BE LESS THAN 8
-SURICOUNT = 3
-ELACOUNT = 4
+SURICOUNT = 1
+ELACOUNT = 1
 PREFIX = "RTWS-Yellow"
 
 
@@ -131,7 +131,7 @@ Vagrant.configure(2) do |config|
         box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_master}"
         box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
         box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip} #{name} #{'student-' + teamnumber.to_s} #{boxno} '#{elas.join(",")}' master"
-        box.vm.provision "shell", path: "./scripts/install-suri.sh", args: "eth1 #{ip_master}"
+        #box.vm.provision "shell", path: "./scripts/install-suri.sh", args: "eth1 #{ip_master}"
         box.vm.provision "shell", path: "./scripts/install-logstash.sh", args: "'#{elas.join(",")}'"
 
         box.vm.provider :vsphere do |vsphere|

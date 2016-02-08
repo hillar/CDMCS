@@ -33,7 +33,7 @@ if [ ! -f "telegraf_${TLGF}-1_amd64.deb" ]; then
 else
   echo -e "Y"|dpkg -i telegraf_${TLGF}-1_amd64.deb > /dev/null
   #  urls = ["http://localhost:8086"] # required
-  sed -i -e 's,http://localhost,http://'${METRICS_SERVER}',g' /etc/telegraf/telegraf.conf
+  sed -i -e 's,http://localhost,http://'${MASTER}',g' /etc/telegraf/telegraf.conf
   #   interval = "10s"
   sed -i -e 's,interval = "10s",interval = "1s",g' /etc/telegraf/telegraf.conf
   # flush_interval = "10s"
