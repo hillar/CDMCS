@@ -25,6 +25,7 @@ pip install -r requirements.txt
 ln -s /etc/scirius/local_settings.py /opt/selks/scirius/scirius/
 pip install -U six
 pip install urllib3 --upgrade
+mkdir -p /etc/suricata/rules
 #stealing from /opt/selks/bin/scirius.sh
 cd /opt/selks/scirius/
 echo "no" | python manage.py syncdb

@@ -31,6 +31,8 @@ if [ ! -f "influxdb_${INFLX}-1_amd64.deb" ]; then
 else
   echo -e "Y"|dpkg -i influxdb_${INFLX}-1_amd64.deb 2>&1 > /dev/null
   #prepare for telegraf
+  curl -s -G http://localhost:8086/query --data-urlencode "q=DROP DATABASE telegraf"
+  sleep 1
   curl -s -G http://localhost:8086/query --data-urlencode "q=CREATE DATABASE telegraf"
   curl -s -G http://localhost:8086/query --data-urlencode "q=CREATE RETENTION POLICY one_day_only ON telegraf DURATION 1d REPLICATION 1 DEFAULT"
   #sed -i -e 's,localhost,'${METRICS_SERVER}',g' /etc/influxdb/influxdb.conf
