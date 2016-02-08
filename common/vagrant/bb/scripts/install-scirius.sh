@@ -232,6 +232,6 @@ python manage.py updatesuricata
 suricata -T -c /etc/suricata/suricata.yaml
 # set u:p  to admin:password
 echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@localhost', 'admin')" | python manage.py shell
-python manage.py runserver 0.0.0.0:7000 > /var/log/scirius.log 2>&1 &
+nohup python manage.py runserver 0.0.0.0:7000 > /var/log/scirius.log 2>&1 &
 cd /etc/suricata/rules/
 #python -m SimpleHTTPServer > /var/log/scirius_rules.log 2>&1 &
