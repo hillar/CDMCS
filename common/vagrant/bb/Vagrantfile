@@ -2,11 +2,12 @@
 # vi: set ft=ruby :
 
 NET = "10.242.11."
-NET_START = 100
+NET_START = 10
 TEAMS = 1
 # (SURICOUNT + ELACOUNT) MUST BE LESS THAN 8
 SURICOUNT = 3
-ELACOUNT = 3
+ELACOUNT = 4
+PREFIX = "RTWS-Yellow"
 
 
 # -------------------------------------------------
@@ -16,6 +17,44 @@ TEACHER = NET  + (NET_START + 9 ).to_s
 $run4all = <<SCRIPT
 echo "running on every vm"
 echo "$1 $2 $3 $4"
+ETH0=$1
+NAME=$2
+echo "fixing net interfasec file ${ETHO} ${NAME} "
+echo "# auto created by $0" > /etc/network/interfaces
+echo "# $(date) " >> /etc/network/interfaces
+echo "# hostname :: ${NAME} ip :: ${ETH0}" >> /etc/network/interfaces
+echo "" >> /etc/network/interfaces
+echo "# The loopback network interface"  >> /etc/network/interfaces
+echo "auto lo" >> /etc/network/interfaces
+echo "iface lo inet loopback" >> /etc/network/interfaces
+echo "# Gamenet interface" >> /etc/network/interfaces
+echo "# VLAN-3611" >> /etc/network/interfaces
+echo "auto eth0" >> /etc/network/interfaces
+echo "iface eth0 inet static" >> /etc/network/interfaces
+echo "	address ${ETH0}" >> /etc/network/interfaces
+echo "	netmask 255.255.255.0" >> /etc/network/interfaces
+echo "	gateway 10.242.11.1" >> /etc/network/interfaces
+echo "	dns-nameservers 10.242.0.2" >> /etc/network/interfaces
+echo "# GigamonTraffic" >> /etc/network/interfaces
+echo "auto eth1" >> /etc/network/interfaces
+echo "iface eth1 inet manual" >> /etc/network/interfaces
+echo "up ifconfig eth1 up" >> /etc/network/interfaces
+sudo ifdown eth0
+sudo ifup eth0
+sleep 1
+count=$(ping -c 1 www.ee | grep transmitted|cut -f2 -d"," |awk '{print $1}')
+if [ $count -eq 1 ]
+then
+  echo "$(date) ${NAME} $0[$$]: {net: {status:OK, interfaces: {eth0:${ETH0}, eth1:${ETH1}}}}"
+else
+  echo "can not ping www.ee ;( broken net !? "
+  echo "/etc/network/interfaces"
+  cat /etc/network/interfaces
+  echo "/etc/resolv.conf"
+  cat /etc/resolv.conf
+  echo "$(date) ${NAME} $0[$$]: {net: {status:ERROR, interfaces: [eth0:${ETH0}]}}"
+  exit -1
+fi
 SCRIPT
 
 # flush lastrun.txt
@@ -33,14 +72,14 @@ Vagrant.configure(2) do |config|
 
   (1..TEAMS).each do |teamnumber|
 
-    File.open('lastrun.txt','a').puts "# "+teamnumber.to_s + " ---------------"
+    #File.open('lastrun.txt','a').puts "# "+teamnumber.to_s + " ---------------"
     ip_syslog = NET  + (NET_START + teamnumber*10).to_s
     ip_master = NET  + (NET_START + teamnumber*10 + 1).to_s
     ip_viewer = NET  + (NET_START + teamnumber*10 + 9).to_s
     ip_first_ela = NET  + (NET_START + teamnumber*10 + 8).to_s
-    name_syslog = 'student-' + teamnumber.to_s + '-syslog'
-    name_master = 'student-' + teamnumber.to_s + '-master'
-    name_viever = 'student-' + teamnumber.to_s + '-viewer'
+    name_syslog = PREFIX + '-' + teamnumber.to_s + '-syslog'
+    name_master = PREFIX + '-' + teamnumber.to_s + '-master'
+    name_viever = PREFIX + '-' + teamnumber.to_s + '-viewer'
 
     require '../../../../../tests/bb/keys/vsphere.rb'
     include VSphereKeys
@@ -48,7 +87,7 @@ Vagrant.configure(2) do |config|
       config.vm.box = "vsphere"
       vsphere.host = VSPHERE_HOST
       vsphere.compute_resource_name = VSPHERE_CLUSTER
-      vsphere.template_name = VSPHERE_TEMPLATE_PATH + 'ubuClust1nic1'
+      vsphere.template_name = VSPHERE_TEMPLATE_PATH + 'ubu1clust1nic1'
       vsphere.vm_base_path = VSPHERE_VM_PATH + 'Student_' + teamnumber.to_s
       vsphere.customization_spec_name = 'linux_1nics'
       vsphere.user = VSPHERE_USER
@@ -62,12 +101,14 @@ Vagrant.configure(2) do |config|
       elas.push(ip)
     end
     (1..ELACOUNT).each do |boxno|
-      name = 'student-' + teamnumber.to_s + '-elastic-' + boxno.to_s
+      name =  PREFIX + '-' + teamnumber.to_s + '-elastic-' + boxno.to_s
       ip = NET  + (NET_START + teamnumber*10 + 9 - boxno).to_s
       #elas.push(ip)
       config.vm.define name do |box|
         box.vm.hostname = name
         box.vm.network 'private_network', ip: ip
+        box.vm.provision "shell", inline: $run4all, args: "#{ip} #{name}"
+
         box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_master}"
         box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
         box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip} #{name} #{'student-' + teamnumber.to_s} #{boxno} '#{elas.join(",")}' data"
@@ -81,22 +122,76 @@ Vagrant.configure(2) do |config|
     end
 
     suris = []
-    (1..SURICOUNT).each do |boxno|
-      name = 'student-' + teamnumber.to_s + '-suri-' + boxno.to_s
+    (1..1).each do |boxno|
+      name = PREFIX + '-' + teamnumber.to_s + '-suri-' + boxno.to_s
       ip = NET  + (NET_START + teamnumber*10 + 1 + boxno).to_s
       suris.push(ip)
       config.vm.define name do |box|
         box.vm.hostname = name
         box.vm.network 'private_network', ip: ip
+        box.vm.provision "shell", inline: $run4all, args: "#{ip} #{name}"
         box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_master}"
         box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
         box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip} #{name} #{'student-' + teamnumber.to_s} #{boxno} '#{elas.join(",")}' master"
+        box.vm.provision "shell", path: "./scripts/install-suri.sh", args: "eth1 #{ip_master}"
+        box.vm.provision "shell", path: "./scripts/install-logstash.sh", args: "'#{elas.join(",")}'"
 
-        box.vm.provision "shell", path: "./scripts/install-suri.sh", args: "#{elas}"
         box.vm.provider :vsphere do |vsphere|
-          vsphere.memory_mb = 8 * 1024
+          vsphere.memory_mb = 16 * 1024
           vsphere.name = name
-          vsphere.cpu_count = 4
+          vsphere.cpu_count = 8
+          vsphere.compute_resource_name = VSPHERE_CLUSTER + "2"
+          vsphere.template_name = VSPHERE_TEMPLATE_PATH + 'ubu1clust2nic2'
+          vsphere.customization_spec_name = 'linux_2nics'
+        end
+      end
+      File.open('lastrun.txt','a').puts ip +" "+name
+    end
+
+    bros = []
+    (1..1).each do |boxno|
+      name = PREFIX + '-' + teamnumber.to_s + '-bro-' + boxno.to_s
+      ip = NET  + (NET_START + teamnumber*10 + 2 + boxno).to_s
+      bros.push(ip)
+      config.vm.define name do |box|
+        box.vm.hostname = name
+        box.vm.network 'private_network', ip: ip
+        box.vm.provision "shell", inline: $run4all, args: "#{ip} #{name}"
+        box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_master}"
+        box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
+        box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip} #{name} #{'student-' + teamnumber.to_s} #{boxno} '#{elas.join(",")}' master"
+        box.vm.provision "shell", path: "./scripts/install-logstash.sh", args: "'#{elas.join(",")}'"
+        box.vm.provider :vsphere do |vsphere|
+          vsphere.memory_mb = 16 * 1024
+          vsphere.name = name
+          vsphere.cpu_count = 8
+          vsphere.compute_resource_name = VSPHERE_CLUSTER + "2"
+          vsphere.template_name = VSPHERE_TEMPLATE_PATH + 'ubu1clust2nic2'
+          vsphere.customization_spec_name = 'linux_2nics'
+        end
+      end
+      File.open('lastrun.txt','a').puts ip +" "+name
+    end
+
+    molos = []
+    (1..1).each do |boxno|
+      name = PREFIX + '-' + teamnumber.to_s + '-moloch-' + boxno.to_s
+      ip = NET  + (NET_START + teamnumber*10 + 3 + boxno).to_s
+      molos.push(ip)
+      config.vm.define name do |box|
+        box.vm.hostname = name
+        box.vm.network 'private_network', ip: ip
+        box.vm.provision "shell", inline: $run4all, args: "#{ip} #{name}"
+        box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_master}"
+        box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
+        box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip} #{name} #{'student-' + teamnumber.to_s} #{boxno} '#{elas.join(",")}' master"
+        box.vm.provider :vsphere do |vsphere|
+          vsphere.memory_mb = 16 * 1024
+          vsphere.name = name
+          vsphere.cpu_count = 8
+          vsphere.compute_resource_name = VSPHERE_CLUSTER + "2"
+          vsphere.template_name = VSPHERE_TEMPLATE_PATH + 'ubu1clust2nic2'
+          vsphere.customization_spec_name = 'linux_2nics'
         end
       end
       File.open('lastrun.txt','a').puts ip +" "+name
@@ -105,6 +200,7 @@ Vagrant.configure(2) do |config|
     config.vm.define name_syslog do |box|
       box.vm.hostname = name_syslog
       box.vm.network 'private_network', ip: ip_syslog
+      box.vm.provision "shell", inline: $run4all, args: "#{ip_syslog} #{name_syslog}"
       box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_master}"
       box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
       box.vm.provision "shell", path: "./scripts/install-influxdb.sh", args: "#{ip_syslog}"
@@ -121,6 +217,7 @@ Vagrant.configure(2) do |config|
     config.vm.define name_viever do |box|
       box.vm.hostname = name_viever
       box.vm.network 'private_network', ip: ip_viewer
+      box.vm.provision "shell", inline: $run4all, args: "#{ip_viewer} #{name_viever}"
       box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_master}"
       box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
       box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip_viewer} #{name_viever} #{'student-' + teamnumber.to_s} 0 '#{elas.join(",")}' client"
@@ -137,6 +234,7 @@ Vagrant.configure(2) do |config|
     config.vm.define name_master do |box|
       box.vm.hostname = name_master
       box.vm.network 'private_network', ip: ip_master
+      box.vm.provision "shell", inline: $run4all, args: "#{ip_master} #{name_master}"
       box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{TEACHER}"
       box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
       box.vm.provision "shell", path: "./scripts/install-salt-master.sh"
@@ -153,15 +251,18 @@ Vagrant.configure(2) do |config|
   end # teams
   #finally add teaacher as master for students masters
   config.vm.define 'teacher' do |box|
-    box.vm.hostname = 'teacher'
+    name = PREFIX + '-teacher'
+    box.vm.hostname = name
     box.vm.network 'private_network', ip: TEACHER
+    box.vm.provision "shell", inline: $run4all, args: "#{TEACHER} #{name}"
     box.vm.provision "shell", path: "./scripts/install-salt-master.sh"
     # root@teacher:~# salt "*" cmd.run 'salt "*" cmd.run "netstat -ntple"'
     box.vm.provider :vsphere do |vsphere|
-      vsphere.name = 'teacher'
+      vsphere.name = name
       vsphere.memory_mb = 2 * 1024
       vsphere.cpu_count = 2
     end
+    File.open('lastrun.txt','a').puts TEACHER + ' ' +name
   end
-  File.open('lastrun.txt','a').puts TEACHER + " teacher"
+
 end
