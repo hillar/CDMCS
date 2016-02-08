@@ -1,5 +1,4 @@
 #!/bin/bash
-#!/bin/bash
 #
 # this script
 # 1) installs elasticsearch as

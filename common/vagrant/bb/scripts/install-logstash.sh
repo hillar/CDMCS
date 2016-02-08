@@ -22,7 +22,7 @@ apt-get -y --force-yes install logstash > /dev/null 2>&1
 #stealing amsterdam losgstash conf
 wget -q https://raw.githubusercontent.com/StamusNetworks/Amsterdam/master/src/config/logstash/logstash.conf -O /etc/logstash/conf.d/suricata.conf
 #    hosts => elasticsearch
-sed -i -e 's,hosts => elasticsearch,hosts => "'${ELASTIC}'",g' /etc/logstash/conf.d/suricata.conf
+sed -i -e 's,hosts => elasticsearch,hosts => "'${ELASTIC}'"\n index => "logstash-%{+YYYY.MM.dd.HH}",g' /etc/logstash/conf.d/suricata.conf
 #fix this hack
 chmod 777 /var/log/suricata/eve.json
 service logstash start
