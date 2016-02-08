@@ -32,7 +32,7 @@ ES=2.2.0
 mkdir -p ${INSTALL_DIR}/elasticsearch
 cd ${INSTALL_DIR}/elasticsearch
 if [ ! -f "elasticsearch-${ES}.deb" ]; then
-  wget -q https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-${ES}.deb
+  wget -4 -q https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-${ES}.deb
 fi
 if [ ! -f "elasticsearch-${ES}.deb" ]; then
     echo "$(date) ${NAME} $0[$$]: {elastic: {status:ERROR, msg: missing elasticsearch-${ES}.deb}"

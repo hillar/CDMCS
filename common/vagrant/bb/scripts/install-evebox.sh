@@ -19,7 +19,7 @@ echo "installing evebox on ${IP} ${HOSTNAME} sets elasticsearch to ${ELASTIC} ..
 
 apt-get -y install unzip
 cd /opt/
-wget -q https://bintray.com/artifact/download/jasonish/evebox/evebox-linux-amd64.zip
+wget -4 -q https://bintray.com/artifact/download/jasonish/evebox/evebox-linux-amd64.zip
 unzip evebox-linux-amd64.zip
 /opt/evebox-linux-amd64/evebox --version
 echo "http.cors.enabled: true" >> /etc/elasticsearch/elasticsearch.yml

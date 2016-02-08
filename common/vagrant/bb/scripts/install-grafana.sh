@@ -23,7 +23,7 @@ GRFN="2.6.0"
 mkdir -p ${INSTALL_DIR}/grafana
 cd ${INSTALL_DIR}/grafana
 if [ ! -f "grafana_${GRFN}_amd64.deb" ]; then
-  wget -q https://grafanarel.s3.amazonaws.com/builds/grafana_${GRFN}_amd64.deb
+  wget -4 -q https://grafanarel.s3.amazonaws.com/builds/grafana_${GRFN}_amd64.deb
 fi
 if [ ! -f "grafana_${GRFN}_amd64.deb" ]; then
   echo "$(date) ${HOSTNAME} $0[$$]: {grafana: {status:WARNING, msg: missing grafana_${GRFN}_amd64.deb}"
