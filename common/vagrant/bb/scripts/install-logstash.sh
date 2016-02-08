@@ -2,7 +2,7 @@
 #
 # this script:
 # 1) installs logstash
-# 2) sets elastic to $1
+# 2) sets elastic to $1 in conf.d/suricata.conf
 #
 
 if [ "$(id -u)" != "0" ]; then
@@ -10,19 +10,19 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
-ELASTIC=$1
+ELASTIC=$(ifconfig eth0 2>/dev/null|grep 'inet addr'|cut -f2 -d':'|cut -f1 -d' ')
 
 
-# Markus, can you replace logststash with rsyslog
+# Markus, can you replace logststash with rsyslog, but still keep the "good" tempalte, so scirius can still get data
 # logstash
-cd /tmp
-wget -q https://download.elastic.co/logstash/logstash/logstash-all-plugins-2.1.0.tar.gz
-cd /opt
-tar -xzf /tmp/logstash-all-plugins-2.1.0.tar.gz
+echo 'deb http://packages.elasticsearch.org/logstash/2.2/debian stable main' > /etc/apt/sources.list.d/logstash.list
+apt-get update > /dev/null 2>&1
+apt-get -y --force-yes install logstash > /dev/null 2>&1
+
 #stealing amsterdam losgstash conf
-mkdir -p /etc/logstash
-wget -q https://raw.githubusercontent.com/StamusNetworks/Amsterdam/master/src/config/logstash/logstash.conf -O /etc/logstash/logstash.conf
-echo "${ELASTIC} elasticsearch" >> /etc/hosts
-nohup /opt/logstash-2.1.0/bin/logstash -f /etc/logstash/logstash.conf > /var/log/logstash.log 2>&1 &
-sleep 3
-tail /var/log/logstash.log
+wget -q https://raw.githubusercontent.com/StamusNetworks/Amsterdam/master/src/config/logstash/logstash.conf -O /etc/logstash/conf.d/suricata.conf
+#    hosts => elasticsearch
+sed -i -e 's,hosts => elasticsearch,hosts => "'${ELASTIC}'",g' /etc/logstash/conf.d/suricata.conf
+#fix this hack
+chmod 777 /var/log/suricata/eve.json
+service logstash start
