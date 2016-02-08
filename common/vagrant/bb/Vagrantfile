@@ -237,7 +237,9 @@ Vagrant.configure(2) do |config|
       box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_syslog}"
       box.vm.provision "shell", path: "./scripts/install-salt-master.sh"
       box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip_master} #{name_master} #{'student-' + teamnumber.to_s} 0 '#{elas.join(",")}' client"
-      box.vm.provision "shell", path: "./scripts/install-scirius.sh", args: "#{ip_master}"
+      #hack for BB
+      suri_name = PREFIX + '-' + teamnumber.to_s + '-suri-1'
+      box.vm.provision "shell", path: "./scripts/install-scirius.sh", args: "#{suri_name}"
       box.vm.provider :vsphere do |vsphere|
         vsphere.name = name_master
         vsphere.memory_mb = 2 * 1024

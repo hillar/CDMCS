@@ -9,7 +9,7 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
-SURIS=$1
+SURICATA=$1
 
 # Scirius
 # see https://github.com/StamusNetworks/scirius#installation-and-setup
@@ -21,7 +21,7 @@ cd /opt/selks
 tar zxf /tmp/master.tar.gz
 ln -sf /opt/selks/scirius-master /opt/selks/scirius
 cd /opt/selks/scirius
-pip install -r requirements.txt  
+pip install -r requirements.txt
 ln -s /etc/scirius/local_settings.py /opt/selks/scirius/scirius/
 pip install -U six
 pip install urllib3 --upgrade
@@ -35,10 +35,7 @@ python manage.py addsource "ETOpen Ruleset" https://rules.emergingthreats.net/op
 python manage.py addsource "SSLBL abuse.ch" https://sslbl.abuse.ch/blacklist/sslblacklist.rules http sig
 python manage.py defaultruleset "Default SELKS ruleset"
 python manage.py disablecategory "Default SELKS ruleset" stream-events
-for suri in $(echo $SURIS | tr "," "\n")
-do
-python manage.py addsuricata $(suri) "Suricata on SELKS" /etc/suricata/rules "Default SELKS ruleset"
-done
+python manage.py addsuricata $SURICATA "Suricata on SELKS" /etc/suricata/rules "Default SELKS ruleset"
 python manage.py updatesuricata
 suricata -T -c /etc/suricata/suricata.yaml
 # set u:p  to admin:password
