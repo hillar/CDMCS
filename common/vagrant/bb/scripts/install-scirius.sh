@@ -17,7 +17,7 @@ HOSTNAME=$(hostname -f)
 # see https://github.com/StamusNetworks/scirius#installation-and-setup
 DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y wget python-pip python-dev git gcc
 cd /tmp/
-wget -q https://github.com/StamusNetworks/scirius/archive/master.tar.gz
+wget -4 -q https://github.com/StamusNetworks/scirius/archive/master.tar.gz
 mkdir -p /opt/selks/sciriusdata
 cd /opt/selks
 tar zxf /tmp/master.tar.gz

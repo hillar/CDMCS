@@ -15,6 +15,8 @@ fi
 echo "installing salt-master on ${hostname} ..."
 
 echo "LC_ALL=en_US.UTF-8" >> /etc/environment
+echo 'Acquire::ForceIPv4 "true";' > /etc/apt/apt.conf.d/99force-ipv4
+
 add-apt-repository -y ppa:saltstack/salt 2>&1 > /dev/null
 apt-get update 2>&1 > /dev/null
 apt-get -y install salt-master 2>&1 > /dev/null

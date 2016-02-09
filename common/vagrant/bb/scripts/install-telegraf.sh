@@ -25,7 +25,7 @@ INSTALL_DIR=/provision
 mkdir -p ${INSTALL_DIR}/telegraf
 cd ${INSTALL_DIR}/telegraf
 if [ ! -f "telegraf_${TLGF}-1_amd64.deb" ]; then
-            wget -q wget http://get.influxdb.org/telegraf/telegraf_${TLGF}-1_amd64.deb
+            wget -4 -q wget http://get.influxdb.org/telegraf/telegraf_${TLGF}-1_amd64.deb
 fi
 if [ ! -f "telegraf_${TLGF}-1_amd64.deb" ]; then
     echo "$(date) ${NAME} $0[$$]: {telegaf: {status:ERROR, msg: missing telegraf_${TLGF}_amd64.deb}"
