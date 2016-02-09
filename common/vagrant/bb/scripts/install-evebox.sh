@@ -25,4 +25,4 @@ unzip evebox-linux-amd64.zip
 echo "http.cors.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
 echo "http.cors.allow-origin: \"/.*/\"" >> /etc/elasticsearch/elasticsearch.yml
 service elasticsearch restart
-#/opt/evebox-linux-amd64/evebox > /var/log/evebox.log 2>&1 &
+nohup /opt/evebox-linux-amd64/evebox > /var/log/evebox.log 2>&1 &
