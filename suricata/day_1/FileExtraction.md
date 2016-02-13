@@ -3,9 +3,12 @@
 > File extraction depends on a lot of things to be fully done..
 
 
-see
+##see
 
 * https://redmine.openinfosecfoundation.org/projects/suricata/wiki/MD5
+
+#### fresh blog posts
+* https://stoq-framework.blogspot.com.ee/2016/02/using-stoq-with-suricatas-file.html
 
 ### config
 ``` yaml
