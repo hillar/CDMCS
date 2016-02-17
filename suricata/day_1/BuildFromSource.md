@@ -4,6 +4,7 @@ see
 * https://redmine.openinfosecfoundation.org/projects/suricata/wiki/Installation_from_GIT
 * http://pevma.blogspot.se/2013/12/suricata-cocktails-handy-one-liners.html
 * https://github.com/obsrvbl/suricata-service
+* https://github.com/jasonish/suricata-rpms
 
 ### Dependencies
 
