@@ -1,27 +1,30 @@
 # Tuning
 
-## eth0
+## eth1
 
 #### Verify that the offloading features are off
-
+```bash
 ethtool -k eth1
+```
 
-#### Verify the send and receive buffers, note how the current hardware values are the same as the pre-set maximum values
-
+#### Verify the send and receive buffers are the same as the hardware maximum values
+```bash
 ethtool -g eth1
+```
 
 #### Verify the flow hash indirection table
-
+```bash
 ethtool -x eth1
+bash
 
 #### Verify that the IRQ affinity is set correctly, the output bellow shows only the first 4 CPU's
-
+```bash
 cat /proc/interrupts | grep 'CPU\|eth1'
-
+```
 ----
 
 ### turn off offloading
-``` bash
+```bash
 ethtool -K $1 rx off
 ethtool -K $1 tx off
 ethtool -K $1 sg off
