@@ -1,3 +1,5 @@
+@regit
+
 # Tuning
 
 ## eth1
@@ -77,3 +79,11 @@ for INDEX in $(seq 0 1 $MAX); do
     let "MASK=$MASK+$MASK"
 done
 ```
+
+### make it persistent
+
+Those configurations need to be persistent when the system is power cycled. To do that one can leverage the */sbin/ifup-local* script ;)
+
+## configuration
+
+...
