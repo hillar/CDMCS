@@ -3,11 +3,11 @@
 
 NET = "10.242.11."
 NET_START = 10
-STUDENTS = 19
+STUDENTS = 1
 # (SURICOUNT + ELACOUNT) MUST BE LESS THAN 8
-SURICOUNT = 4
-ELACOUNT = 3
-PREFIX = "RTWS-Yellow"
+SURICOUNT = 1 
+ELACOUNT = 1
+PREFIX = "CDMCS-"
 
 
 # -------------------------------------------------
