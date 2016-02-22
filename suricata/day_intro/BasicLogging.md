@@ -50,11 +50,7 @@ Starting in 2.0, Suricata can output alerts, connections and internal statistics
 ```
 
 ```
-  # Extensible Event Format (nicknamed EVE) event log in JSON format
-  - eve-log:
-      enabled: yes
-      filetype: regular #regular|syslog|unix_dgram|unix_stream|redis
-      filename: eve.json
+grep 'eve-log' -A10 /etc/suricata/suricata.yaml
 ```
 
 Following event types can be enabled in Suricata 3. 
