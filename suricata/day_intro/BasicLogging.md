@@ -82,12 +82,6 @@ Suricata can alert via syslog.
  * https://www.balabit.com/sites/default/files/documents/syslog-ng-ose-latest-guides/en/syslog-ng-ose-guide-admin/html-single/index.html
  * http://nxlog-ce.sourceforge.net/nxlog-docs/en/nxlog-reference-manual.html
 
-## whatever
-
- * lua-output ;)
-
-## alerts
-
 ## stuff
 
 ```
