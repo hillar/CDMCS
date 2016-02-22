@@ -1,17 +1,51 @@
 # logging
 
-see http://jasonish-suricata.readthedocs.org/en/latest/output/index.html
+ * http://jasonish-suricata.readthedocs.org/en/latest/output/index.html
 
 ## file
 
 ### unified2 aka Barnyard2
 
+Binary format for disk efficiency. Thus, IDS spends minimal resources for storing data. Further processing is offloaded to other tools.
+
+ * https://github.com/firnsy/barnyard2
+ * https://github.com/jasonish/py-idstools
+ * https://github.com/threatstack/unified2
+ * http://threatstack.github.io/pigsty/
+
 ### json
-Starting in 2.0, Suricata can output alerts, http events, dns events, tls events and file info through json.
+
+Starting in 2.0, Suricata can output alerts, http events, dns events, tls events and file info through JSON.
+
+ * http://www.json.org/
+ * https://redmine.openinfosecfoundation.org/projects/suricata/wiki/EveJSONFormat
+
+```
+{
+  "timestamp": "2015-12-07T19:29:55.093707+0000",
+  "flow_id": 1.4000333881421e+14,
+  "event_type": "http",
+  "src_ip": "192.168.11.11",
+  "src_port": 42334,
+  "dest_ip": "192.168.12.12",
+  "dest_port": 80,
+  "proto": "TCP",
+  "tx_id": 0,
+  "http": {
+    "hostname": "192.168.12.12",
+    "url": "\/index.html?crap=1449516595",
+    "http_content_type": "text\/html",
+    "http_method": "GET",
+    "protocol": "HTTP\/1.1",
+    "status": 200,
+    "length": 1
+  }
+}
+```
 
 ## syslog
 
-Suricata can alert via sylog
+Suricata can alert via syslog
 
 ## whatever
 
