@@ -21,7 +21,7 @@ Binary format for disk efficiency. Thus, IDS spends minimal resources for storin
 
 ### EVE (Extensible Event Format)
 
-Starting in 2.0, Suricata can output alerts, http events, dns events, tls events and file info through JSON.
+Starting in 2.0, Suricata can output alerts, connections and internal statistics through JSON.
 
  * http://www.json.org/
  * https://redmine.openinfosecfoundation.org/projects/suricata/wiki/EveJSONFormat
@@ -47,6 +47,32 @@ Starting in 2.0, Suricata can output alerts, http events, dns events, tls events
     "length": 1
   }
 }
+```
+
+```
+  # Extensible Event Format (nicknamed EVE) event log in JSON format
+  - eve-log:
+      enabled: yes
+      filetype: regular #regular|syslog|unix_dgram|unix_stream|redis
+      filename: eve.json
+```
+
+Following event types can be enabled in Suricata 3. 
+
+ * Alert
+ * HTTP
+ * DNS
+ * TLS
+ * Files
+ * drop
+ * SMTP
+ * SSH
+ * Stats
+ * Flow
+ * Netflow
+
+```
+grep '"event_type":"alert"' /var/log/suricata/eve.json
 ```
 
 ## syslog
