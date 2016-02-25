@@ -10,7 +10,7 @@ Suricata uses the Yaml format for configuration.
 
 see http://www.yaml.org
 
-### set configuration file location
+### specify configuration file location
 
 ```
 suricata -c /bla/blah/suricata.yaml
@@ -21,7 +21,7 @@ suricata -c /bla/blah/suricata.yaml
 ```
 suricata -c /bla/blah/suricata.yaml -T
 ```
-> missing threshold.config
+> notice the missing threshold.config
 > see http://permalink.gmane.org/gmane.comp.security.ids.oisf.user/1738
 
 ```
@@ -33,7 +33,7 @@ root@secx:~# /usr/bin/suricata -T -c /etc/suricata/suricata.yaml
 
 ## HOME_NET
 
-At least, you will need to define your home network:
+As a bare minimum, you should define your home network:
 ```
 HOME_NET: "[192.168.100.0/24]"
 EXTERNAL_NET: !$HOME_NET
@@ -55,12 +55,76 @@ root@secx:~# grep HOME_NET /etc/suricata/suricata.yaml
     ENIP_SERVER: "$HOME_NET"
 ```
 
+Review default ports according to your environments:
+```
+root@secx:~# grep '_PORTS' /etc/suricata/suricata.yaml 
+    HTTP_PORTS: "80"
+    SHELLCODE_PORTS: "!80"
+    ORACLE_PORTS: 1521
+    SSH_PORTS: 22
+    DNP3_PORTS: 20000
+    MODBUS_PORTS: 502
+```
+
 ## Rules
 
 ```
-root@secx:~# grep rule-path /etc/suricata/suricata.yaml
+root@secx:~# grep -A51 rule-path /etc/suricata/suricata.yaml
 default-rule-path: /etc/suricata/rules
+rule-files:
+ - botcc.rules
+ - ciarmy.rules
+ - compromised.rules
+ - drop.rules
+ - dshield.rules
+ - emerging-activex.rules
+ - emerging-attack_response.rules
+ - emerging-chat.rules
+ - emerging-current_events.rules
+ - emerging-dns.rules
+ - emerging-dos.rules
+ - emerging-exploit.rules
+ - emerging-ftp.rules
+ - emerging-games.rules
+ - emerging-icmp_info.rules
+# - emerging-icmp.rules
+ - emerging-imap.rules
+ - emerging-inappropriate.rules
+ - emerging-malware.rules
+ - emerging-misc.rules
+ - emerging-mobile_malware.rules
+ - emerging-netbios.rules
+ - emerging-p2p.rules
+ - emerging-policy.rules
+ - emerging-pop3.rules
+ - emerging-rpc.rules
+ - emerging-scada.rules
+ - emerging-scan.rules
+ - emerging-shellcode.rules
+ - emerging-smtp.rules
+ - emerging-snmp.rules
+ - emerging-sql.rules
+ - emerging-telnet.rules
+ - emerging-tftp.rules
+ - emerging-trojan.rules
+ - emerging-user_agents.rules
+ - emerging-voip.rules
+ - emerging-web_client.rules
+ - emerging-web_server.rules
+ - emerging-web_specific_apps.rules
+ - emerging-worm.rules
+ - tor.rules
+ - decoder-events.rules # available in suricata sources under rules dir
+ - stream-events.rules  # available in suricata sources under rules dir
+ - http-events.rules    # available in suricata sources under rules dir
+ - smtp-events.rules    # available in suricata sources under rules dir
+ - dns-events.rules     # available in suricata sources under rules dir
+ - tls-events.rules     # available in suricata sources under rules dir
+# - modbus-events.rules  # available in suricata sources under rules dir
+ - app-layer-events.rules  # available in suricata sources under rules dir
 ```
+
+
 
 ### do you need rules !?
 
