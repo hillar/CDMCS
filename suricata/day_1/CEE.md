@@ -13,3 +13,5 @@ Feb 25 11:23:42 suricata suricata[26526]: @cee: {"timestamp":"2015-12-07T19:30:5
 ```
 grep cee -B2 -A3 /etc/suricata/suricata.yaml
 ```
+
+[next: rsyslog](/suricata/day_1/rsyslog.md)
