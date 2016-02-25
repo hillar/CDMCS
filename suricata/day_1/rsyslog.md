@@ -1,6 +1,8 @@
 # Rsyslog
 
  * http://www.rsyslog.com/ubuntu-repository/
+ * http://www.rsyslog.com/tag/mmjsonparse/
+ * http://www.rsyslog.com/doc/mmjsonparse.html
 
 ```
 apt-cache policy rsyslog
@@ -37,4 +39,68 @@ Feb 25 11:47:56 suricata rsyslogd: [origin software="rsyslogd" swVersion="8.16.0
 Feb 25 11:47:56 suricata rsyslogd-2307: warning: ~ action is deprecated, consider using the 'stop' statement instead [v8.16.0 try http://www.rsyslog.com/e/2307 ]
 Feb 25 11:47:56 suricata rsyslogd: rsyslogd's groupid changed to 104
 Feb 25 11:47:56 suricata rsyslogd: rsyslogd's userid changed to 101
+```
+
+# Simple filtering
+
+```
+vim /etc/rsyslog.d/60-suricata-tag-to-file.conf
+```
+
+```
+if $syslogtag contains 'suricata' then /var/log/suricata-tag.log
+```
+
+# Filtering using JSON parser
+
+```
+vim /etc/rsyslog.d/61-suricata-cee-to-file.conf
+```
+```
+module(load="mmjsonparse")
+
+action(type="mmjsonparse")
+
+if $parsesuccess == "OK" then action(
+    type="omfile" 
+    dirCreateMode="0700" 
+    FileCreateMode="0644"
+    File="/var/log/suricata-cee.log"
+)
+```
+
+# Enable high precision timestamps
+
+```
+sudo vim /etc/rsyslog.conf
+```
+```
+#$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
+```
+```
+sudo service rsyslog restart
+```
+
+# Parsing syslog timestamp
+
+```
+template(name="suricata-index" type="list") {
+    constant(value="suricata-") 
+    property(name="timereported" dateFormat="rfc3339" position.from="1" position.to="4")
+    constant(value=".") 
+    property(name="timereported" dateFormat="rfc3339" position.from="6" position.to="7")
+    constant(value=".") 
+    property(name="timereported" dateFormat="rfc3339" position.from="9" position.to="10")
+}
+```
+
+# Invoking a template for dynamic naming
+
+```
+local5.info     action(
+    type="omfile"
+    dirCreateMode="0700"
+    FileCreateMode="0644"
+    DynaFile="suricata-index"
+)
 ```
