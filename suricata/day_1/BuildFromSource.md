@@ -72,3 +72,17 @@ sudo ldconfig
 root@secx:/home/student/oisf# suricata -V
 This is Suricata version 3.0dev (rev 44a444b)
 ```
+
+### Cleaning up
+
+```
+make uninstall
+```
+
+```
+make clean
+```
+
+```
+make distclean
+```

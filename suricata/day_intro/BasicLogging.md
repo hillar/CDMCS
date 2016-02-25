@@ -8,6 +8,11 @@
 Line-based logs are easily human readable but contain limited information. Furthermore, machine processing can be expensive in terms of CPU and IO.
 
 ```
+grep '\- fast' -A4 -B1 /etc/suricata/suricata.yaml
+tail /var/log/suricata/fast.log
+```
+
+```
 12/07/2015-19:30:03.307554  [**] [1:2200074:1] SURICATA TCPv4 invalid checksum [**] [Classification: (null)] [Priority: 3] {TCP} 192.168.11.11:42336 -> 192.168.12.12:80
 ```
 
