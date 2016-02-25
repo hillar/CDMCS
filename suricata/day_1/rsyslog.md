@@ -3,6 +3,7 @@
  * http://www.rsyslog.com/ubuntu-repository/
  * http://www.rsyslog.com/tag/mmjsonparse/
  * http://www.rsyslog.com/doc/mmjsonparse.html
+ * http://www.rsyslog.com/doc/v8-stable/configuration/modules/omelasticsearch.html
 
 ```
 apt-cache policy rsyslog
@@ -102,5 +103,25 @@ local5.info     action(
     dirCreateMode="0700"
     FileCreateMode="0644"
     DynaFile="suricata-index"
+)
+```
+
+# Defining custom log message format
+
+```
+template(name="JSON" type="list") {
+    property(name="$!all-json")
+}
+```
+
+# Invoking elasticsearch output module
+
+```
+action(
+    type="omelasticsearch"
+    template="JSON"
+    server="192.168.56.101"
+    serverport="9200"
+    searchIndex="suricata-index"
 )
 ```
