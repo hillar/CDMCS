@@ -172,7 +172,7 @@ root@secx:~# service suricata status
 suricata is running with PID 8316
 ```
 
-### default configuration for the service?
+### default configuration when started as a service?
 ```
 root@secx:/etc/suricata# grep -A 9 'SURCONF' /etc/default/suricata 
 SURCONF=/etc/suricata/suricata.yaml

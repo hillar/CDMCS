@@ -13,20 +13,22 @@ see http://www.yaml.org
 ### specify configuration file location
 
 ```
-suricata -c /bla/blah/suricata.yaml
+suricata -c /some/directory/suricata.yaml
 ```
 
 ### test configuration file
 
 ```
-suricata -c /bla/blah/suricata.yaml -T
+suricata -c /etc/suricata/suricata.yaml -T
+#or
+suricata -c /etc/suricata/suricata.yaml -T -v
 ```
 > notice the missing threshold.config
 > see http://permalink.gmane.org/gmane.comp.security.ids.oisf.user/1738
 
 ```
 root@secx:~# touch /etc/suricata/threshold.config
-root@secx:~# /usr/bin/suricata -T -c /etc/suricata/suricata.yaml
+root@secx:~# /usr/bin/suricata -c /etc/suricata/suricata.yaml -T
 6/1/2016 -- 14:25:47 - <Info> - Running suricata under test mode
 6/1/2016 -- 14:25:47 - <Notice> - This is Suricata version 2.0.11 RELEASE
 ```
