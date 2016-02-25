@@ -120,7 +120,7 @@ template(name="JSON" type="list") {
 action(
     type="omelasticsearch"
     template="JSON"
-    server="192.168.56.101"
+    server="127.0.0.1"
     serverport="9200"
     searchIndex="suricata-index"
 )
