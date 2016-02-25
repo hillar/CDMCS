@@ -76,7 +76,7 @@ This is Suricata version 3.0dev (rev 44a444b)
 ### Cleaning up
 
 ```
-make uninstall
+sudo make uninstall
 ```
 
 ```
