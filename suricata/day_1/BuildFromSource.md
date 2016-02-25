@@ -30,6 +30,15 @@ make \
 libmagic-dev
 ```
 
+### Searching for packages
+
+```
+sudo apt-cache search pcre
+```
+
+```
+sudo apt-cache policy libpcre3-dev
+```
 
 ### get the source
 ```
