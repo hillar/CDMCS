@@ -18,3 +18,6 @@ dns
 ----
 
 [next: keywords](/suricata/day_intro/keywords.md)
+
+[jump to: configuration](/suricata/day_intro/BasicConf.md)
+

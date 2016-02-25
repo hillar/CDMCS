@@ -144,6 +144,8 @@ default-log-dir: /var/log/suricata/
 ...
 ```
 
+More of logging in the next chapter
+
 ----
 
 [next : basic logging](/suricata/day_intro/BasicLogging.md)

@@ -56,3 +56,6 @@ suricata -c suricata.yaml -s signatures.rules -i eth0
 ----
 
 [next: /etc/suricata/*](/suricata/day_intro/etc.md)
+
+[jump to: configuration](/suricata/day_intro/BasicConf.md)
+

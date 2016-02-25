@@ -172,6 +172,21 @@ root@secx:~# service suricata status
 suricata is running with PID 8316
 ```
 
+### default configuration for the service?
+```
+root@secx:/etc/suricata# grep -A 9 'SURCONF' /etc/default/suricata 
+SURCONF=/etc/suricata/suricata.yaml
+
+# Listen mode: pcap, nfqueue or af-packet
+# depending on this value, only one of the two following options
+# will be used (af-packet uses neither).
+# Please note that IPS mode is only available when using nfqueue
+LISTENMODE=af-packet
+
+# Interface to listen on (for pcap mode)
+IFACE=eth0
+```
+
 ### stop it for now
 
 ```

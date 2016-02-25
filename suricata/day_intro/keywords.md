@@ -452,3 +452,7 @@ dns_query:
 
 
 ```
+[next: runmodes](/suricata/day_intro/runmodes.md)
+
+[jump to: configuration](/suricata/day_intro/BasicConf.md)
+

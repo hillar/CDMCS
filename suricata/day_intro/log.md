@@ -18,3 +18,6 @@ root@secx:~# tree /var/log/suricata/
 ----
 
 [next: app layer protocols](/suricata/day_intro/AppProtos.md)
+
+[jump to: configuration](/suricata/day_intro/BasicConf.md)
+
