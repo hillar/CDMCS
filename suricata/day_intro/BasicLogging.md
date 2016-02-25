@@ -1,8 +1,7 @@
 # logging
 
  * http://jasonish-suricata.readthedocs.org/en/latest/output/index.html
-
- [Files in log directory](/suricata/day_intro/log.md)
+ * [Files in log directory](/suricata/day_intro/log.md)
 
 ## file
 
