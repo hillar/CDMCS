@@ -15,7 +15,7 @@
 
 
 
-* 13:00 - 13:45 [CEE](/suricata/day_1/CEE.md)
+* 13:00 - 13:45 [CEE](/suricata/day_1/CEE.md), [rsyslog](/suricata/day_1/rsyslog.md)
 * 14:00 - 14:45 Extraction, [TLS monitor](/suricata/day_1/TLSMonitor.md) , [DNS probe](/suricata/day_1/DNSProbe.md) , [flow probe](/suricata/day_1/FlowProbe.md)
 * 15:00 - 15:45 Extraction [file](/suricata/day_1/FileExtraction.md)   
 * 16:00 - 16:45 [Tuning Considerations](/suricata/day_1/SingleBoxtuning.md), [rule profiling](/suricata/day_1/RuleProfiling.md),
