@@ -2,6 +2,8 @@
 
  * http://jasonish-suricata.readthedocs.org/en/latest/output/index.html
 
+ [Files in log directory](/suricata/day_intro/log.md)
+
 ## file
 
 Line-based logs are easily human readable but contain limited information. Furthermore, machine processing can be expensive in terms of CPU and IO.
