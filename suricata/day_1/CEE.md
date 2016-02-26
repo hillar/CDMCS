@@ -1,6 +1,7 @@
 # Common Event Expression
 
  * https://cee.mitre.org/
+ * http://www.rsyslog.com/tag/cee-enhanced/
 
 ## Log format
 
