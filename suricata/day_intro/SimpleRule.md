@@ -25,13 +25,17 @@ A rule consists of the following:
 ## header
 
 * First keyword: protocol with protocol recognition
-* Second part: 
+* Second part: IP params includin variable
 
 ## Rule options
 
+* content matching
+* meta data
+* threshold configuration
 
-## Write a simple signature for HTTP query
+## Write some simple signature
 
 * Write rules on query to a specific website http_hostname
 * Check some text in the content of the response 
 * Write a rules checking TLS fingerprint of a HTTPS website
+* Alert on all PNG files seen on HTTP and SMTP
