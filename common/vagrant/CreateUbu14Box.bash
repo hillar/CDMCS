@@ -24,10 +24,12 @@ cat > ./Vagrantfile <<DELIM
 \$script = <<SCRIPT
 echo "update & upgrade.."
 date > /etc/vagrant_provisioned_at
+apt-get -y --purge remove nfs-kernel-server nfs-common portmap rpcbind puppet puppet-common chef chef-zero
 apt-get update >> /etc/vagrant_provisioned_at
 apt-get upgrade >> /etc/vagrant_provisioned_at
 apt-get -y install openjdk-7-jdk >> /etc/vagrant_provisioned_at
-apt-get -y --purge remove nfs-kernel-server nfs-common portmap rpcbind puppet puppet-common chef chef-zero
+apt-get -y install git >> /etc/vagrant_provisioned_at
+apt-get -y install libpcre3 libpcre3-dbg libpcre3-dev build-essential autoconf automake libtool libpcap-dev libnet1-dev libyaml-0-2 libyaml-dev pkg-config zlib1g zlib1g-dev libcap-ng-dev libcap-ng0 make libmagic-dev >> /etc/vagrant_provisioned_at
 apt-get clean
 date >> /etc/vagrant_provisioned_at
 SCRIPT
