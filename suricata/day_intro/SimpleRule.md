@@ -24,4 +24,14 @@ A rule consists of the following:
 
 ## header
 
+* First keyword: protocol with protocol recognition
+* Second part: 
+
 ## Rule options
+
+
+## Write a simple signature for HTTP query
+
+* Write rules on query to a specific website http_hostname
+* Check some text in the content of the response 
+* Write a rules checking TLS fingerprint of a HTTPS website

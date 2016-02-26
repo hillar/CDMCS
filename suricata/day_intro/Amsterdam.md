@@ -1,6 +1,6 @@
 # Amsterdam
 
-Docker based Suricata, Scirius, Evebox
+Docker based Suricata, ELK, Scirius, Evebox
 
 see https://github.com/StamusNetworks/Amsterdam
 

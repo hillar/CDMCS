@@ -74,7 +74,7 @@ Following event types can be enabled in Suricata 3.
  * Netflow
 
 ```
-grep '"event_type":"alert"' /var/log/suricata/eve.json
+cat /var/log/suricata/eve.json | jq -c 'select(.event_type=="alert")'
 ```
 
 ## syslog
@@ -98,6 +98,12 @@ root@secx:/usr/local/var/log/suricata# cat eve.json | perl -ne 'print "$1\n" if 
   12438 http
    8219 ssh
   44329 stats
+```
+
+Or with jq:
+
+```
+cat eve.json | jq -c '.event_type' | sort | uniq -c
 ```
 
 ----
