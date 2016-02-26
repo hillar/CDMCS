@@ -1,13 +1,14 @@
 IP = "10.1.10.4"
 vm_box = 'ubu14'
 
+
 Vagrant.configure('2') do |config|
   config.vm.define :abox do |box|
     box.vm.box = vm_box
     box.vm.synced_folder ".", "/vagrant", disabled: true
     box.vm.network :private_network, ip: "#{IP}"
     box.vm.hostname = 'abox'
-    box.vm.provision "shell", inline: "ifconfig eth0"
+    box.vm.provision "shell", inline: "ifconfig eth1; netstat -ntple"
     box.vm.provider :virtualbox do |vb|
      vb.customize ["modifyvm", :id, "--memory", "4096"]
      vb.customize ["modifyvm", :id, "--cpus", "4"]

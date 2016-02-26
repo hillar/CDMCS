@@ -27,10 +27,12 @@ date > /etc/vagrant_provisioned_at
 apt-get update >> /etc/vagrant_provisioned_at
 apt-get upgrade >> /etc/vagrant_provisioned_at
 apt-get -y install openjdk-7-jdk >> /etc/vagrant_provisioned_at
+apt-get -y --purge remove nfs-kernel-server nfs-common portmap rpcbind puppet puppet-common chef chef-zero
 apt-get clean
 date >> /etc/vagrant_provisioned_at
 SCRIPT
 Vagrant.configure(2) do |config|
+  config.vm.synced_folder ".", "/vagrant", disabled: true
   config.vm.box = "ubuntu/trusty64"
   config.vm.provision "shell", inline: \$script
 end
