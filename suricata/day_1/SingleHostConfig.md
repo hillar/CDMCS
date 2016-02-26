@@ -2,35 +2,27 @@
 
 see
  * http://jasonish-suricata.readthedocs.org/en/latest/configuration/suricata-yaml.html
+ * http://jasonish-suricata.readthedocs.org/en/latest/configuration/index.html
  * https://redmine.openinfosecfoundation.org/projects/suricata/wiki/Suricatayaml
+ * http://pevma.blogspot.com.ee/2015/10/suricata-with-afpacket-memory-of-it-all.html
+ * http://www.yaml.org
 
-## Yaml
-
-Suricata uses the Yaml format for configuration.
-
-see http://www.yaml.org
-
-### specify configuration file location
-
+## Backup current configuration
 ```
-suricata -c /some/directory/suricata.yaml
+root@secx:~# cp /etc/suricata/suricata.yaml /etc/suricata/suricata.yaml.bak
 ```
 
-### test configuration file
+## See all currently active configuration
+```
+root@secx:~# grep -v -E '^\s*#' /etc/suricata/suricata.yaml | grep -v '^$'
+```
+
+### Test changes in configuration file
 
 ```
 suricata -c /etc/suricata/suricata.yaml -T
 #or
 suricata -c /etc/suricata/suricata.yaml -T -v
-```
-> notice the missing threshold.config
-> see http://permalink.gmane.org/gmane.comp.security.ids.oisf.user/1738
-
-```
-root@secx:~# touch /etc/suricata/threshold.config
-root@secx:~# /usr/bin/suricata -c /etc/suricata/suricata.yaml -T
-6/1/2016 -- 14:25:47 - <Info> - Running suricata under test mode
-6/1/2016 -- 14:25:47 - <Notice> - This is Suricata version 2.0.11 RELEASE
 ```
 
 ## HOME_NET
@@ -128,17 +120,6 @@ rule-files:
 
 
 
-### do you need rules !?
-
-```
-root@secx:~# suricata -c /etc/suricata/suricata.yaml --disable-detection
-6/1/2016 -- 14:47:28 - <Info> - detection engine disabled
-6/1/2016 -- 14:47:28 - <Notice> - This is Suricata version 2.0.11 RELEASE
-```
-
-How could this mode prove useful?
- 
-
 ## logs
 
 ```
@@ -151,4 +132,6 @@ More of logging in the next chapter
 
 ----
 
-[next : basic logging](/suricata/day_intro/BasicLogging.md)
+<!--- [next : build from source](/suricata/day_1/BuildFromSource.md) -->
+
+[skip to : Rules management](/suricata/day_1/RuleManagement.md)

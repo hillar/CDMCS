@@ -95,3 +95,9 @@ make clean
 ```
 make distclean
 ```
+
+---
+
+[next : Single host configuration](/suricata/day_1/SingleHostConfig.md)
+
+
