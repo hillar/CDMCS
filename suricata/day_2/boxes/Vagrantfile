@@ -1,3 +1,25 @@
-Vagrant.configure(2) do |config|
-  config.vm.box = "ubu14"
+
+STUDENT = 1
+MASTERIP = "192.168.11.19"
+
+virtualbox_box = 'ubu14'
+
+Vagrant.configure('2') do |config|
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+  config.vm.box = 'dummy'
+  name = 'master'
+  config.vm.define name do |box|
+    box.vm.hostname = name
+    box.vm.provider :virtualbox do |vb|
+     box.vm.box = virtualbox_box
+     box.vm.network :private_network, ip: "#{MASTERIP}"
+     vb.customize ["modifyvm", :id, "--memory", "1024"]
+     vb.customize ["modifyvm", :id, "--cpus", "2"]
+    end
+    box.vm.provider :vsphere do |vsphere|
+    end
+    box.vm.provider :azure do |azure|
+    end
+    box.vm.provision "shell", inline: "ifconfig; netstat -ntple"
+  end
 end
