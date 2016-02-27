@@ -21,7 +21,7 @@ Fortunately, suricata.yaml is quite well explained within the comments.
 
 
 
-### Test changes before running your new configuration!
+## Test changes before running your new configuration!
 
 ```
 suricata -c /etc/suricata/suricata.yaml -T
@@ -48,7 +48,7 @@ root@secx:~# grep 'HOME_NET' /etc/suricata/suricata.yaml
     ENIP_SERVER: "$HOME_NET"
 ```
 
-Review default ports according to your environments:
+### Review default ports according to your environments:
 ```
 root@secx:~# grep '_PORTS' /etc/suricata/suricata.yaml 
     HTTP_PORTS: "80"
@@ -59,7 +59,7 @@ root@secx:~# grep '_PORTS' /etc/suricata/suricata.yaml
     MODBUS_PORTS: 502
 ```
 
-Where are which hosts?
+### Where are which hosts?
 ```
 root@secx:~# grep -A 14 'host-os-policy:' /etc/suricata/suricata.yaml
 host-os-policy:
@@ -136,6 +136,17 @@ rule-files:
 # - modbus-events.rules  # available in suricata sources under rules dir
  - app-layer-events.rules  # available in suricata sources under rules dir
 ```
+### Rule priority
+Different rules are matched in a specific priority order
+
+```
+root@secx:~# grep -A 4 'action-order' /etc/suricata/suricata.yaml
+# action-order:
+#   - pass
+#   - drop
+#   - reject
+#   - alert
+```
 
 
 ## Optimizing the default configuration for performance
@@ -167,6 +178,31 @@ max-pending-packets: 4096
 ```
 
 ### Detection engine
+
+Inspection configuration
+```
+root@secx:~# grep -A 12 'detect-engine:' /etc/suricata/suricata.yaml
+detect-engine:
+  - profile: medium
+  - custom-values:
+      toclient-src-groups: 2
+      toclient-dst-groups: 2
+      toclient-sp-groups: 2
+      toclient-dp-groups: 3
+      toserver-src-groups: 2
+      toserver-dst-groups: 4
+      toserver-sp-groups: 2
+      toserver-dp-groups: 25
+  - sgh-mpm-context: auto
+  - inspection-recursion-limit: 3000
+```
+Which pattern matching algorithm?
+mpm-algo: ?
+
+<!--- My tests also showed that b2gc was performing the best -->
+
+
+
 
 
 
