@@ -21,7 +21,7 @@ end
 if PVSPHERE
   STUDENTS = 1
   SURICOUNT = 1
-  ELACOUNT = 1
+  ELACOUNT = 2
   NET = "10.242.11."
   NET_START = 0
 end
@@ -78,7 +78,7 @@ Vagrant.configure('2') do |config|
     # elastic
     elas = []
     (1..ELACOUNT).each do |boxno|
-      ip = NET  + (NET_START + studentnumber*10 + 9 - boxno).to_s
+      ip = NET  + (NET_START + studentnumber*10 + 10 - boxno).to_s
       elas.push(ip)
     end
     (1..ELACOUNT).each do |boxno|
@@ -108,7 +108,7 @@ Vagrant.configure('2') do |config|
         box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_admin}"
         box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_admin}"
         box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip} #{name} #{'student-' + studentnumber.to_s} #{boxno} '#{elas.join(",")}' data"
-        box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; sleep 3; netstat -ntple"
+        #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; sleep 3; netstat -ntple"
       end # ela-x
     end # ela loop
     # suricata
@@ -141,7 +141,9 @@ Vagrant.configure('2') do |config|
         end
         box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_admin}"
         box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_admin}"
-        box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; netstat -ntple"
+        box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip} #{name} #{'student-' + studentnumber.to_s} #{boxno} '#{elas.join(",")}' master"
+
+        #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; netstat -ntple"
       end # suri-x
   end # suri loop
 
@@ -173,7 +175,9 @@ Vagrant.configure('2') do |config|
     box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_admin}"
     box.vm.provision "shell", path: "./scripts/install-influxdb.sh", args: "#{ip_admin}"
     box.vm.provision "shell", path: "./scripts/install-salt-master.sh"
-    box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; netstat -ntple"
+    box.vm.provision "shell", path: "./scripts/install-grafana.sh"
+    box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip} #{name} #{'student-' + studentnumber.to_s} #{boxno} '#{elas.join(",")}' client"
+    #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; netstat -ntple"
   end # admin
   end #student
   # create teacher box ...
@@ -191,7 +195,7 @@ Vagrant.configure('2') do |config|
         vsphere.cpu_count = 2
       end
       box.vm.provision "shell", path: "./scripts/install-salt-master.sh"
-      box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; netstat -ntple"
+      #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; netstat -ntple"
     end # master
   end
 

@@ -29,18 +29,24 @@ if [ ! -f "influxdb_${INFLX}-1_amd64.deb" ]; then
   echo "$(date) ${NAME} $0[$$]: {influxdb: {status:ERROR, msg: missing influxdb_${INFLX}-1_amd64.deb}"
   exit -1
 else
-  echo -e "Y"|dpkg -i influxdb_${INFLX}-1_amd64.deb 2>&1 > /dev/null
-  service influxdb start
-  #prepare for telegraf
+  echo -e "Y"|dpkg -i influxdb_${INFLX}-1_amd64.deb > /dev/null 2>&1
+  service influxdb start > /dev/null 2>&1
   sleep 1
-  service telegraf stop
+  service influxdb status
+  #prepare for telegraf
+
+  service telegraf stop > /dev/null 2>&1
   curl -s -G http://localhost:8086/query --data-urlencode "q=DROP DATABASE telegraf"
   curl -s -G http://localhost:8086/query --data-urlencode "q=CREATE DATABASE telegraf"
   curl -s -G http://localhost:8086/query --data-urlencode "q=CREATE RETENTION POLICY one_day_only ON telegraf DURATION 1d REPLICATION 1 DEFAULT"
   #sed -i -e 's,localhost,'${METRICS_SERVER}',g' /etc/influxdb/influxdb.conf
-  echo "[[inputs.influxdb]]" >> /etc/telegraf/telegraf.conf 
-  echo "urls = [\"http://127.0.0.1:8086/debug/vars\"]" >> /etc/telegraf/telegraf.conf
-  echo "[[inputs.procstat]]" >> /etc/telegraf/telegraf.conf
-  echo "pid_file = \"/var/run/influxdb/influxd.pid\"" >> /etc/telegraf/telegraf.conf
-  service telegraf start
+cat > /etc/telegraf/telegraf.d/influxdb.conf <<DELIM
+[[inputs.influxdb]]
+  urls = ["http://127.0.0.1:8086/debug/vars"]
+[[inputs.procstat]]
+  pid_file = "/var/run/influxdb/influxd.pid"
+DELIM
+  service telegraf start > /dev/null  2>&1
+  sleep 1
+  service telegraf status
 fi

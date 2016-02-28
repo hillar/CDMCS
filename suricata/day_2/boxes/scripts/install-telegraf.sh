@@ -10,13 +10,13 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
-service telegraf stop
+service telegraf stop 2>&1 > /dev/null
 
 MASTER=$1
 IP=$(ifconfig eth0 2>/dev/null|grep 'inet addr'|cut -f2 -d':'|cut -f1 -d' ')
 HOSTNAME=$(hostname -f)
 
-echo "installing telegraf on ${IP} ${HOSTNAME} setting influxdb to ${MASTER}..."
+echo "installing telegraf on ${IP} ${HOSTNAME} setting influxdb to ${MASTER}"
 
 
 TLGF=0.10.4.1
@@ -28,20 +28,40 @@ if [ ! -f "telegraf_${TLGF}-1_amd64.deb" ]; then
             wget -4 -q wget http://get.influxdb.org/telegraf/telegraf_${TLGF}-1_amd64.deb
 fi
 if [ ! -f "telegraf_${TLGF}-1_amd64.deb" ]; then
-    echo "$(date) ${NAME} $0[$$]: {telegaf: {status:ERROR, msg: missing telegraf_${TLGF}_amd64.deb}"
+    echo "$(date) ${NAME} $0[$$]: {telegraf: {status:ERROR, msg: missing telegraf_${TLGF}_amd64.deb}"
     exit -1
 else
   echo -e "Y"|dpkg -i telegraf_${TLGF}-1_amd64.deb > /dev/null
-  service telegraf stop
-  #  urls = ["http://localhost:8086"] # required
-  sed -i -e 's,http://localhost,http://'${MASTER}',g' /etc/telegraf/telegraf.conf
-  #   interval = "10s"
-  sed -i -e 's,interval = "10s",interval = "1s",g' /etc/telegraf/telegraf.conf
-  # flush_interval = "10s"
-  sed -i -e 's,flush_interval = "1s",flush_interval = "60s",g' /etc/telegraf/telegraf.conf
-  echo "[[inputs.net]]" >> /etc/telegraf/telegraf.conf
-  echo "[[inputs.netstat]]" >> /etc/telegraf/telegraf.conf
-  echo "[[inputs.procstat]]" >> /etc/telegraf/telegraf.conf
-  echo "pid_file = \"/var/run/telegraf/telegraf.pid\"" >> /etc/telegraf/telegraf.conf
-  service telegraf start
+  service telegraf stop 2>&1 > /dev/null
+cat > /etc/telegraf/telegraf.conf <<DELIM
+[agent]
+  interval = "1s"
+  round_interval = true
+  metric_buffer_limit = 10000
+  flush_buffer_when_full = true
+  collection_jitter = "0s"
+  flush_interval = "60s"
+  flush_jitter = "3s"
+  debug = false
+  quiet = false
+[[outputs.influxdb]]
+  urls = ["http://$MASTER:8086"] # required
+  database = "telegraf" # required
+  precision = "s"
+DELIM
+cat > /etc/telegraf/telegraf.d/common.conf <<DELIM
+[[inputs.mem]]
+[[inputs.cpu]]
+[[inputs.disk]]
+[[inputs.diskio]]
+[[inputs.net]]
+[[inputs.netstat]]
+DELIM
+cat > /etc/telegraf/telegraf.d/telegraf.conf <<DELIM
+[[inputs.procstat]]
+  pid_file = "/var/run/telegraf/telegraf.pid"
+DELIM
+  service telegraf start 2>&1 > /dev/null
+  sleep 1
+  service telegraf status
 fi

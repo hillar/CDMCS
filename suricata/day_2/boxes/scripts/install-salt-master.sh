@@ -11,13 +11,13 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
-echo "installing salt-master on ${hostname} ..."
+echo "installing salt-master on $(hostname -f) ..."
 
 echo "LC_ALL=en_US.UTF-8" >> /etc/environment
 echo 'Acquire::ForceIPv4 "true";' > /etc/apt/apt.conf.d/99force-ipv4
-add-apt-repository -y ppa:saltstack/salt 2>&1 > /dev/null
-apt-get update 2>&1 > /dev/null
-apt-get -y install salt-master 2>&1 > /dev/null
+add-apt-repository -y ppa:saltstack/salt > /dev/null  2>&1
+apt-get update  > /dev/null 2>&1
+apt-get -y install salt-master > /dev/null 2>&1
 #echo "waiting for minions.."
 #sleep 11
 #salt-key -L
