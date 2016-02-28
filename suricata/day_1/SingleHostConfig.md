@@ -54,6 +54,13 @@ root@secx:~# grep 'HOME_NET' /etc/suricata/suricata.yaml
 ```
 
 
+### Why does it matter?
+EXTERNAL_NET -> HOME_NET
+HOME_NET -> EXTERNAL_NET
+any -> any
+...
+
+
 ### Review default ports according to your environments:
 ```
 root@secx:~# grep '_PORTS' /etc/suricata/suricata.yaml 
@@ -87,6 +94,11 @@ host-os-policy:
 ```
 
 
+## MTU
+```
+root@secx:~# grep 'default-packet-size:' /etc/suricata/suricata.yaml
+#default-packet-size: 1514
+```
 
 ## Rules
 
@@ -147,6 +159,8 @@ rule-files:
 ```
 
 
+
+
 ### Rule priority
 Different rule types are matched in a specific priority order
 
@@ -166,6 +180,8 @@ root@secx:~# grep -A 4 'action-order' /etc/suricata/suricata.yaml
 see:
  * http://jasonish-suricata.readthedocs.org/en/latest/configuration/suricata-yaml.html#max-pending-packets
  * http://jasonish-suricata.readthedocs.org/en/latest/configuration/suricata-yaml.html#detection-engine
+ * https://redmine.openinfosecfoundation.org/projects/suricata/wiki/High_Performance_Configuration
+ * https://redmine.openinfosecfoundation.org/projects/suricata/wiki/Tuning_Considerations
  * http://mauno.pihelgas.eu/files/Mauno_Pihelgas-A_Comparative_Analysis_of_OpenSource_Intrusion_Detection_Systems.pdf
  * https://github.com/StamusNetworks/SELKS/wiki/Tuning-SELKS
 

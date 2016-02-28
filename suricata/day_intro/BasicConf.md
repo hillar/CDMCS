@@ -37,10 +37,6 @@ root@secx:~# /usr/bin/suricata -c /etc/suricata/suricata.yaml -T
 
 As a bare minimum, you should define your home network:
 ```
-HOME_NET: "[192.168.100.0/24]"
-EXTERNAL_NET: !$HOME_NET
-```
-```
 root@secx:~# grep HOME_NET /etc/suricata/suricata.yaml
     HOME_NET: "[192.168.0.0/16,10.0.0.0/8,172.16.0.0/12]"
     EXTERNAL_NET: "!$HOME_NET"
