@@ -248,6 +248,8 @@ Some testing:
 
 ### Buffer sizes
 Default receive buffer sizes for capture modules are quite safe even for portable systems.
+
+#### af-packet mode
 ```
 af-packet:
 ...
@@ -261,6 +263,8 @@ af-packet:
     buffer-size: 2147483647
 ```
 ---
+
+#### PCAP mode
 ```
 pcap:
 ...
@@ -337,7 +341,7 @@ Can we decrease something?
 
 <!--- [next : build from source](/suricata/day_1/BuildFromSource.md) -->
 
-[skip to : Rules management](/suricata/day_1/RuleManagement.md)
+[next : Rules management](/suricata/day_1/RuleManagement.md)
 
 
 
