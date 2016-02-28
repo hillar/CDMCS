@@ -18,6 +18,7 @@ ethtool -g eth1
 ```bash
 ethtool -x eth1
 bash
+```
 
 #### Verify that the IRQ affinity is set correctly, the output bellow shows only the first 4 CPU's
 ```bash
