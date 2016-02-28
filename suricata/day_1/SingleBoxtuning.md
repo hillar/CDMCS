@@ -27,16 +27,16 @@ cat /proc/interrupts | grep 'CPU\|eth1'
 
 ### turn off offloading
 ```bash
-ethtool -K $1 rx off
-ethtool -K $1 tx off
-ethtool -K $1 sg off
-ethtool -K $1 tso off
-ethtool -K $1 gso off
-ethtool -K $1 gro off
-ethtool -K $1 lro off
-ethtool -K $1 rxvlan off
-ethtool -K $1 txvlan off
-ethtool -K $1 rxhash off
+ethtool -K eth1 rx off
+ethtool -K eth1 tx off
+ethtool -K eth1 sg off
+ethtool -K eth1 tso off
+ethtool -K eth1 gso off
+ethtool -K eth1 gro off
+ethtool -K eth1 lro off
+ethtool -K eth1 rxvlan off
+ethtool -K eth1 txvlan off
+ethtool -K eth1 rxhash off
 ```
 
 ### set buffers
@@ -45,7 +45,7 @@ ethtool -K $1 rxhash off
 ```bash
 PRESET=$(ethtool -g $1 | tr '\n' ' ' | sed 's/.*RX:\s\+\([0-9]\+\).*TX:\s\+\([0-9]\+\).*RX:\s\+\([0-9]\+\).*TX:\s\+\([0-9]\+\).*/\1 \2 \3 \4/g')
 ```
-1. Set receive and trasmit buffers to the hardware maximum
+1. Set receive and transmit buffers to the hardware maximum
 ```bash
 ethtool -G $1 rx $(echo $PRESET | cut -f 1 -d " ") tx $(echo $PRESET | cut -f 2 -d " ")
 ```
@@ -84,6 +84,6 @@ done
 
 Those configurations need to be persistent when the system is power cycled. To do that one can leverage the */sbin/ifup-local* script ;)
 
-## configuration
+## Suricata configuration
 
 ...
