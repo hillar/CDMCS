@@ -194,7 +194,7 @@ max-pending-packets: 4096
 
 ### Detection engine
 
-Inspection configuration
+Inspection profile
 ```
 root@secx:~# grep -A 12 'detect-engine:' /etc/suricata/suricata.yaml
 detect-engine:
@@ -211,12 +211,46 @@ detect-engine:
   - sgh-mpm-context: auto
   - inspection-recursion-limit: 3000
 ```
+All signatures loaded into Suricata are divided in groups for faster matching.
+ * high - better performance and higher memory usage;
+ * medium - balance between performance and memory usage (default);
+ * low - lower performance and lower memory usage.
+ * custom - 8 customizable values
 
 
 ### Which pattern matching algorithm?
 mpm-algo: ?
 
 <!--- My tests also showed that b2gc was performing the best -->
+
+
+
+
+
+
+
+## logs
+
+```
+root@secx:~# grep log-dir /etc/suricata/suricata.yaml
+default-log-dir: /var/log/suricata/
+...
+```
+
+More of logging in the next chapter
+
+----
+
+<!--- [next : build from source](/suricata/day_1/BuildFromSource.md) -->
+
+[skip to : Rules management](/suricata/day_1/RuleManagement.md)
+
+
+
+
+
+
+
 
 
 
@@ -269,19 +303,3 @@ root@secx:~# grep -A 35 'set-cpu-affinity:' /etc/suricata/suricata.yaml
 ```
 END OF THREADING SECTION-->
 
-
-## logs
-
-```
-root@secx:~# grep log-dir /etc/suricata/suricata.yaml
-default-log-dir: /var/log/suricata/
-...
-```
-
-More of logging in the next chapter
-
-----
-
-<!--- [next : build from source](/suricata/day_1/BuildFromSource.md) -->
-
-[skip to : Rules management](/suricata/day_1/RuleManagement.md)
