@@ -1,25 +1,94 @@
+ENV["LC_ALL"] = "en_US.UTF-8"
 
-STUDENT = 1
-MASTERIP = "192.168.11.19"
+#supported providers
+PVIRTUALBOX = (!ARGV.nil? && ARGV.join('').include?('provider=virtualbox'))
+PVSPHERE = (!ARGV.nil? && ARGV.join('').include?('provider=vsphere'))
+PAZURE = false
+if (!PVIRTUALBOX && !PVSPHERE)
+  print "please set provider with --provider\n"
+  print "supported: vitrualbox, vsphere\n"
+  exit 1
+end
 
-virtualbox_box = 'ubu14'
+if PVIRTUALBOX
+  STUDENTS = 1
+  NET = "192.168.11."
+  NET_START = 10
+end
+if PVSPHERE
+  STUDENTS = 1
+  NET = "10.242.11."
+  NET_START = 10
+end
 
 Vagrant.configure('2') do |config|
+  # common for all providers and all boxes
   config.vm.synced_folder ".", "/vagrant", disabled: true
-  config.vm.box = 'dummy'
-  name = 'master'
-  config.vm.define name do |box|
-    box.vm.hostname = name
-    box.vm.provider :virtualbox do |vb|
-     box.vm.box = virtualbox_box
-     box.vm.network :private_network, ip: "#{MASTERIP}"
-     vb.customize ["modifyvm", :id, "--memory", "1024"]
-     vb.customize ["modifyvm", :id, "--cpus", "2"]
-    end
-    box.vm.provider :vsphere do |vsphere|
-    end
-    box.vm.provider :azure do |azure|
-    end
-    box.vm.provision "shell", inline: "ifconfig; netstat -ntple"
+  config.vm.box = 'dummy' #just because vagrant needs it, real box is setted by provider
+  require '../../../../../tests/bb/keys/vm.rb'
+  include VMKeys
+  config.ssh.username = VM_USER # the one used to create the VM
+  config.ssh.password = VM_PASSWORD # the one used to create the VM
+
+  #providers ...
+  if PVIRTUALBOX
+  config.vm.provider :virtualbox do |vb|
+    #STUDENTS = 1
+    config.vm.box = "ubu14"
   end
+  end
+  if PVSPHERE
+  config.vm.provider :vsphere do |vsphere|
+    require '../../../../../tests/bb/keys/vsphere.rb'
+    include VSphereKeys
+    config.vm.box = "vsphere"
+    vsphere.host = VSPHERE_HOST
+    vsphere.compute_resource_name = VSPHERE_CLUSTER
+    vsphere.template_name = VSPHERE_TEMPLATE_PATH + 'ubu1clust1nic1'
+    #vsphere.vm_base_path = VSPHERE_VM_PATH + 'Student_' + studentnumber.to_s
+    vsphere.customization_spec_name = 'linux_1nics'
+    vsphere.user = VSPHERE_USER
+    vsphere.password = VSPHERE_PASSWORD
+    vsphere.insecure = true
+  end
+  end
+  if PAZURE
+  config.vm.provider :azure do |azure|
+  end
+  end
+
+  # boxes .......................................................
+  (1..STUDENTS).each do |studentnumber|
+    if PVSPHERE
+    config.vm.provider :vsphere do |vsphere|
+      vsphere.vm_base_path = VSPHERE_VM_PATH + 'Student_' + studentnumber.to_s
+    end
+    end
+    # master
+    name = 'student-'+ studentnumber.to_s+'-master'
+    ip_master = NET  + (NET_START + studentnumber*10 + 1).to_s
+    config.vm.define name do |box|
+      box.vm.hostname = name
+      box.vm.network :private_network, ip: "#{ip_master}"
+      if PVIRTUALBOX
+      box.vm.provider :virtualbox do |vb|
+       vb.customize ["modifyvm", :id, "--memory", "1024"]
+       vb.customize ["modifyvm", :id, "--cpus", "2"]
+      end
+      end
+      if PVSPHERE
+      box.vm.provider :vsphere do |vsphere|
+        vsphere.name = name
+        vsphere.memory_mb = 1 * 1024
+        vsphere.cpu_count = 2
+      end
+      end
+      if PAZURE
+      box.vm.provider :azure do |azure|
+      end
+      end
+      box.vm.provision "shell", inline: "ifconfig; netstat -ntple"
+    end # master
+
+  end #student
 end
