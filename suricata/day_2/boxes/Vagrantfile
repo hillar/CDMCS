@@ -27,14 +27,17 @@ Vagrant.configure('2') do |config|
   config.vm.box = 'dummy' #just because vagrant needs it, real box is setted by provider
   require '../../../../../tests/bb/keys/vm.rb'
   include VMKeys
-  config.ssh.username = VM_USER # the one used to create the VM
-  config.ssh.password = VM_PASSWORD # the one used to create the VM
+  config.ssh.username = VM_USER
+  config.ssh.password = VM_PASSWORD 
 
   #providers ...
   if PVIRTUALBOX
   config.vm.provider :virtualbox do |vb|
     #STUDENTS = 1
     config.vm.box = "ubu14"
+    config.ssh.username = "vagrant"
+    config.ssh.password = "vagrant"
+
   end
   end
   if PVSPHERE
@@ -87,7 +90,7 @@ Vagrant.configure('2') do |config|
       box.vm.provider :azure do |azure|
       end
       end
-      box.vm.provision "shell", inline: "ifconfig; netstat -ntple"
+      box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; netstat -ntple"
     end # master
 
   end #student
