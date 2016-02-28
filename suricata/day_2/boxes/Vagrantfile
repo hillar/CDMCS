@@ -18,10 +18,10 @@ if PVIRTUALBOX
   NET_START = 10
 end
 if PVSPHERE
-  STUDENTS = 2
+  STUDENTS = 1
   # SURICOUNT + ELACOUNT < 10
-  SURICOUNT = 2
-  ELACOUNT = 2
+  SURICOUNT = 1
+  ELACOUNT = 1
   NET = "10.242.11."
   NET_START = 10
 end
@@ -98,7 +98,6 @@ Vagrant.configure('2') do |config|
           vsphere.name = name
           vsphere.memory_mb = 16 * 1024
           vsphere.cpu_count = 4
-
         end
         end
         if PAZURE
