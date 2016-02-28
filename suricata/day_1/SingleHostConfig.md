@@ -7,10 +7,13 @@ see
  * http://pevma.blogspot.com.ee/2015/10/suricata-with-afpacket-memory-of-it-all.html
  * http://www.yaml.org
 
+
 ## Backup current configuration
 ```
 root@secx:~# cp /etc/suricata/suricata.yaml /etc/suricata/suricata.yaml.bak
 ```
+
+
 
 ## See all currently active configuration
 ```
@@ -28,6 +31,8 @@ suricata -c /etc/suricata/suricata.yaml -T
 #or
 suricata -c /etc/suricata/suricata.yaml -T -v
 ```
+
+
 
 ## HOME_NET and ports
 As a bare minimum, you should define your home network:
@@ -48,6 +53,7 @@ root@secx:~# grep 'HOME_NET' /etc/suricata/suricata.yaml
     ENIP_SERVER: "$HOME_NET"
 ```
 
+
 ### Review default ports according to your environments:
 ```
 root@secx:~# grep '_PORTS' /etc/suricata/suricata.yaml 
@@ -58,6 +64,7 @@ root@secx:~# grep '_PORTS' /etc/suricata/suricata.yaml
     DNP3_PORTS: 20000
     MODBUS_PORTS: 502
 ```
+
 
 ### Where are which hosts?
 ```
@@ -78,6 +85,8 @@ host-os-policy:
   vista: []
   windows2k3: []
 ```
+
+
 
 ## Rules
 
@@ -136,8 +145,10 @@ rule-files:
 # - modbus-events.rules  # available in suricata sources under rules dir
  - app-layer-events.rules  # available in suricata sources under rules dir
 ```
+
+
 ### Rule priority
-Different rules are matched in a specific priority order
+Different rule types are matched in a specific priority order
 
 ```
 root@secx:~# grep -A 4 'action-order' /etc/suricata/suricata.yaml
@@ -147,6 +158,7 @@ root@secx:~# grep -A 4 'action-order' /etc/suricata/suricata.yaml
 #   - reject
 #   - alert
 ```
+
 
 
 ## Optimizing the default configuration for performance
@@ -163,7 +175,9 @@ see:
  * RAM: 72GB PC3-10600 (DDR3-1333) Registered CAS-9 Memory;
  * 1Gbit/s traffic
  * Almost 12,000 EmergingThreats rules enabled
+
 <!--- * Default conf dropped packets already at 150Mbit/s, After conf optimizations it could handle 1000Mbit/s without drops -->
+
 
 ###Simultaneous packet processing
 Default number of packets allowed to be processed simultaneously by Suricata.
@@ -176,6 +190,7 @@ The default is rather conservative if you have a powerful CPU. For example, incr
 ```
 max-pending-packets: 4096
 ```
+
 
 ### Detection engine
 
@@ -196,7 +211,9 @@ detect-engine:
   - sgh-mpm-context: auto
   - inspection-recursion-limit: 3000
 ```
-Which pattern matching algorithm?
+
+
+### Which pattern matching algorithm?
 mpm-algo: ?
 
 <!--- My tests also showed that b2gc was performing the best -->
@@ -207,7 +224,7 @@ mpm-algo: ?
 
 
 <!--- Eric will talk about it
-###Threading
+### Threading
 ```
 root@secx:~# grep 'detect-thread-ratio:' /etc/suricata/suricata.yaml
   detect-thread-ratio: 1.5
