@@ -77,7 +77,7 @@ else
   sleep 2
   service elasticsearch status
   service telegraf stop > /dev/null 2>&1
-  if [ "$TYPE" == "master" ];
+  if [ "$TYPE" == "master" ]; then
 cat > /etc/telegraf/telegraf.d/elasticsearch.conf <<DELIM
 [[inputs.elasticsearch]]
   servers = ["http://$IP:9200"]
