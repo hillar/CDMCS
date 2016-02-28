@@ -10,6 +10,7 @@ if (!PVIRTUALBOX && !PVSPHERE)
   exit 1
 end
 
+# SURICOUNT + ELACOUNT < 10
 if PVIRTUALBOX
   STUDENTS = 1
   SURICOUNT = 1
@@ -19,7 +20,6 @@ if PVIRTUALBOX
 end
 if PVSPHERE
   STUDENTS = 1
-  # SURICOUNT + ELACOUNT < 10
   SURICOUNT = 1
   ELACOUNT = 1
   NET = "10.242.11."
@@ -140,6 +140,7 @@ Vagrant.configure('2') do |config|
         end
         end
         box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_admin}"
+        box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_admin}"
         box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; netstat -ntple"
       end # suri-x
   end # suri loop
@@ -169,6 +170,8 @@ Vagrant.configure('2') do |config|
     box.vm.provider :azure do |azure|
     end
     end
+    box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_admin}"
+    box.vm.provision "shell", path: "./scripts/install-influxdb.sh", args: "#{ip_admin}"
     box.vm.provision "shell", path: "./scripts/install-salt-master.sh"
     box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; netstat -ntple"
   end # admin
@@ -182,7 +185,7 @@ Vagrant.configure('2') do |config|
       box.vm.hostname = name
       box.vm.network :private_network, ip: "#{ip_teacher}"
       box.vm.provider :vsphere do |vsphere|
-        vsphere.vm_base_path = VSPHERE_VM_PATH 
+        vsphere.vm_base_path = VSPHERE_VM_PATH
         vsphere.name = name
         vsphere.memory_mb = 1 * 1024
         vsphere.cpu_count = 2

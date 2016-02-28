@@ -18,9 +18,9 @@ echo 'Acquire::ForceIPv4 "true";' > /etc/apt/apt.conf.d/99force-ipv4
 add-apt-repository -y ppa:saltstack/salt 2>&1 > /dev/null
 apt-get update 2>&1 > /dev/null
 apt-get -y install salt-master 2>&1 > /dev/null
-echo "waiting for minions.."
-sleep 11
-salt-key -L
-salt-key -A -y
-sleep 3
-salt '*' test.ping
+#echo "waiting for minions.."
+#sleep 11
+#salt-key -L
+#salt-key -A -y
+#sleep 3
+#salt '*' test.ping
