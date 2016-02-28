@@ -182,6 +182,7 @@ Vagrant.configure('2') do |config|
       box.vm.hostname = name
       box.vm.network :private_network, ip: "#{ip_teacher}"
       box.vm.provider :vsphere do |vsphere|
+        vsphere.vm_base_path = VSPHERE_VM_PATH 
         vsphere.name = name
         vsphere.memory_mb = 1 * 1024
         vsphere.cpu_count = 2
