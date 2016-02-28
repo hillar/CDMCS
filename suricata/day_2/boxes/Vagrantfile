@@ -176,7 +176,7 @@ Vagrant.configure('2') do |config|
     box.vm.provision "shell", path: "./scripts/install-influxdb.sh", args: "#{ip_admin}"
     box.vm.provision "shell", path: "./scripts/install-salt-master.sh"
     box.vm.provision "shell", path: "./scripts/install-grafana.sh"
-    box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip_admin} #{name} #{'student-' + studentnumber.to_s} #{boxno} '#{elas.join(",")}' client"
+    box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip_admin} #{name} #{'student-' + studentnumber.to_s} 0 '#{elas.join(",")}' client"
     #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; netstat -ntple"
   end # admin
   end #student
