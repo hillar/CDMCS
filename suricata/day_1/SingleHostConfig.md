@@ -166,6 +166,9 @@ root@secx:~# grep -A 4 'action-order' /etc/suricata/suricata.yaml
 see:
  * http://jasonish-suricata.readthedocs.org/en/latest/configuration/suricata-yaml.html#max-pending-packets
  * http://jasonish-suricata.readthedocs.org/en/latest/configuration/suricata-yaml.html#detection-engine
+ * http://mauno.pihelgas.eu/files/Mauno_Pihelgas-A_Comparative_Analysis_of_OpenSource_Intrusion_Detection_Systems.pdf
+ * https://github.com/StamusNetworks/SELKS/wiki/Tuning-SELKS
+
 
 
 ### My test machine (yes, it is old)
@@ -212,32 +215,123 @@ detect-engine:
   - inspection-recursion-limit: 3000
 ```
 All signatures loaded into Suricata are divided in groups for faster matching.
- * high - better performance and higher memory usage;
+ * high - more groups, better performance and higher memory usage;
  * medium - balance between performance and memory usage (default);
- * low - lower performance and lower memory usage.
+ * low - less groups, lower performance and lower memory usage.
  * custom - 8 customizable values
 
 
-### Which pattern matching algorithm?
-mpm-algo: ?
-
-<!--- My tests also showed that b2gc was performing the best -->
-
-
-
-
-
-
-
-## logs
+### Which MPM algorithm?
+Supported algorithms are b2g, b2gc, b3g, wumanber, ac, ac-bs, and ac-gfbs
 
 ```
-root@secx:~# grep log-dir /etc/suricata/suricata.yaml
-default-log-dir: /var/log/suricata/
+root@secx:~# grep '^mpm-algo:' /etc/suricata/suricata.yaml
+mpm-algo: ac
+```
+
+
+#### Signature Group Head MPM distribution context
+```
+root@secx:~# grep 'sgh-mpm-context:' /etc/suricata/suricata.yaml
+  - sgh-mpm-context: auto
+```
+ * full - every group has its own MPM-context;
+ * single - all groups share one MPM-context.
+
+If the sgh-mpm-context is set to 'auto', two algorithms ac and ac-gfbs use a single MPM-context. The rest of the algorithms use full by default. You can try different setting manually.
+
+Some testing:
+ * Using the 'ac' algorithms with 'full' distribution context required a large amount of memory. With the ET ruleset it consumed over 30GiB of memory. It did demonstrate the best results in processing speed. But is it worth it?
+ * Using the 'b2gc' algorithm with 'full' context demonstrated also good performance with more reasonable memory usage (about 6GiB) in my case.
+
+
+
+### Buffer sizes
+Default receive buffer sizes for capture modules are quite safe even for portable systems.
+```
+af-packet:
+...
+    # recv buffer size, increase value could improve performance
+    # buffer-size: 32768
 ...
 ```
+Instead try:
+```
+af-packet:
+    buffer-size: 2147483647
+```
+---
+```
+pcap:
+...
+    # On Linux, pcap will try to use mmaped capture and will use buffer-size
+    # as total of memory used by the ring. So set this to something bigger
+    # than 1% of your bandwidth.
+    #buffer-size: 16777216
+...
+```
+Instead try
+```
+pcap:
+    buffer-size: 2147483647
+```
 
-More of logging in the next chapter
+
+### Memcaps
+Increase memcaps and disable checksum-validation.
+```
+root@secx:~# grep -A6 '^stream:' /etc/suricata/suricata.yaml
+stream:
+  memcap: 32mb
+  checksum-validation: yes      # reject wrong csums
+  inline: auto                  # auto will use inline mode in IPS mode, yes or no set it statically
+  reassembly:
+    memcap: 128mb
+    depth: 1mb                  # reassemble 1mb into a stream
+```
+
+```
+root@secx:~# grep -A4 '^flow:' /etc/suricata/suricata.yaml
+flow:
+  memcap: 64mb
+  hash-size: 65536
+  prealloc: 10000
+  emergency-recovery: 30
+```
+
+
+### Flow timeouts
+```
+root@secx:~# grep -A25 '^flow-timeouts' /etc/suricata/suricata.yaml
+flow-timeouts:
+
+  default:
+    new: 30
+    established: 300
+    closed: 0
+    emergency-new: 10
+    emergency-established: 100
+    emergency-closed: 0
+  tcp:
+    new: 60
+    established: 3600
+    closed: 120
+    emergency-new: 10
+    emergency-established: 300
+    emergency-closed: 20
+  udp:
+    new: 30
+    established: 300
+    emergency-new: 10
+    emergency-established: 100
+  icmp:
+    new: 30
+    established: 300
+    emergency-new: 10
+    emergency-established: 100
+```
+Can we decrease something?
+
 
 ----
 
