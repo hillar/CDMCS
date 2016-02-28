@@ -12,23 +12,27 @@ end
 
 if PVIRTUALBOX
   STUDENTS = 1
+  SURICOUNT = 1
   NET = "192.168.11."
   NET_START = 10
 end
 if PVSPHERE
-  STUDENTS = 1
+  STUDENTS = 2
+  SURICOUNT = 2
   NET = "10.242.11."
   NET_START = 10
 end
 
 Vagrant.configure('2') do |config|
+  time = Time.now
+  File.open('lastrun.txt','w').puts "# " + time.inspect
   # common for all providers and all boxes
   config.vm.synced_folder ".", "/vagrant", disabled: true
   config.vm.box = 'dummy' #just because vagrant needs it, real box is setted by provider
   require '../../../../../tests/bb/keys/vm.rb'
   include VMKeys
   config.ssh.username = VM_USER
-  config.ssh.password = VM_PASSWORD 
+  config.ssh.password = VM_PASSWORD
 
   #providers ...
   if PVIRTUALBOX
@@ -47,8 +51,7 @@ Vagrant.configure('2') do |config|
     config.vm.box = "vsphere"
     vsphere.host = VSPHERE_HOST
     vsphere.compute_resource_name = VSPHERE_CLUSTER
-    vsphere.template_name = VSPHERE_TEMPLATE_PATH + 'ubu1clust1nic1'
-    #vsphere.vm_base_path = VSPHERE_VM_PATH + 'Student_' + studentnumber.to_s
+    vsphere.template_name = VSPHERE_TEMPLATE_PATH + 'cmdcs1clust1nic1'
     vsphere.customization_spec_name = 'linux_1nics'
     vsphere.user = VSPHERE_USER
     vsphere.password = VSPHERE_PASSWORD
@@ -69,7 +72,8 @@ Vagrant.configure('2') do |config|
     end
     # master
     name = 'student-'+ studentnumber.to_s+'-master'
-    ip_master = NET  + (NET_START + studentnumber*10 + 1).to_s
+    ip_master = NET  + (NET_START + studentnumber*10).to_s
+    File.open('lastrun.txt','a').puts ip_master +" "+name
     config.vm.define name do |box|
       box.vm.hostname = name
       box.vm.network :private_network, ip: "#{ip_master}"
@@ -92,6 +96,37 @@ Vagrant.configure('2') do |config|
       end
       box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; netstat -ntple"
     end # master
+    # suricata
+    (1..SURICOUNT).each do |boxno|
+    name = 'student-'+ studentnumber.to_s+'-suricata-' + boxno.to_s
+    ip_suricata = NET  + (NET_START + studentnumber*10 + boxno).to_s
+    File.open('lastrun.txt','a').puts ip_suricata +" "+name
+    config.vm.define name do |box|
+      box.vm.hostname = name
+      box.vm.network :private_network, ip: "#{ip_suricata}"
+      if PVIRTUALBOX
+      box.vm.provider :virtualbox do |vb|
+       vb.customize ["modifyvm", :id, "--memory", "2024"]
+       vb.customize ["modifyvm", :id, "--cpus", "2"]
+      end
+      end
+      if PVSPHERE
+      box.vm.provider :vsphere do |vsphere|
+        vsphere.name = name
+        vsphere.memory_mb = 8 * 1024
+        vsphere.cpu_count = 8
+        vsphere.template_name = VSPHERE_TEMPLATE_PATH + "cmdcs1clust2nic2"
+        vsphere.compute_resource_name = VSPHERE_CLUSTER + "2"
+        vsphere.customization_spec_name = 'linux_2nics'
+      end
+      end
+      if PAZURE
+      box.vm.provider :azure do |azure|
+      end
+      end
+      box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; netstat -ntple"
+    end # suri-x
+  end # end suri loop
 
   end #student
 end
