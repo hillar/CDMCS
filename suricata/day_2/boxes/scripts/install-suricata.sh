@@ -13,7 +13,11 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
+IP=$(ifconfig eth0 2>/dev/null|grep 'inet addr'|cut -f2 -d':'|cut -f1 -d' ')
+HOSTNAME=$(hostname -f)
+
 ETH=$1
+echo "installing suricata on $IP $HOSTNAME setting * off on $ETH"
 ethtool -K $ETH tx off sg off gro off gso off lro off tso off
 
 #suricata
@@ -31,13 +35,12 @@ sed -i -e 's,- interface: eth0,- interface: '${ETH}',g' /etc/suricata/suricata.y
 #todo: get it from master
 touch /etc/suricata/rules/scirius.rules
 service suricata start > /dev/null 2>&1
-sleep 2
-service suricata status
-service telegraf stop > /dev/null 2>&1
+#sleep 2
+#service suricata status
 cat > /etc/telegraf/telegraf.d/suricata.conf <<DELIM
 [[inputs.procstat]]
   pid_file = "/var/run/suricata.pid"
 DELIM
-service telegraf start > /dev/null 2>&1
-sleep 1
-service telegraf status
+service telegraf restart > /dev/null 2>&1
+#sleep 1
+#service telegraf status

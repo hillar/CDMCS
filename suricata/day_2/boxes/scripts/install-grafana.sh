@@ -26,13 +26,19 @@ if [ ! -f "grafana_${GRFN}_amd64.deb" ]; then
   echo "$(date) ${HOSTNAME} $0[$$]: {grafana: {status:WARNING, msg: missing grafana_${GRFN}_amd64.deb}"
   #exit -1
 else
-  apt-get install -y adduser libfontconfig
-  echo -e "Y"|dpkg -i grafana_${GRFN}_amd64.deb
-  update-rc.d grafana-server defaults 95 10
+  apt-get install -y adduser libfontconfig > /dev/null 2>&1
+  echo -e "Y"|dpkg -i grafana_${GRFN}_amd64.deb > /dev/null 2>&1
+  update-rc.d grafana-server defaults 95 10 > /dev/null 2>&1
   sed -i -e 's,domain = localhost,domain = '${IP}',g' /etc/grafana/grafana.ini
-  service grafana-server start
+  service grafana-server start > /dev/null 2>&1
+  #sleep 1
+  #service grafana-server status
+  #service telegraf stop  > /dev/null 2>&1
 cat > /etc/telegraf/telegraf.d/grafana.conf <<DELIM
 [[inputs.procstat]]
   pid_file = "/var/run/grafana-server.pid"
 DELIM
+  service telegraf restart  > /dev/null 2>&1
+  #sleep 1
+  #service telegraf status
 fi

@@ -74,9 +74,9 @@ else
       fi
   fi
   service elasticsearch start > /dev/null 2>&1
-  sleep 2
-  service elasticsearch status
-  service telegraf stop > /dev/null 2>&1
+  #sleep 2
+  #service elasticsearch status
+  #service telegraf stop > /dev/null 2>&1
   if [ "$TYPE" == "master" ]; then
 cat > /etc/telegraf/telegraf.d/elasticsearch.conf <<DELIM
 [[inputs.elasticsearch]]
@@ -91,9 +91,9 @@ cat > /etc/telegraf/telegraf.d/elasticsearch.conf <<DELIM
   pid_file = "/var/run/elasticsearch/elasticsearch.pid"
 DELIM
   fi
-  service telegraf start > /dev/null 2>&1
-  sleep 1
-  service telegraf status
+  service telegraf restart > /dev/null 2>&1
+  #sleep 1
+  #service telegraf status
 
 
 fi

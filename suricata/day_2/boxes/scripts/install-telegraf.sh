@@ -10,14 +10,11 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
-service telegraf stop 2>&1 > /dev/null
-
 MASTER=$1
 IP=$(ifconfig eth0 2>/dev/null|grep 'inet addr'|cut -f2 -d':'|cut -f1 -d' ')
 HOSTNAME=$(hostname -f)
 
 echo "installing telegraf on ${IP} ${HOSTNAME} setting influxdb to ${MASTER}"
-
 
 TLGF=0.10.4.1
 INSTALL_DIR=/provision
@@ -25,14 +22,18 @@ INSTALL_DIR=/provision
 mkdir -p ${INSTALL_DIR}/telegraf
 cd ${INSTALL_DIR}/telegraf
 if [ ! -f "telegraf_${TLGF}-1_amd64.deb" ]; then
-            wget -4 -q wget http://get.influxdb.org/telegraf/telegraf_${TLGF}-1_amd64.deb
+    wget -4 -q wget http://get.influxdb.org/telegraf/telegraf_${TLGF}-1_amd64.deb
 fi
 if [ ! -f "telegraf_${TLGF}-1_amd64.deb" ]; then
     echo "$(date) ${NAME} $0[$$]: {telegraf: {status:ERROR, msg: missing telegraf_${TLGF}_amd64.deb}"
     exit -1
 else
-  echo -e "Y"|dpkg -i telegraf_${TLGF}-1_amd64.deb > /dev/null
-  service telegraf stop 2>&1 > /dev/null
+  rm -rf /var/log/telegraf
+  rm -rf /etc/telegraf
+  apt-get -y remove --purge telegraf > /dev/null 2>&1
+  #echo -e "Y"|
+  dpkg -i telegraf_${TLGF}-1_amd64.deb > /dev/null 2>&1
+
 cat > /etc/telegraf/telegraf.conf <<DELIM
 [agent]
   interval = "1s"
@@ -61,7 +62,7 @@ cat > /etc/telegraf/telegraf.d/telegraf.conf <<DELIM
 [[inputs.procstat]]
   pid_file = "/var/run/telegraf/telegraf.pid"
 DELIM
-  service telegraf start 2>&1 > /dev/null
-  sleep 1
-  service telegraf status
+  service telegraf restart  > /dev/null 2>&1
+  #sleep 1
+  #service telegraf status
 fi

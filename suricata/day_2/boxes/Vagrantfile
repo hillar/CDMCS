@@ -20,8 +20,8 @@ if PVIRTUALBOX
 end
 if PVSPHERE
   STUDENTS = 1
-  SURICOUNT = 1
-  ELACOUNT = 2
+  SURICOUNT = 2
+  ELACOUNT = 1
   NET = "10.242.11."
   NET_START = 0
 end
@@ -142,7 +142,8 @@ Vagrant.configure('2') do |config|
         box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_admin}"
         box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_admin}"
         box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip_suricata} #{name} #{'student-' + studentnumber.to_s} #{boxno} '#{elas.join(",")}' master"
-
+        box.vm.provision "shell", path: "./scripts/install-suricata.sh", args: "eth1"
+        box.vm.provision "shell", path: "./scripts/install-logstash.sh"
         #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; netstat -ntple"
       end # suri-x
   end # suri loop
