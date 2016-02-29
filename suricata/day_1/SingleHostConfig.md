@@ -4,8 +4,6 @@ see
  * http://jasonish-suricata.readthedocs.org/en/latest/configuration/suricata-yaml.html
  * http://jasonish-suricata.readthedocs.org/en/latest/configuration/index.html
  * https://redmine.openinfosecfoundation.org/projects/suricata/wiki/Suricatayaml
- * http://pevma.blogspot.com.ee/2015/10/suricata-with-afpacket-memory-of-it-all.html
- * http://www.yaml.org
 
 
 ## Backup current configuration
@@ -35,7 +33,7 @@ suricata -c /etc/suricata/suricata.yaml -T -v
 
 
 ## HOME_NET and ports
-As a bare minimum, you should define your home network:
+Again, as a bare minimum, you should define your home network:
 ```
 root@secx:~# grep 'HOME_NET' /etc/suricata/suricata.yaml
     HOME_NET: "[192.168.0.0/16,10.0.0.0/8,172.16.0.0/12]"
@@ -55,9 +53,10 @@ root@secx:~# grep 'HOME_NET' /etc/suricata/suricata.yaml
 
 
 ### Why does it matter?
-EXTERNAL_NET -> HOME_NET
-HOME_NET -> EXTERNAL_NET
-any -> any
+ * EXTERNAL_NET -> HOME_NET
+ * HOME_NET -> EXTERNAL_NET
+ * HOME_NET -> HOME_NET
+ * any -> any
 ...
 
 
@@ -71,6 +70,8 @@ root@secx:~# grep '_PORTS' /etc/suricata/suricata.yaml
     DNP3_PORTS: 20000
     MODBUS_PORTS: 502
 ```
+
+Also, keep in mind that Suricata recognizes some protocols regardless of the port.
 
 
 ### Where are which hosts?
@@ -182,8 +183,9 @@ see:
  * http://jasonish-suricata.readthedocs.org/en/latest/configuration/suricata-yaml.html#detection-engine
  * https://redmine.openinfosecfoundation.org/projects/suricata/wiki/High_Performance_Configuration
  * https://redmine.openinfosecfoundation.org/projects/suricata/wiki/Tuning_Considerations
- * http://mauno.pihelgas.eu/files/Mauno_Pihelgas-A_Comparative_Analysis_of_OpenSource_Intrusion_Detection_Systems.pdf
+ * http://pevma.blogspot.com.ee/2015/10/suricata-with-afpacket-memory-of-it-all.html
  * https://github.com/StamusNetworks/SELKS/wiki/Tuning-SELKS
+ * http://mauno.pihelgas.eu/files/Mauno_Pihelgas-A_Comparative_Analysis_of_OpenSource_Intrusion_Detection_Systems.pdf
 
 
 
@@ -352,7 +354,8 @@ flow-timeouts:
     emergency-new: 10
     emergency-established: 100
 ```
-Can we decrease something?
+
+Too much? Can we decrease something?
 
 
 ----
