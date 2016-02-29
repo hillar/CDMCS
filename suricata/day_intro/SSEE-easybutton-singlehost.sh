@@ -75,22 +75,18 @@ sudo dpkg -i elasticsearch-2.1.1.deb
 echo "network.host: 0.0.0.0" >> /etc/elasticsearch/elasticsearch.yml
 service elasticsearch restart
 
+# Markus, can you replace logststash with rsyslog
 # logstash
-ELASTIC="127.0.0.1"
-echo 'deb http://packages.elasticsearch.org/logstash/2.2/debian stable main' > /etc/apt/sources.list.d/logstash.list
-apt-get update > /dev/null 2>&1
-apt-get -y --force-yes install logstash > /dev/null 2>&1
+cd /tmp
+wget -q https://download.elastic.co/logstash/logstash/logstash-all-plugins-2.1.0.tar.gz
+cd /opt
+tar -xzf /tmp/logstash-all-plugins-2.1.0.tar.gz
 #stealing amsterdam losgstash conf
-wget -4 -q https://raw.githubusercontent.com/StamusNetworks/Amsterdam/master/src/config/logstash/conf.d/logstash.conf -O /etc/logstash/conf.d/suricata.conf
-#    hosts => elasticsearch
-sed -i -e 's,hosts => elasticsearch,hosts => "'${ELASTIC}'"\n index => "logstash-%{+YYYY.MM.dd.HH}",g' /etc/logstash/conf.d/suricata.conf
-#fix this hack
-chmod 777 /var/log/suricata/eve.json
-service logstash start > /dev/null 2>&1
-
------
-
-
+mkdir -p /etc/logstash
+wget -q https://raw.githubusercontent.com/StamusNetworks/Amsterdam/master/src/config/logstash/logstash.conf -O /etc/logstash/logstash.conf
+echo "127.0.0.1 elasticsearch" >> /etc/hosts
+cd /opt/logstash-2.1.0/bin/
+/opt/logstash-2.1.0/bin/logstash -f /etc/logstash/logstash.conf > /var/log/logstash.log 2>&1 &
 
 #kibana
 cd /tmp
