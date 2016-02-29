@@ -47,6 +47,22 @@ pip install -r requirements.txt
 ln -s /etc/scirius/local_settings.py /opt/selks/scirius/scirius/
 pip install -U six
 pip install urllib3 --upgrade
+
+IP=$(ifconfig eth1 2>/dev/null|grep 'inet addr'|cut -f2 -d':'|cut -f1 -d' ')
+mkdir /etc/scirius
+cat > /etc/scirius/local_settings.py <<DELIM
+ELASTICSEARCH_LOGSTASH_TIMESTAMPING = "hourly"
+ELASTICSEARCH_2X = True
+USE_KIBANA = True
+KIBANA_URL = "http://$IP:5601"
+KIBANA_INDEX = ".kibana"
+KIBANA_VERSION=4
+USE_EVEBOX = True
+EVEBOX_ADDRESS = "$IP:5636"
+USE_SURICATA_STATS = True
+USE_LOGSTASH_STATS = True
+SURICATA_UNIX_SOCKET = "/var/run/suricata/suricata-command.socket"
+DELIM
 #stealing from /opt/selks/bin/scirius.sh
 cd /opt/selks/scirius/
 echo "no" | python manage.py syncdb
@@ -75,28 +91,37 @@ sudo dpkg -i elasticsearch-2.1.1.deb
 echo "network.host: 0.0.0.0" >> /etc/elasticsearch/elasticsearch.yml
 service elasticsearch restart
 
-# Markus, can you replace logststash with rsyslog
-# logstash
-cd /tmp
-wget -q https://download.elastic.co/logstash/logstash/logstash-all-plugins-2.1.0.tar.gz
-cd /opt
-tar -xzf /tmp/logstash-all-plugins-2.1.0.tar.gz
+#logstash
+ELASTIC="127.0.0.1"
+echo "installing logstash on $IP $HOSTNAME setting elasticsearch on $ELASTIC"
+
+#ELASTIC=$(ifconfig eth0 2>/dev/null|grep 'inet addr'|cut -f2 -d':'|cut -f1 -d' ')
+echo 'deb http://packages.elasticsearch.org/logstash/2.2/debian stable main' > /etc/apt/sources.list.d/logstash.list
+apt-get update > /dev/null 2>&1
+apt-get -y --force-yes install logstash > /dev/null 2>&1
 #stealing amsterdam losgstash conf
-mkdir -p /etc/logstash
-wget -q https://raw.githubusercontent.com/StamusNetworks/Amsterdam/master/src/config/logstash/logstash.conf -O /etc/logstash/logstash.conf
-echo "127.0.0.1 elasticsearch" >> /etc/hosts
-cd /opt/logstash-2.1.0/bin/
-/opt/logstash-2.1.0/bin/logstash -f /etc/logstash/logstash.conf > /var/log/logstash.log 2>&1 &
+wget -4 -q https://raw.githubusercontent.com/StamusNetworks/Amsterdam/master/src/config/logstash/conf.d/logstash.conf -O /etc/logstash/conf.d/suricata.conf
+#    hosts => elasticsearch
+sed -i -e 's,hosts => elasticsearch,hosts => "'${ELASTIC}'"\n index => "logstash-%{+YYYY.MM.dd.HH}",g' /etc/logstash/conf.d/suricata.conf
+#fix this hack
+chmod 777 /var/log/suricata/eve.json
+service logstash start > /dev/null 2>&1
 
 #kibana
-cd /tmp
-wget -q https://download.elastic.co/kibana/kibana/kibana-4.3.1-linux-x64.tar.gz
-cd /opt/
-tar -xzf /tmp/kibana-4.3.1-linux-x64.tar.gz
-ln -sf /opt/kibana-4.3.1-linux-x64 /opt/kibana
-/opt/kibana/bin/kibana plugin -i kibana/timelion
+KBN=4.4
+wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | apt-key add - > /dev/null 2>&1
+echo 'deb http://packages.elastic.co/kibana/'${KBN}'/debian stable main' > /etc/apt/sources.list.d/kibana.list
+apt-get update > /dev/null 2>&1
+apt-get -y install kibana > /dev/null 2>&1
+/opt/kibana/bin/kibana plugin -i kibana/timelion > /dev/null 2>&1
 #chown -R kibana.kibana /opt/kibana/optimize/
-/opt/kibana/bin/kibana > /var/log/kibana.log 2>&1 &
+# server.host: "0.0.0.0"
+sed -i -e 's,# server.host: "0.0.0.0",server.host: "'${IP}'",g' /opt/kibana/config/kibana.yml
+# elasticsearch.url: "http://10.242.11.29:9200"
+sed -i -e 's,# elasticsearch.url: "http://localhost:9200",elasticsearch.url: "http://'${ELASTIC}':9200",g' /opt/kibana/config/kibana.yml
+#todo fix this
+chmod -R 777 /opt/kibana/optimize/
+service kibana start > /dev/null 2>&1
 
 #evebox
 apt-get -y install unzip
