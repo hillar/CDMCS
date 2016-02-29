@@ -13,15 +13,15 @@ end
 # SURICOUNT + ELACOUNT < 10
 if PVIRTUALBOX
   STUDENTS = 1
-  SURICOUNT = 1
-  ELACOUNT = 1
+  SURICOUNT = 2
+  ELACOUNT = 2
   NET = "192.168.11."
   NET_START = 0
 end
 if PVSPHERE
   STUDENTS = 1
   SURICOUNT = 2
-  ELACOUNT = 1
+  ELACOUNT = 2
   NET = "10.242.11."
   NET_START = 0
 end
@@ -90,7 +90,7 @@ Vagrant.configure('2') do |config|
         box.vm.network :private_network, ip: "#{ip}"
         if PVIRTUALBOX
         box.vm.provider :virtualbox do |vb|
-         vb.customize ["modifyvm", :id, "--memory", "2024"]
+         vb.customize ["modifyvm", :id, "--memory", "1024"]
          vb.customize ["modifyvm", :id, "--cpus", "2"]
         end
         end
@@ -121,7 +121,7 @@ Vagrant.configure('2') do |config|
         box.vm.network :private_network, ip: "#{ip_suricata}"
         if PVIRTUALBOX
         box.vm.provider :virtualbox do |vb|
-         vb.customize ["modifyvm", :id, "--memory", "2024"]
+         vb.customize ["modifyvm", :id, "--memory", "1024"]
          vb.customize ["modifyvm", :id, "--cpus", "2"]
         end
         end
@@ -143,7 +143,7 @@ Vagrant.configure('2') do |config|
         box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_admin}"
         box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip_suricata} #{name} #{'student-' + studentnumber.to_s} #{boxno} '#{elas.join(",")}' master"
         box.vm.provision "shell", path: "./scripts/install-suricata.sh", args: "eth1"
-        box.vm.provision "shell", path: "./scripts/install-logstash.sh"
+        box.vm.provision "shell", path: "./scripts/install-logstash.sh", args: "#{ip_suricata}"
         #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; netstat -ntple"
       end # suri-x
   end # suri loop

@@ -1,4 +1,4 @@
 module VMKeys
-    VM_USER = 'student'
-    VM_PASSWORD = 'student'
+    VM_USER = 'yellow'
+    VM_PASSWORD = 'yellow'
 end
