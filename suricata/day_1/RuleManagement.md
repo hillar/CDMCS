@@ -21,3 +21,19 @@ rule-files:
   - ddos.rules
   - ....
 ```
+
+## Reloading rules
+
+Rules need to be reloaded to be active.
+
+You can send a signal to Suricata
+
+```bash
+killall -USR2 suricata
+```
+
+or use the unix socket command interface
+
+```bash
+suricatasc -c "reload-rules"
+```
