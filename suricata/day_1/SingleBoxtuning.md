@@ -87,4 +87,73 @@ Those configurations need to be persistent when the system is power cycled. To d
 
 ## Suricata configuration
 
-...
+### Capture configuration
+
+```YAML
+af-packet:
+  - interface: eth0
+    threads: 16
+    use-mmap: yes
+    cluster-id: 42
+    cluster-type: cluster_flow
+    ring-size: 30000
+```
+
+### Memory settings
+
+* memcaps
+* preallocation
+
+### Detection engine settings
+
+```YAML
+detect:
+  profile: medium
+  custom-values:
+    toclient-groups: 3
+    toserver-groups: 25
+  sgh-mpm-context: auto
+  inspection-recursion-limit: 3000
+
+mpm-algo: ac #ac-bs ac-gfbs
+
+```
+
+### CPU affinity settings
+
+For worker mode:
+
+```YAML
+threading:
+  set-cpu-affinity: yes
+  cpu-affinity:
+    - management-cpu-set:
+        cpu: [ "all" ]  # include only these cpus in affinity settings
+    - detect-cpu-set:
+        cpu: [ "all" ]
+        mode: "exclusive" # run detect threads in these cpus
+        prio:
+           default: "high"
+```
+
+```YAML
+threading:
+  set-cpu-affinity: yes
+  cpu-affinity:
+    - management-cpu-set:
+        cpu: [ "all" ]  # include only these cpus in affinity settings
+    - receive-cpu-set:
+        cpu: [ "all" ]  # include only these cpus in affinity settings
+        mode: "exclusive" # run detect threads in these cpus
+        prio:
+           default: "high"
+    - detect-cpu-set:
+        cpu: [ "all" ]
+        mode: "exclusive" # run detect threads in these cpus
+        threads: 48
+    - verdict-cpu-set:
+        cpu: [ 0 ]
+        prio:
+          default: "high"
+  detect-thread-ratio: 1.5
+```
