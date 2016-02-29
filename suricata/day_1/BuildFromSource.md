@@ -30,6 +30,12 @@ make \
 libmagic-dev
 ```
 
+Or the lazy way to get most of them:
+
+```
+sudo apt-get build-dep suricata
+```
+
 ### Searching for packages
 
 ```

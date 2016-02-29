@@ -18,6 +18,7 @@ ethtool -g eth1
 ```bash
 ethtool -x eth1
 bash
+```
 
 #### Verify that the IRQ affinity is set correctly, the output bellow shows only the first 4 CPU's
 ```bash
@@ -27,16 +28,16 @@ cat /proc/interrupts | grep 'CPU\|eth1'
 
 ### turn off offloading
 ```bash
-ethtool -K $1 rx off
-ethtool -K $1 tx off
-ethtool -K $1 sg off
-ethtool -K $1 tso off
-ethtool -K $1 gso off
-ethtool -K $1 gro off
-ethtool -K $1 lro off
-ethtool -K $1 rxvlan off
-ethtool -K $1 txvlan off
-ethtool -K $1 rxhash off
+ethtool -K eth1 rx off
+ethtool -K eth1 tx off
+ethtool -K eth1 sg off
+ethtool -K eth1 tso off
+ethtool -K eth1 gso off
+ethtool -K eth1 gro off
+ethtool -K eth1 lro off
+ethtool -K eth1 rxvlan off
+ethtool -K eth1 txvlan off
+ethtool -K eth1 rxhash off
 ```
 
 ### set buffers
@@ -45,7 +46,7 @@ ethtool -K $1 rxhash off
 ```bash
 PRESET=$(ethtool -g $1 | tr '\n' ' ' | sed 's/.*RX:\s\+\([0-9]\+\).*TX:\s\+\([0-9]\+\).*RX:\s\+\([0-9]\+\).*TX:\s\+\([0-9]\+\).*/\1 \2 \3 \4/g')
 ```
-1. Set receive and trasmit buffers to the hardware maximum
+1. Set receive and transmit buffers to the hardware maximum
 ```bash
 ethtool -G $1 rx $(echo $PRESET | cut -f 1 -d " ") tx $(echo $PRESET | cut -f 2 -d " ")
 ```
@@ -84,6 +85,75 @@ done
 
 Those configurations need to be persistent when the system is power cycled. To do that one can leverage the */sbin/ifup-local* script ;)
 
-## configuration
+## Suricata configuration
 
-...
+### Capture configuration
+
+```YAML
+af-packet:
+  - interface: eth0
+    threads: 16
+    use-mmap: yes
+    cluster-id: 42
+    cluster-type: cluster_flow
+    ring-size: 30000
+```
+
+### Memory settings
+
+* memcaps
+* preallocation
+
+### Detection engine settings
+
+```YAML
+detect:
+  profile: medium
+  custom-values:
+    toclient-groups: 3
+    toserver-groups: 25
+  sgh-mpm-context: auto
+  inspection-recursion-limit: 3000
+
+mpm-algo: ac #ac-bs ac-gfbs
+
+```
+
+### CPU affinity settings
+
+For worker mode:
+
+```YAML
+threading:
+  set-cpu-affinity: yes
+  cpu-affinity:
+    - management-cpu-set:
+        cpu: [ "all" ]  # include only these cpus in affinity settings
+    - detect-cpu-set:
+        cpu: [ "all" ]
+        mode: "exclusive" # run detect threads in these cpus
+        prio:
+           default: "high"
+```
+
+```YAML
+threading:
+  set-cpu-affinity: yes
+  cpu-affinity:
+    - management-cpu-set:
+        cpu: [ "all" ]  # include only these cpus in affinity settings
+    - receive-cpu-set:
+        cpu: [ "all" ]  # include only these cpus in affinity settings
+        mode: "exclusive" # run detect threads in these cpus
+        prio:
+           default: "high"
+    - detect-cpu-set:
+        cpu: [ "all" ]
+        mode: "exclusive" # run detect threads in these cpus
+        threads: 48
+    - verdict-cpu-set:
+        cpu: [ 0 ]
+        prio:
+          default: "high"
+  detect-thread-ratio: 1.5
+```
