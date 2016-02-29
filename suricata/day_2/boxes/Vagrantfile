@@ -13,15 +13,15 @@ end
 # SURICOUNT + ELACOUNT < 10
 if PVIRTUALBOX
   STUDENTS = 1
-  SURICOUNT = 2
-  ELACOUNT = 2
+  SURICOUNT = 1
+  ELACOUNT = 1
   NET = "192.168.11."
   NET_START = 0
 end
 if PVSPHERE
   STUDENTS = 1
-  SURICOUNT = 2
-  ELACOUNT = 2
+  SURICOUNT = 1
+  ELACOUNT = 1
   NET = "10.242.11."
   NET_START = 0
 end
@@ -70,9 +70,9 @@ Vagrant.configure('2') do |config|
   ip_teacher = NET  + (NET_START + 9).to_s
   (1..STUDENTS).each do |studentnumber|
     if PVSPHERE
-    config.vm.provider :vsphere do |vsphere|
-      vsphere.vm_base_path = VSPHERE_VM_PATH + 'Student_' + studentnumber.to_s
-    end
+    #config.vm.provider :vsphere do |vsphere|
+    #  vsphere.vm_base_path = VSPHERE_VM_PATH + 'Student_' + studentnumber.to_s
+    #end
     end
     ip_admin = NET  + (NET_START + studentnumber*10).to_s
     # elastic
@@ -99,6 +99,7 @@ Vagrant.configure('2') do |config|
           vsphere.name = name
           vsphere.memory_mb = 16 * 1024
           vsphere.cpu_count = 4
+          vsphere.vm_base_path = VSPHERE_VM_PATH + 'Student_' + studentnumber.to_s
         end
         end
         if PAZURE
@@ -133,6 +134,7 @@ Vagrant.configure('2') do |config|
           vsphere.template_name = VSPHERE_TEMPLATE_PATH + "cmdcs1clust2nic2"
           vsphere.compute_resource_name = VSPHERE_CLUSTER + "2"
           vsphere.customization_spec_name = 'linux_2nics'
+          vsphere.vm_base_path = VSPHERE_VM_PATH + 'Student_' + studentnumber.to_s
         end
         end
         if PAZURE
@@ -167,6 +169,7 @@ Vagrant.configure('2') do |config|
       vsphere.name = name
       vsphere.memory_mb = 1 * 1024
       vsphere.cpu_count = 2
+      vsphere.vm_base_path = VSPHERE_VM_PATH + 'Student_' + studentnumber.to_s
     end
     end
     if PAZURE
@@ -178,6 +181,7 @@ Vagrant.configure('2') do |config|
     box.vm.provision "shell", path: "./scripts/install-salt-master.sh"
     box.vm.provision "shell", path: "./scripts/install-grafana.sh"
     box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip_admin} #{name} #{'student-' + studentnumber.to_s} 0 '#{elas.join(",")}' client"
+    box.vm.provision "shell", path: "./scripts/install-kibana4.sh", args: "#{ip_admin}"
     #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; netstat -ntple"
   end # admin
   end #student
