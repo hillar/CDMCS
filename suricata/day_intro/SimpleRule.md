@@ -35,6 +35,33 @@ A rule consists of the following:
 
 ## Write some simple signature
 
+### Amsterdam
+
+Config file are in ee/config directory. To update suricata config file, you have
+to edit ee/config/suricata/suricata.yaml and add a reference to custom.rules:
+
+```YAML
+ default-rule-path: /etc/suricata/rules
+  rule-files:
+   - scirius.rules
+   - custom.rules
+```
+
+Restart amsterdam then create a shell in suricata container:
+
+```bash
+docker exec -ti ee_suricata_1 bash
+```
+
+Once in the shell, you can install vim
+
+```bash
+apt-get install vim
+vim /etc/suricata/rules/custom.rules
+```
+
+### Exercises
+
 * Write rules on query to a specific website http_hostname
 * Check some text in the content of the response 
 * Write a rules checking TLS fingerprint of a HTTPS website
