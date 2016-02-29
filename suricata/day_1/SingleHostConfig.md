@@ -238,7 +238,9 @@ All signatures loaded into Suricata are divided in groups for faster matching.
 
 
 ### Which MPM algorithm?
-Supported algorithms are b2g, b2gc, b3g, wumanber, ac, ac-bs, and ac-gfbs
+ * MPM - multi pattern matcher
+
+Supported algorithms are b2g, b3g, wumanber, ac, ac-bs, and ac-gfbs
 
 ```
 root@secx:~# grep '^mpm-algo:' /etc/suricata/suricata.yaml
@@ -256,7 +258,7 @@ root@secx:~# grep 'sgh-mpm-context:' /etc/suricata/suricata.yaml
 
 If the sgh-mpm-context is set to 'auto', two algorithms ac and ac-gfbs use a single MPM-context. The rest of the algorithms use full by default. You can try different setting manually.
 
-Some testing:
+Some test results:
  * Using the 'ac' algorithms with 'full' distribution context required a large amount of memory. With the ET ruleset it consumed over 30GiB of memory. It did demonstrate the best results in processing speed. But is it worth it?
  * Using the 'b2gc' algorithm with 'full' context demonstrated also good performance with more reasonable memory usage (about 6GiB) in my case.
 
