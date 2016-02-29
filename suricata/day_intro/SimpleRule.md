@@ -47,7 +47,21 @@ to edit ee/config/suricata/suricata.yaml and add a reference to custom.rules:
    - custom.rules
 ```
 
-Restart amsterdam then create a shell in suricata container:
+Restart amsterdam.
+
+You can also edit the file from the container by changing their right to read write.
+
+To do so, edit the ee/docker-compose.yml and change suricata.yaml and threshold.config to rw:
+
+```YAML
+suricata:
+    build: /home/eric/builds/amsterdam/ee/docker/suricata
+    volumes:
+        - /home/eric/builds/amsterdam/ee/config/suricata/suricata.yaml:/etc/suricata/suricata.yaml:rw
+        - /home/eric/builds/amsterdam/ee/config/suricata/threshold.config:/etc/suricata/threshold.config:rw
+```
+
+Then create a shell in suricata container:
 
 ```bash
 docker exec -ti ee_suricata_1 bash
