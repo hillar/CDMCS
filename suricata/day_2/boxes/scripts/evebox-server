@@ -41,7 +41,7 @@ DAEMON=/opt/evebox/evebox
 CONFIG=/etc/evebox/evebox.conf
 
 # PID file for the daemon
-PIDFILE=/var/run/evebox.pid
+PIDFILE=/var/run/evebox/evebox.pid
 PIDDIR=`dirname $PIDFILE`
 if [ ! -d "$PIDDIR" ]; then
     mkdir -p $PIDDIR

@@ -32,6 +32,7 @@ addgroup --system evebox --quiet
 adduser --system --home /opt/evebox --no-create-home --ingroup evebox --disabled-password --shell /bin/false evebox
  > /dev/null 2>&1
 touch /etc/default/evebox-server
+mkdir -p /etc/evebox
 touch /etc/evebox/evebox.conf
 wget -4 -q https://raw.githubusercontent.com/hillar/CDMCS/master/suricata/day_2/boxes/scripts/evebox-server  -O /etc/init.d/evebox-server
 chmod +x /etc/init.d/evebox-server
