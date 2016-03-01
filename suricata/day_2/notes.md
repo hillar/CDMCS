@@ -24,16 +24,34 @@
 
 ### :9200 elasticsearch
 
- 1. http://10.242.11.XX0:9200/
- 1. http://10.242.11.XX0:9200/_cat
- 1. http://10.242.11.XX0:9200/_cat/nodes?v
+1. http://10.242.11.XX0:9200/
+1. http://10.242.11.XX0:9200/_cat
+1. http://10.242.11.XX0:9200/_cat/nodes?v
 
  ```
  $ curl -XGET http://10.242.11.XX0:9200/_cat/nodes?v
  ```
 
 
- * http://10.242.11.XX0:9200/_plugin/head
+* open in browser http://10.242.11.XX0:9200/_plugin/head
+
+
+1. click *Indices*
+1. click *Browser*
+1. click *Overview*
+
+
+### :5636 EveBox
+
+* open in browser http://10.242.11.XX0:5636/
+
+
+1. click *settings*
+1. set *Elastic Search URL* to *http://10.242.11.XX0:9200*  
+1. click *save*
+1. click *Events*
+1. click *any row*
+1. click *back*  
 
 ### :8083, :8086 influxdb
 
@@ -41,14 +59,19 @@
  1. http://10.242.11.XX0:8086/query?q=SHOW+MEASUREMENTS&db=telegraf
  1. http://10.242.11.XX0:8086/query?q=SHOW+TAG+VALUES+FROM+%22cpu%22+WITH+KEY+%3D+%22host%22&db=telegraf
 
+ ```
+ $ curl -XGET 'http://somehostname:8086/query?db=mydb' --data-urlencode 'q=SHOW MEASUREMENTS'
+ ```
 
  * open in browser http://10.242.11.XX0:8083/
 
- 1. set current database to *telegraf*
 
-```
-$ curl -XGET 'http://somehostname:8086/query?db=mydb' --data-urlencode 'q=SHOW MEASUREMENTS'
-```
+ 1. set current database to *telegraf*
+ 1. click *Query Templates*
+ 1. select *SHOW DATABASES*
+ 1. loop around ...
+
+
 
 ### :5601 Kibana4
 
@@ -72,3 +95,19 @@ $ curl -XGET 'http://somehostname:8086/query?db=mydb' --data-urlencode 'q=SHOW M
 1. set *User* and *Password* to *admin*
 1. click *Test Connection*
 1. click *Save*
+
+
+1. click *Dashboards*
+1. click *Home*
+1. click *New*
+1. click *small green box on top left*
+1. choose *add panel* - *graph*
+1. set *From*  to *cpu*
+1. set *Where* to *cpu* = *cpu-total*
+1. set *Select* to *usage_idle*
+1. set *group by* to *host*
+1. click *floppy image* on top
+1. click *Panel Title*
+1. select *edit*
+1. play around ...
+1. click *floppy image* on top
