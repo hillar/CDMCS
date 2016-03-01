@@ -36,7 +36,7 @@ LOG_DIR=/var/log/evebox
 CONF_FILE=$CONF_DIR/evebox.ini
 MAX_OPEN_FILES=10000
 PID_FILE=/var/run/$NAME.pid
-DAEMON=/opt/sbin/$NAME
+DAEMON=/opt/evebox/$NAME
 
 umask 0027
 
