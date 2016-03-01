@@ -1,14 +1,22 @@
 digraph G {
+
 {rank=min gigamon}
-gigamon->{suri1 suri2 suri3} -> {ela1 ela2 ela3}->viewer [color="red"]
-master->{suri1 suri2 suri3 ela1 ela2 ela3 viewer} [style="dotted", color="green" ]
-{suri1 suri2 suri3 ela1 ela2 ela3 viewer}->syslog [style="dotted", color="blue" ]
-{rank=max master syslog}
+{rank=max admin}
+
 gigamon [label="traffic mirror"]
-suri1 [label="suricata 1"]
-suri2 [label="suricata .."]
-suri3 [label="suricata N"]
-viewer [label=" evebox + kibana + grafana"]
-master [label="salt master + sirius"]
-syslog [label="syslog + influxdb"]
+suri1   [label="suricata  1"]
+suri2   [label="suricata .."]
+suri3   [label="suricata N"]
+ela1    [label="elasticsearch  1"]
+ela2    [label="elasticsearch .."]
+ela3    [label="elasticsearch N"]
+admin   [label=" salt + scirius + evebox + kibana + grafana + influxdb"]
+
+# data
+gigamon -> {suri1 suri2 suri3} -> {ela1 ela2 ela3} -> admin [color="red"]
+# master
+admin -> {suri1 suri2 suri3 ela1 ela2 ela3} [style="dotted", color="green" ]
+# metrix
+{suri1 suri2 suri3 ela1 ela2 ela3} -> admin [style="dotted", color="blue" ]
+
 }
