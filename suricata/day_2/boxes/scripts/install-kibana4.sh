@@ -28,6 +28,7 @@ apt-get -y install kibana > /dev/null 2>&1
 sed -i -e 's,# server.host: "0.0.0.0",server.host: "'${IP}'",g' /opt/kibana/config/kibana.yml
 # elasticsearch.url: "http://10.242.11.29:9200"
 sed -i -e 's,# elasticsearch.url: "http://localhost:9200",elasticsearch.url: "http://'${ELASTIC}':9200",g' /opt/kibana/config/kibana.yml
+chown -R kibana:kibana /opt/kibana/optimize/
 service kibana start > /dev/null 2>&1
 cat > /etc/telegraf/telegraf.d/kibana.conf <<DELIM
 [[inputs.procstat]]
