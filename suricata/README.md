@@ -11,13 +11,13 @@
 
 * 09:00 - 09:45 [intro](/suricata/day_1/README.md),[build from source](/suricata/day_1/BuildFromSource.md)
 * 10:00 - 10:45 [Config](/suricata/day_1/SingleHostConfig.md)
-* 11:00 - 11:45 Rules [management](/suricata/day_1/RuleManagement.md),  [thresholding](/suricata/day_1/RuleThresholding.md), [reputation](/suricata/day_1/Reputation.md)
+* 11:00 - 11:45 Rules [management](/suricata/day_1/RuleManagement.md)
 
 
 
-* 13:00 - 13:45 [CEE](/suricata/day_1/CEE.md), [rsyslog](/suricata/day_1/rsyslog.md)
-* 14:00 - 14:45 Extraction, [TLS monitor](/suricata/day_1/TLSMonitor.md) , [DNS probe](/suricata/day_1/DNSProbe.md) , [flow probe](/suricata/day_1/FlowProbe.md)
-* 15:00 - 15:45 Extraction [file](/suricata/day_1/FileExtraction.md)   
+* 13:00 - 13:45 [thresholding](/suricata/day_1/RuleThresholding.md)
+* 14:00 - 14:45 [reputation](/suricata/day_1/Reputation.md)
+* 15:00 - 15:45 [CEE](/suricata/day_1/CEE.md), [rsyslog](/suricata/day_1/rsyslog.md)
 * 16:00 - 16:45 [Tuning Considerations](/suricata/day_1/SingleBoxtuning.md), [rule profiling](/suricata/day_1/RuleProfiling.md),
 
 
@@ -43,8 +43,8 @@
 
 
 
-* 13:00 - 13:45
-* 14:00 - 14:45
+* 13:00 - 13:45 Extraction, [TLS monitor](/suricata/day_1/TLSMonitor.md) , [DNS probe](/suricata/day_1/DNSProbe.md) , [flow probe](/suricata/day_1/FlowProbe.md)
+* 14:00 - 14:45 Extraction [file](/suricata/day_1/FileExtraction.md)   
 * 15:00 - 15:45 [Lua Output](/suricata/day_3/LuaOutput.md)
 * 16:00 - 16:45 [Lua scripted rules](/suricata/day_3/LuaRules.md)
 
