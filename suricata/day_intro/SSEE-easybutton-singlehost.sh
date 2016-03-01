@@ -82,9 +82,10 @@ python manage.py runserver 0.0.0.0:8000 > /var/log/scirius.log 2>&1 &
 service suricata start
 
 #elastic
+ELA="2.2.0"
 apt-get install -y openjdk-7-jre-headless
-wget -q https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.1.1/elasticsearch-2.1.1.deb
-sudo dpkg -i elasticsearch-2.1.1.deb
+wget -q https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/$(ELA)/elasticsearch-$(ELA).deb
+sudo dpkg -i elasticsearch-$(ELA).deb
 /usr/share/elasticsearch/bin/plugin install mobz/elasticsearch-head
 #/usr/share/elasticsearch/bin/plugin install elasticsearch/elasticsearch-mapper-attachments/3.1.1
 /usr/share/elasticsearch/bin/plugin install delete-by-query
