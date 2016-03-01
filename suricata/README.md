@@ -17,14 +17,13 @@
 
 * 13:00 - 13:45 [thresholding](/suricata/day_1/RuleThresholding.md)
 * 14:00 - 14:45 [reputation](/suricata/day_1/Reputation.md)
-* 15:00 - 15:45 [CEE](/suricata/day_1/CEE.md), [rsyslog](/suricata/day_1/rsyslog.md)
-* 16:00 - 16:45 [Tuning Considerations](/suricata/day_1/SingleBoxtuning.md), [rule profiling](/suricata/day_1/RuleProfiling.md),
+* 15:00 - 16:45 [CEE](/suricata/day_1/CEE.md), [rsyslog](/suricata/day_1/rsyslog.md)
 
 
 ## Day 2 :: Cluster
 
-* 09:00 - 09:45 [intro](/suricata/day_2/README.md),[Metrix](/suricata/day_2/SetUpMetrics.md),[Elastic](/suricata/day_2/SetUpElastic.md)
-* 10:00 - 10:45 [Minions](/suricata/day_2/SetUpMinions.md)
+* 09:00 - 09:45 [Tuning Considerations](/suricata/day_1/SingleBoxtuning.md)
+* 10:00 - 10:45 [intro](/suricata/day_2/README.md),[Metrix](/suricata/day_2/SetUpMetrics.md),[Elastic](/suricata/day_2/SetUpElastic.md), [Minions](/suricata/day_2/SetUpMinions.md)
 * 11:00 - 11:45 [Master](/suricata/day_2/SetUpMaster.md)
 
 
@@ -53,6 +52,7 @@
 * [Internal counters](/suricata/day_3/DumpCounters.md)
 * [Converting logs to pcap](/suricata/day_3/Eve2Pcap.md)
 * [evil bit](/suricata/day_3/EvilBit.md)
+* [rule profiling](/suricata/day_1/RuleProfiling.md),
 
 
 ## Day +1
