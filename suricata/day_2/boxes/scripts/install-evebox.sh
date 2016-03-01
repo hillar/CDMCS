@@ -28,16 +28,14 @@ service elasticsearch restart > /dev/null 2>&1
 
 ln -s /opt/evebox-linux-amd64 /opt/evebox
 ln -s /opt/evebox-linux-amd64/evebox /opt/evebox-linux-amd64/evebox-server
-adduser --system evebox > /dev/null 2>&1
-
-cat > /etc/default/evebox-server <<DELIM
-LOG_DIR=/var/log/evebox
-DELIM
+addgroup --system evebox --quiet
+adduser --system --home /opt/evebox --no-create-home --ingroup evebox --disabled-password --shell /bin/false evebox
+ > /dev/null 2>&1
+touch /etc/default/evebox-server
+touch /etc/evebox/evebox.conf
 wget -4 -q https://raw.githubusercontent.com/hillar/CDMCS/master/suricata/day_2/boxes/scripts/evebox-server  -O /etc/init.d/evebox-server
 chmod +x /etc/init.d/evebox-server
-
 update-rc.d evebox-server defaults 95 10 > /dev/null 2>&1
-
 service evebox-server start > /dev/null 2>&1
 
 

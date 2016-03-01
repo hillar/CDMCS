@@ -1,11 +1,5 @@
 #! /usr/bin/env bash
 
-# chkconfig: 2345 80 05
-# description: evebox server
-# processname: evebox
-# config: NONE
-# pidfile: /var/run/evebox.pid
-
 ### BEGIN INIT INFO
 # Provides:          evebox
 # Required-Start:    $all
@@ -15,134 +9,211 @@
 # Short-Description: Start evebox at boot time
 ### END INIT INFO
 
-# TODO
-# ask ish to take this ownership
+# If you modify this, please make sure to also edit evebox.service
+# this init script supports three different variations:
+#  1. New lsb that define start-stop-daemon
+#  2. Old lsb that don't have start-stop-daemon but define, log, pidofproc and killproc
+#  3. Centos installations without lsb-core installed
+#
+# In the third case we have to define our own functions which are very dumb
+# and expect the args to be positioned correctly.
 
-#  tested on
-#  1. ubuntu 14.04
+# Command-line options that can be set in /etc/default/evebox.  These will override
+# any config file values.
+DEFAULT=/etc/default/evebox
 
-PATH=/bin:/usr/bin:/sbin:/usr/sbin
-NAME=evebox-server
-DESC="EveBox Server"
-DEFAULT=/etc/default/$NAME
+# Daemon options
+EVEBOX_OPTS=
 
-EVEBOX_USER=evebox
-EVEBOX_GROUP=evebox
-EVEBOX_HOME=/usr/share/evebox
-CONF_DIR=/etc/evebox
-WORK_DIR=$EVEBOX_HOME
-DATA_DIR=/var/lib/evebox
-LOG_DIR=/var/log/evebox
-CONF_FILE=$CONF_DIR/evebox.ini
-MAX_OPEN_FILES=10000
-PID_FILE=/var/run/$NAME.pid
-DAEMON=/opt/evebox/$NAME
+# Process name ( For display )
+NAME=evebox
 
-umask 0027
+# User and group
+USER=evebox
+GROUP=evebox
 
-if [ `id -u` -ne 0 ]; then
-	echo "You need root privileges to run this script"
-	exit 4
+# Daemon name, where is the actual executable
+# If the daemon is not there, then exit.
+DAEMON=/opt/evebox/evebox
+[ -x $DAEMON ] || exit 5
+
+# Configuration file
+CONFIG=/etc/evebox/evebox.conf
+
+# PID file for the daemon
+PIDFILE=/var/run/evebox.pid
+PIDDIR=`dirname $PIDFILE`
+if [ ! -d "$PIDDIR" ]; then
+    mkdir -p $PIDDIR
+    chown $USER:$GROUP $PIDDIR
 fi
 
-if [ ! -x $DAEMON ]; then
-  echo "Program not installed or not executable"
-  exit 5
+# Max open files
+OPEN_FILE_LIMIT=65536
+
+if [ -r /lib/lsb/init-functions ]; then
+    source /lib/lsb/init-functions
 fi
 
-. /lib/lsb/init-functions
-
-if [ -r /etc/default/rcS ]; then
-	. /etc/default/rcS
+# Logging
+if [ -z "$STDOUT" ]; then
+    STDOUT=/dev/null
 fi
 
-# overwrite settings from default file
-if [ -f "$DEFAULT" ]; then
-	. "$DEFAULT"
+if [ ! -f "$STDOUT" ]; then
+    mkdir -p $(dirname $STDOUT)
 fi
 
-DAEMON_OPTS="--pidfile=${PID_FILE} --config=${CONF_FILE} cfg:default.paths.data=${DATA_DIR} cfg:default.paths.logs=${LOG_DIR}"
+if [ -z "$STDERR" ]; then
+    STDERR=/var/log/evebox/evebox.log
+fi
 
-case "$1" in
-  start)
+if [ ! -f "$STDERR" ]; then
+    mkdir -p $(dirname $STDERR)
+fi
 
-	log_daemon_msg "Starting $DESC"
+# Overwrite init script variables with /etc/default/evebox values
+if [ -r $DEFAULT ]; then
+    source $DEFAULT
+fi
 
-	pid=`pidofproc -p $PID_FILE evebox`
-	if [ -n "$pid" ] ; then
-		log_begin_msg "Already running."
-		log_end_msg 0
-		exit 0
-	fi
+function pidofproc() {
+    if [ $# -ne 3 ]; then
+        echo "Expected three arguments, e.g. $0 -p pidfile daemon-name"
+    fi
 
-	# Prepare environment
-	mkdir -p "$LOG_DIR" "$DATA_DIR" && chown "$EVEBOX_USER":"$EVEBOX_GROUP" "$LOG_DIR" "$DATA_DIR"
-	touch "$PID_FILE" && chown "$EVEBOX_USER":"$EVEBOX_GROUP" "$PID_FILE"
+    PID=`pgrep -f $3`
+    local PIDFILE=`cat $2`
 
-  if [ -n "$MAX_OPEN_FILES" ]; then
-		ulimit -n $MAX_OPEN_FILES
-	fi
+    if [ "x$PIDFILE" == "x" ]; then
+        return 1
+    fi
 
-	# Start Daemon
-	start-stop-daemon --start -b --chdir "$WORK_DIR" --user "$EVEBOX_USER" -c "$EVEBOX_USER" --pidfile "$PID_FILE" --exec $DAEMON -- $DAEMON_OPTS
-	return=$?
-	if [ $return -eq 0 ]
-	then
-	  sleep 1
+    if [ "x$PID" != "x" -a "$PIDFILE" == "$PID" ]; then
+        return 0
+    fi
 
-    # check if pid file has been written two
-	  if ! [[ -s $PID_FILE ]]; then
-	    log_end_msg 1
-	    exit 1
-	  fi
+    return 1
+}
 
-		i=0
-		timeout=10
-		# Wait for the process to be properly started before exiting
-		until { cat "$PID_FILE" | xargs kill -0; } >/dev/null 2>&1
-		do
-			sleep 1
-			i=$(($i + 1))
-      if [ $i -gt $timeout ]; then
-			  log_end_msg 1
-			  exit 1
-			fi
-		done
-  fi
-  log_end_msg $return
-	;;
-  stop)
-	log_daemon_msg "Stopping $DESC"
+function killproc() {
+    if [ $# -ne 3 ]; then
+        echo "Expected three arguments, e.g. $0 -p pidfile signal"
+    fi
 
-	if [ -f "$PID_FILE" ]; then
-		start-stop-daemon --stop --pidfile "$PID_FILE" \
-			--user "$EVEBOX_USER" \
-			--retry=TERM/20/KILL/5 >/dev/null
-		if [ $? -eq 1 ]; then
-			log_progress_msg "$DESC is not running but pid file exists, cleaning up"
-		elif [ $? -eq 3 ]; then
-			PID="`cat $PID_FILE`"
-			log_failure_msg "Failed to stop $DESC (pid $PID)"
-			exit 1
-		fi
-		rm -f "$PID_FILE"
-	else
-		log_progress_msg "(not running)"
-	fi
-	log_end_msg 0
-	;;
-  status)
-	status_of_proc -p $PID_FILE evebox evebox && exit 0 || exit $?
-    ;;
-  restart|force-reload)
-	if [ -f "$PID_FILE" ]; then
-		$0 stop
-		sleep 1
-	fi
-	$0 start
-	;;
-  *)
-	log_success_msg "Usage: $0 {start|stop|restart|force-reload|status}"
-	exit 3
-	;;
+    PID=`cat $2`
+
+    /bin/kill -s $3 $PID
+    while true; do
+        pidof `basename $DAEMON` >/dev/null
+        if [ $? -ne 0 ]; then
+            return 0
+        fi
+
+        sleep 1
+        n=$(expr $n + 1)
+        if [ $n -eq 30 ]; then
+            /bin/kill -s SIGKILL $PID
+            return 0
+        fi
+    done
+}
+
+function log_failure_msg() {
+    echo "$@" "[ FAILED ]"
+}
+
+function log_success_msg() {
+    echo "$@" "[ OK ]"
+}
+
+case $1 in
+    start)
+        # Check if config file exist
+        if [ ! -r $CONFIG ]; then
+            log_failure_msg "config file doesn't exist (or you don't have permission to view)"
+            exit 4
+        fi
+
+        # Checked the PID file exists and check the actual status of process
+        if [ -e $PIDFILE ]; then
+	    PID="$(pgrep -f $PIDFILE)"
+	    if test ! -z $PID && kill -0 "$PID" &>/dev/null; then
+		# If the status is SUCCESS then don't need to start again.
+                log_failure_msg "$NAME process is running"
+                exit 0 # Exit
+            fi
+        # if PID file does not exist, check if writable
+        else
+            su -s /bin/sh -c "touch $PIDFILE" $USER > /dev/null 2>&1
+            if [ $? -ne 0 ]; then
+                log_failure_msg "$PIDFILE not writable, check permissions"
+                exit 5
+            fi
+        fi
+
+        # Bump the file limits, before launching the daemon. These will carry over to
+        # launched processes.
+        ulimit -n $OPEN_FILE_LIMIT
+        if [ $? -ne 0 ]; then
+            log_failure_msg "set open file limit to $OPEN_FILE_LIMIT"
+            exit 1
+        fi
+
+        log_success_msg "Starting the process" "$NAME"
+        if which start-stop-daemon > /dev/null 2>&1; then
+            start-stop-daemon --chuid $GROUP:$USER --start --quiet --pidfile $PIDFILE --exec $DAEMON -- -pidfile $PIDFILE -config $CONFIG $EVEBOX_OPTS >>$STDOUT 2>>$STDERR &
+        else
+            su -s /bin/sh -c "nohup $DAEMON -pidfile $PIDFILE -config $CONFIG $EVEBOX_OPTS >>$STDOUT 2>>$STDERR &" $USER
+        fi
+        log_success_msg "$NAME process was started"
+        ;;
+
+    stop)
+        # Stop the daemon.
+        if [ -e $PIDFILE ]; then
+	    PID="$(pgrep -f $PIDFILE)"
+	    if test ! -z $PID && kill -0 "$PID" &>/dev/null; then
+                if killproc -p $PIDFILE SIGTERM && /bin/rm -rf $PIDFILE; then
+                    log_success_msg "$NAME process was stopped"
+                else
+                    log_failure_msg "$NAME failed to stop service"
+                fi
+            fi
+        else
+            log_failure_msg "$NAME process is not running"
+        fi
+        ;;
+
+    restart)
+        # Restart the daemon.
+        $0 stop && sleep 2 && $0 start
+        ;;
+
+    status)
+        # Check the status of the process.
+        if [ -e $PIDFILE ]; then
+	    PID="$(pgrep -f $PIDFILE)"
+	    if test ! -z $PID && test -d "/proc/$PID" &>/dev/null; then
+                log_success_msg "$NAME Process is running"
+                exit 0
+            else
+                log_failure_msg "$NAME Process is not running"
+                exit 1
+            fi
+        else
+            log_failure_msg "$NAME Process is not running"
+            exit 3
+        fi
+        ;;
+
+    version)
+        $DAEMON version
+        ;;
+
+    *)
+        # For invalid arguments, print the usage message.
+        echo "Usage: $0 {start|stop|restart|status|version}"
+        exit 2
+        ;;
 esac
