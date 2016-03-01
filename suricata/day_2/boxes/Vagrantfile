@@ -20,8 +20,8 @@ if PVIRTUALBOX
 end
 if PVSPHERE
   STUDENTS = 1
-  SURICOUNT = 1
-  ELACOUNT = 1
+  SURICOUNT = 5
+  ELACOUNT = 3
   NET = "10.242.11."
   NET_START = 0
 end
@@ -97,8 +97,8 @@ Vagrant.configure('2') do |config|
         if PVSPHERE
         box.vm.provider :vsphere do |vsphere|
           vsphere.name = name
-          vsphere.memory_mb = 16 * 1024
-          vsphere.cpu_count = 4
+          vsphere.memory_mb = 4 * 1024
+          vsphere.cpu_count = 2
           vsphere.vm_base_path = VSPHERE_VM_PATH + 'Student_' + studentnumber.to_s
         end
         end
@@ -129,8 +129,8 @@ Vagrant.configure('2') do |config|
         if PVSPHERE
         box.vm.provider :vsphere do |vsphere|
           vsphere.name = name
-          vsphere.memory_mb = 8 * 1024
-          vsphere.cpu_count = 8
+          vsphere.memory_mb = 2 * 1024
+          vsphere.cpu_count = 2
           vsphere.template_name = VSPHERE_TEMPLATE_PATH + "cmdcs1clust2nic2"
           vsphere.compute_resource_name = VSPHERE_CLUSTER + "2"
           vsphere.customization_spec_name = 'linux_2nics'
@@ -146,6 +146,7 @@ Vagrant.configure('2') do |config|
         box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip_suricata} #{name} #{'student-' + studentnumber.to_s} #{boxno} '#{elas.join(",")}' master"
         box.vm.provision "shell", path: "./scripts/install-suricata.sh", args: "eth1"
         box.vm.provision "shell", path: "./scripts/install-logstash.sh", args: "#{ip_suricata}"
+
         #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; netstat -ntple"
       end # suri-x
   end # suri loop
@@ -167,8 +168,8 @@ Vagrant.configure('2') do |config|
     box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_teacher}"
     box.vm.provider :vsphere do |vsphere|
       vsphere.name = name
-      vsphere.memory_mb = 1 * 1024
-      vsphere.cpu_count = 2
+      vsphere.memory_mb = 4 * 1024
+      vsphere.cpu_count = 4
       vsphere.vm_base_path = VSPHERE_VM_PATH + 'Student_' + studentnumber.to_s
     end
     end
@@ -179,9 +180,12 @@ Vagrant.configure('2') do |config|
     box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_admin}"
     box.vm.provision "shell", path: "./scripts/install-influxdb.sh", args: "#{ip_admin}"
     box.vm.provision "shell", path: "./scripts/install-salt-master.sh"
-    box.vm.provision "shell", path: "./scripts/install-grafana.sh"
     box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip_admin} #{name} #{'student-' + studentnumber.to_s} 0 '#{elas.join(",")}' client"
+    box.vm.provision "shell", path: "./scripts/install-evebox.sh", args: "#{ip_admin}"
+    box.vm.provision "shell", path: "./scripts/install-grafana.sh"
     box.vm.provision "shell", path: "./scripts/install-kibana4.sh", args: "#{ip_admin}"
+    box.vm.provision "shell", path: "./scripts/install-scirius.sh", args: "#{ip_admin} #{ip_admin} #{ip_admin}"
+
     #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; netstat -ntple"
   end # admin
   end #student

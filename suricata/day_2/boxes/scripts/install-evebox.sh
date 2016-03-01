@@ -42,6 +42,6 @@ service evebox-server start > /dev/null 2>&1
 
 cat > /etc/telegraf/telegraf.d/evebox.conf <<DELIM
 [[inputs.procstat]]
-  pid_file = "/var/run/evebox-server.pid"
+  pid_file = "/var/run/evebox/evebox.pid"
 DELIM
 service telegraf restart > /dev/null 2>&1
