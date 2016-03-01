@@ -1,0 +1,145 @@
+ENV["LC_ALL"] = "en_US.UTF-8"
+
+#supported providers
+PVIRTUALBOX = (!ARGV.nil? && ARGV.join('').include?('provider=virtualbox'))
+PVSPHERE = (!ARGV.nil? && ARGV.join('').include?('provider=vsphere'))
+PAZURE = false
+if (!PVIRTUALBOX && !PVSPHERE)
+  print "please set provider with --provider\n"
+  print "supported: vitrualbox, vsphere\n"
+  exit 1
+end
+
+# SURICOUNT + ELACOUNT < 10
+if PVIRTUALBOX
+  STUDENTS = 1
+  SURICOUNT = 1
+  ELACOUNT = 0
+  NET = "192.168.11."
+  NET_START = 0
+end
+if PVSPHERE
+  STUDENTS = 18
+  SURICOUNT = 2
+  ELACOUNT = 0
+  NET = "10.242.11."
+  NET_START = 0
+end
+
+Vagrant.configure('2') do |config|
+  time = Time.now
+  File.open('lastrun.txt','w').puts "# " + time.inspect
+  # common for all providers and all boxes
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+  config.vm.box = 'dummy' #just because vagrant needs it, real box is setted by provider
+  require '../../../../../tests/bb/keys/vm.rb'
+  include VMKeys
+  config.ssh.username = VM_USER
+  config.ssh.password = VM_PASSWORD
+
+  #providers ...
+  if PVIRTUALBOX
+  config.vm.provider :virtualbox do |vb|
+    #STUDENTS = 1
+    config.vm.box = "ubu14"
+    config.ssh.username = "vagrant"
+    config.ssh.password = "vagrant"
+
+  end
+  end
+  if PVSPHERE
+  config.vm.provider :vsphere do |vsphere|
+    require '../../../../../tests/bb/keys/vsphere.rb'
+    include VSphereKeys
+    config.vm.box = "vsphere"
+    vsphere.host = VSPHERE_HOST
+    vsphere.compute_resource_name = VSPHERE_CLUSTER
+    vsphere.template_name = VSPHERE_TEMPLATE_PATH + 'cmdcs1clust1nic1'
+    vsphere.customization_spec_name = 'linux_1nics'
+    vsphere.user = VSPHERE_USER
+    vsphere.password = VSPHERE_PASSWORD
+    vsphere.insecure = true
+  end
+  end
+  if PAZURE
+  config.vm.provider :azure do |azure|
+  end
+  end
+
+  # boxes .......................................................
+  ip_teacher = NET  + (NET_START + 9).to_s
+  (1..STUDENTS).each do |studentnumber|
+    if PVSPHERE
+    #config.vm.provider :vsphere do |vsphere|
+    #  vsphere.vm_base_path = VSPHERE_VM_PATH + 'Student_' + studentnumber.to_s
+    #end
+    end
+    ip_admin = NET  + (NET_START + studentnumber*10).to_s
+    # elastic
+    elas = []
+    (1..ELACOUNT).each do |boxno|
+      ip = NET  + (NET_START + studentnumber*10 + 10 - boxno).to_s
+      elas.push(ip)
+    end
+
+    # suricata
+    (2..SURICOUNT).each do |boxno|
+      name = 'student-'+ studentnumber.to_s+'-suricata-' + boxno.to_s
+      ip_suricata = NET  + (NET_START + studentnumber*10 + boxno).to_s
+      File.open('lastrun.txt','a').puts ip_suricata +" "+name
+      config.vm.define name do |box|
+        box.vm.hostname = name
+        box.vm.network :private_network, ip: "#{ip_suricata}"
+        if PVIRTUALBOX
+        box.vm.provider :virtualbox do |vb|
+         vb.customize ["modifyvm", :id, "--memory", "1024"]
+         vb.customize ["modifyvm", :id, "--cpus", "2"]
+        end
+        end
+        if PVSPHERE
+        box.vm.provider :vsphere do |vsphere|
+          vsphere.name = name
+          vsphere.memory_mb = 4 * 1024
+          vsphere.cpu_count = 2
+          vsphere.template_name = VSPHERE_TEMPLATE_PATH + "cmdcs1clust2nic2"
+          vsphere.compute_resource_name = VSPHERE_CLUSTER + "2"
+          vsphere.customization_spec_name = 'linux_2nics'
+          vsphere.vm_base_path = VSPHERE_VM_PATH + 'Student_' + studentnumber.to_s
+        end
+        end
+        if PAZURE
+        box.vm.provider :azure do |azure|
+        end
+        end
+        #box.vm.provision "shell", path: "../../day_2/boxes/scripts/install-salt-minion.sh", args: "#{ip_admin}"
+        #box.vm.provision "shell", path: "../../day_2/boxes/scripts/install-telegraf.sh", args: "#{ip_admin}"
+        #box.vm.provision "shell", path: "../../day_2/boxes/scripts/install-elastic.sh", args: "#{ip_suricata} #{name} #{'student-' + studentnumber.to_s} #{boxno} '#{elas.join(",")}' master"
+        box.vm.provision "shell", path: "./scripts/install-suricata.sh", args: "eth1"
+        box.vm.provision "shell", inline: "service suricata start; sleep 3; service suricata status;"
+        #box.vm.provision "shell", path: "../../day_2/boxes/scripts/install-logstash.sh", args: "#{ip_suricata}"
+        #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; netstat -ntple"
+      end # suri-x
+  end # suri loop
+
+
+  end #student
+  # create teacher box ...
+  if PVSPHERE
+    name = 'teacher'
+
+    File.open('lastrun.txt','a').puts ip_teacher +" "+name
+    config.vm.define name do |box|
+      box.vm.hostname = name
+      box.vm.network :private_network, ip: "#{ip_teacher}"
+      box.vm.provider :vsphere do |vsphere|
+        vsphere.vm_base_path = VSPHERE_VM_PATH
+        vsphere.name = name
+        vsphere.memory_mb = 1 * 1024
+        vsphere.cpu_count = 2
+      end
+      # box.vm.provision "shell", path: "../../day_2/boxes/scripts/install-salt-master.sh"
+      #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; netstat -ntple"
+    end # master
+  end
+
+end

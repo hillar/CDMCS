@@ -2,6 +2,8 @@
 common/vagrant/bb/.vagrant
 common/vagrant/bb/lastrun.txt
 suricata/day_1/abox/.vagrant
+suricata/day_1/boxes/.vagrant
+suricata/day_1/boxes/lastrun.txt
 suricata/day_2/boxes/.vagrant
 suricata/day_2/boxes/lastrun.txt
 suricata/day_intro/amstelredamme/.vagrant
