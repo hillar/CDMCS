@@ -4,4 +4,4 @@ see https://github.com/hillar/CDMCS/blob/master/suricata/day_2/boxes/Vagrantfile
 
 tldr  Amstelredamme + salt-master + influxdb + grafana
 
-[next : go over sceleton](/suricata/notes.md)
+[next : go over sceleton](/suricata/day_2/notes.md)
