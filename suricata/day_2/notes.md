@@ -38,7 +38,7 @@ student-18-suricata-5
 1. service influxdb status
 1. service telegraf status
 1. netstat -ntple
-
+```
 
 ### :9200 elasticsearch
 
