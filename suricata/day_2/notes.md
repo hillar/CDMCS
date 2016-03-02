@@ -111,3 +111,11 @@
 1. select *edit*
 1. play around ...
 1. click *floppy image* on top
+
+### :8000 Scirius
+
+ * open in browser http://10.242.11.XX0:8000/
+ * user *admin* password *admin*
+ * click on *elasticsearch*
+ * look around ...
+ 
