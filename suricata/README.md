@@ -25,36 +25,40 @@
 * 09:00 - 11:45 [Tuning Considerations](/suricata/day_1/SingleBoxtuning.md)
 
 
+* 13:00 - 13:45 [intro](/suricata/day_2/README.md),[Metrix](/suricata/day_2/SetUpMetrics.md),[Elastic](/suricata/day_2/SetUpElastic.md), [Minions](/suricata/day_2/SetUpMinions.md), [Master](/suricata/day_2/SetUpMaster.md)
+* 14:00 - 16:45 [work with boxes](/suricata/day_2/notes.md)
 
-
-* 13:00 - 13:45 [intro](/suricata/day_2/README.md),[Metrix](/suricata/day_2/SetUpMetrics.md),[Elastic](/suricata/day_2/SetUpElastic.md), [Minions](/suricata/day_2/SetUpMinions.md)
-* 14:00 - 15:45 [Master](/suricata/day_2/SetUpMaster.md)
-* 16:00 - 16:45 [Kibana4](/suricata/day_2/Kibana4.md)
 
 
 ## Day 3 :: Advanced usage
 
-* 09:00 - 09:45 [pf_packet, af_ring, ..](/suricata/day_3/NICAccess.md)  
-* 10:00 - 10:45 [Loading many pcaps](/suricata/day_3/LoadPcaps.md)
-* 11:00 - 11:45 [Multi Tenancy](/suricata/day_3/MultiTenancy.md)
+* 09:00 - 09:45 [diving into nigthly alerts](/suricata/day_2/Kibana4.md)
+* 10:00 - 10:45
+* 11:00 - 11:45
 
 
 
-* 13:00 - 13:45 Extraction, [TLS monitor](/suricata/day_1/TLSMonitor.md) , [DNS probe](/suricata/day_1/DNSProbe.md) , [flow probe](/suricata/day_1/FlowProbe.md)
-* 14:00 - 14:45 Extraction [file](/suricata/day_1/FileExtraction.md)   
-* 15:00 - 15:45 [Lua Output](/suricata/day_3/LuaOutput.md)
-* 16:00 - 16:45 [Lua scripted rules](/suricata/day_3/LuaRules.md)
+* 13:00 - 13:45
+* 14:00 - 14:45   
+* 15:00 - 15:45
+* 16:00 - 16:45
 
 
-
+* [Lua scripted rules](/suricata/day_3/LuaRules.md)
+* [Lua Output](/suricata/day_3/LuaOutput.md)
+* Extraction [file](/suricata/day_1/FileExtraction.md)
+* [TLS monitor](/suricata/day_1/TLSMonitor.md) , [DNS probe](/suricata/day_1/DNSProbe.md) , [flow probe](/suricata/day_1/FlowProbe.md)
+* [Multi Tenancy](/suricata/day_3/MultiTenancy.md)
+* [Loading many pcaps](/suricata/day_3/LoadPcaps.md)
 * [Internal counters](/suricata/day_3/DumpCounters.md)
 * [Converting logs to pcap](/suricata/day_3/Eve2Pcap.md)
 * [evil bit](/suricata/day_3/EvilBit.md)
 * [rule profiling](/suricata/day_1/RuleProfiling.md),
+* [pf_packet, af_ring, ..](/suricata/day_3/NICAccess.md)
 
 
 ## Day +1
 
-* 09:00 - 09:45 [Threat Management XYZ]()
+* 09:00 - 09:45
 * 10:00 - 10:45
 * 11:00 - 11:45 [pgp key signing, conctat excange, thanks, etc ...]()
