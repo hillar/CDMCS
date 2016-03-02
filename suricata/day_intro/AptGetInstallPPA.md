@@ -77,7 +77,7 @@ Reading package lists... Done
 
 ```
 
-root@secx:~# apt-get install suricata
+root@secx:~# apt-get install suricata libhtp1
 Reading package lists... Done
 Building dependency tree       
 Reading state information... Done
