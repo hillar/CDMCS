@@ -4,7 +4,7 @@
 
 ### ssh into admin box
 
-1. ssh user@10.242.XX0
+1. ssh user@10.242.11.XX0
 1. w
 1. last
 1. cat /etc/salt/minion
