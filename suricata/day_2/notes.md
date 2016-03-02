@@ -16,7 +16,7 @@ id: student-XX-admin
 1. ps aux | less
 1. sudo -i
 1. salt-key -L
- ```
+```
 Accepted Keys:
 Denied Keys:
 Unaccepted Keys:
@@ -27,7 +27,7 @@ student-18-suricata-1
 student-18-suricata-2
 student-18-suricata-4
 student-18-suricata-5
- ```
+```
   * salt-key -A -y
 1. salt '\*' test.ping
 1. salt '\*' service.status telegraf
