@@ -34,9 +34,9 @@ student-18-suricata-5
 1. salt '\*suricata\*' service.status suricata
 1. salt '\*suricata\*' service.status logstash
 1. salt '\*elastic\*' service.status elasticsearch
-1. service status elasticsearch
-1. service status influxdb
-1. service status telegraf
+1. service elasticsearch status
+1. service influxdb status
+1. service telegraf status
 1. netstat -ntple
 
 
