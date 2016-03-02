@@ -7,9 +7,9 @@ We need also:
 * to know, how hw is holding
 * good fast responsive place to put all our stuff
 
-![graphvizrocks](./suriNpng)
+![graphvizrocks](./suriN.png)
 
-see [source](./suriN.dot) 
+see [source](./suriN.dot)
 
 ----
 
