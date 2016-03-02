@@ -29,11 +29,11 @@ student-18-suricata-4
 student-18-suricata-5
  ```
   * salt-key -A -y
-1. salt \* test.ping
-1. salt \* service.status telegraf
-1. salt \*suricata\* service.status suricata
-1. salt \*suricata\* service.status logstash
-1. salt \*elastic\* service.status elasticsearch
+1. salt '\*' test.ping
+1. salt '\*' service.status telegraf
+1. salt '\*suricata\*' service.status suricata
+1. salt '\*suricata\*' service.status logstash
+1. salt '\*elastic\*' service.status elasticsearch
 1. service status elasticsearch
 1. service status influxdb
 1. service status telegraf
