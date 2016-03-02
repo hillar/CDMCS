@@ -8,4 +8,4 @@
 
  ----
 
- [next : admin box](/suricata/admin.md)
+ [next : admin box](/suricata/day_2/admin.md)
