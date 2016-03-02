@@ -56,7 +56,7 @@ id: student-XX-admin
 
 ### :5636 EveBox
 
-> open in browser http://10.242.11.XX0:5636/
+> open in browser http://10.242.11.XX0:5636/ https://github.com/hillar/CDMCS/blob/master/suricata/day_2/boxes/scripts/install-evebox.sh#L30
 
 
 1. click *settings*
@@ -131,7 +131,7 @@ id: student-XX-admin
 
 ### :8000 Scirius
 
-1. open in browser http://10.242.11.XX0:8000/
-1. user *admin* password *admin*
+1. open in browser http://10.242.11.XX0:8000/ https://github.com/hillar/CDMCS/blob/master/suricata/day_2/boxes/scripts/install-scirius.sh#L62
+1. user *admin* password *admin* https://github.com/hillar/CDMCS/blob/master/suricata/day_2/boxes/scripts/install-scirius.sh#L61
 1. click on *elasticsearch*
 1. look around ...
