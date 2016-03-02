@@ -135,3 +135,6 @@ id: student-XX-admin
 1. user *admin* password *admin* https://github.com/hillar/CDMCS/blob/master/suricata/day_2/boxes/scripts/install-scirius.sh#L61
 1. click on *elasticsearch*
 1. look around ...
+
+---
+[next : set homenet](/suricata/day_2/homenet.md)
