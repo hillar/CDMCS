@@ -1,6 +1,14 @@
 ## check prepared sceleton
 
- * XX <- studentnumber [1..18]
+* XX <- studentnumber [1..18]
+
+
+* 10.242.11.XX0 student-XX-admin https://github.com/hillar/CDMCS/blob/master/suricata/day_2/boxes/Vagrantfile#L158
+* 10.242.11.XX1 student-XX-suricata-1 https://github.com/hillar/CDMCS/blob/master/suricata/day_2/boxes/Vagrantfile#L120
+* 10.242.11.XX9 student-XX-elasticsearch-1  https://github.com/hillar/CDMCS/blob/master/suricata/day_2/boxes/Vagrantfile#L88
+
+
+
 
 ### ssh into admin box
 
@@ -12,23 +20,10 @@
 master: 10.242.11.9
 id: student-XX-admin
  ```
-
 1. ps aux | less
 1. sudo -i
 1. salt-key -L
-```
-Accepted Keys:
-Denied Keys:
-Unaccepted Keys:
-student-18-elasticsearch-1
-student-18-elasticsearch-2
-student-18-elasticsearch-3
-student-18-suricata-1
-student-18-suricata-2
-student-18-suricata-4
-student-18-suricata-5
-```
-  * salt-key -A -y
+1. salt-key -A -y
 1. salt '\*' test.ping
 1. salt '\*' service.status telegraf
 1. salt '\*suricata\*' service.status suricata
@@ -38,7 +33,7 @@ student-18-suricata-5
 1. service influxdb status
 1. service telegraf status
 1. netstat -ntple
-```
+
 
 ### :9200 elasticsearch
 
@@ -51,7 +46,7 @@ student-18-suricata-5
  ```
 
 
-* open in browser http://10.242.11.XX0:9200/_plugin/head
+> open in browser http://10.242.11.XX0:9200/_plugin/head
 
 
 1. click *Indices*
@@ -61,7 +56,7 @@ student-18-suricata-5
 
 ### :5636 EveBox
 
-* open in browser http://10.242.11.XX0:5636/
+> open in browser http://10.242.11.XX0:5636/
 
 
 1. click *settings*
@@ -81,7 +76,7 @@ student-18-suricata-5
  $ curl -XGET 'http://somehostname:8086/query?db=mydb' --data-urlencode 'q=SHOW MEASUREMENTS'
  ```
 
- * open in browser http://10.242.11.XX0:8083/
+ > open in browser http://10.242.11.XX0:8083/
 
 
  1. set current database to *telegraf*
@@ -93,20 +88,23 @@ student-18-suricata-5
 
 ### :5601 Kibana4
 
-* open in browser http://10.242.11.XX0:5601
+> open in browser http://10.242.11.XX0:5601
 
 
-1. Index name or pattern
-1. Time-field name
+1. set *Index name or pattern*
+1. set *Time-field name*
 1. click *Discover* tab on top left
 
 ### :3000 Grafana
 
-* open in browser http://10.242.11.XX0:3000/
+> open in browser http://10.242.11.XX0:3000/
+
+#### add first datasource
 
 1. click *Data Sources* (http://10.242.11.XX0:3000/datasources)
 1. click *Add new* (http://10.242.11.XX0:3000/datasources/new)
 1. set *Name* to *telemetry*
+1. tick *default*
 1. set *Type* to *InfluxDB 0.9.x*
 1. set *Url* to *http://10.242.11.XX0:8086*
 1. set *Database* to *telegraf*
@@ -114,6 +112,7 @@ student-18-suricata-5
 1. click *Test Connection*
 1. click *Save*
 
+#### create first dashboard and graph
 
 1. click *Dashboards*
 1. click *Home*
@@ -132,7 +131,7 @@ student-18-suricata-5
 
 ### :8000 Scirius
 
- * open in browser http://10.242.11.XX0:8000/
- * user *admin* password *admin*
- * click on *elasticsearch*
- * look around ...
+1. open in browser http://10.242.11.XX0:8000/
+1. user *admin* password *admin*
+1. click on *elasticsearch*
+1. look around ...
