@@ -22,16 +22,14 @@
 
 ## Day 2 :: Cluster
 
-* 09:00 - 09:45 [Tuning Considerations](/suricata/day_1/SingleBoxtuning.md)
-* 10:00 - 10:45 [intro](/suricata/day_2/README.md),[Metrix](/suricata/day_2/SetUpMetrics.md),[Elastic](/suricata/day_2/SetUpElastic.md), [Minions](/suricata/day_2/SetUpMinions.md)
-* 11:00 - 11:45 [Master](/suricata/day_2/SetUpMaster.md)
+* 09:00 - 11:45 [Tuning Considerations](/suricata/day_1/SingleBoxtuning.md)
 
 
 
-* 13:00 - 13:45
-* 14:00 - 14:45 [Kibana4](/suricata/day_2/Kibana4.md)
-* 15:00 - 15:45
-* 16:00 - 16:45
+
+* 13:00 - 13:45 [intro](/suricata/day_2/README.md),[Metrix](/suricata/day_2/SetUpMetrics.md),[Elastic](/suricata/day_2/SetUpElastic.md), [Minions](/suricata/day_2/SetUpMinions.md)
+* 14:00 - 15:45 [Master](/suricata/day_2/SetUpMaster.md)
+* 16:00 - 16:45 [Kibana4](/suricata/day_2/Kibana4.md)
 
 
 ## Day 3 :: Advanced usage
