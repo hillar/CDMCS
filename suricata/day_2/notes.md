@@ -7,9 +7,27 @@
 1. ssh user@10.242.XX0
 1. w
 1. last
+1. cat /etc/salt/minion
+ ```
+master: 10.242.11.9
+id: student-XX-admin
+ ```
+
 1. ps aux | less
 1. sudo -i
 1. salt-key -L
+ ```
+Accepted Keys:
+Denied Keys:
+Unaccepted Keys:
+student-18-elasticsearch-1
+student-18-elasticsearch-2
+student-18-elasticsearch-3
+student-18-suricata-1
+student-18-suricata-2
+student-18-suricata-4
+student-18-suricata-5
+ ```
   * salt-key -A -y
 1. salt \* test.ping
 1. salt \* service.status telegraf
@@ -118,4 +136,3 @@
  * user *admin* password *admin*
  * click on *elasticsearch*
  * look around ...
- 
