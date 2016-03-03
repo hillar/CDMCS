@@ -17,3 +17,6 @@ grep "elasticsearch.url" /opt/kibana/config/kibana.yml
 ```
 event_type:"alert" AND alert.severity:2
 ```
+
+---
+[next : looking at the numbers](/suricata/day_2/Grafana.md)
