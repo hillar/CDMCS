@@ -32,14 +32,13 @@
 
 ## Day 3 :: Advanced usage
 
-* 09:00 - 09:45 [diving into nigthly alerts](/suricata/day_2/Kibana4.md)
-* 10:00 - 10:45
-* 11:00 - 11:45
+* 09:00 - 11:45 [diving into nigthly alerts](/suricata/day_2/Kibana4.md)
 
 
 
-* 13:00 - 13:45
-* 14:00 - 14:45   
+
+* 13:00 - 13:45 [Multi Tenancy](/suricata/day_3/MultiTenancy.md)
+* 14:00 - 14:45 [Loading many pcaps](/suricata/day_3/LoadPcaps.md)  
 * 15:00 - 15:45
 * 16:00 - 16:45
 
@@ -48,8 +47,6 @@
 * [Lua Output](/suricata/day_3/LuaOutput.md)
 * Extraction [file](/suricata/day_1/FileExtraction.md)
 * [TLS monitor](/suricata/day_1/TLSMonitor.md) , [DNS probe](/suricata/day_1/DNSProbe.md) , [flow probe](/suricata/day_1/FlowProbe.md)
-* [Multi Tenancy](/suricata/day_3/MultiTenancy.md)
-* [Loading many pcaps](/suricata/day_3/LoadPcaps.md)
 * [Internal counters](/suricata/day_3/DumpCounters.md)
 * [Converting logs to pcap](/suricata/day_3/Eve2Pcap.md)
 * [evil bit](/suricata/day_3/EvilBit.md)
