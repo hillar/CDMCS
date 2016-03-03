@@ -10,6 +10,9 @@
 #### fresh blog posts
 * https://stoq-framework.blogspot.com.ee/2016/02/using-stoq-with-suricatas-file.html
 
+### slides
+* Generic slides with filestore keywords after slide 12: https://home.regit.org/wp-content/uploads/2015/02/suricata-netfilter-prc.pdf
+
 ### config
 ``` yaml
 - file-store:
