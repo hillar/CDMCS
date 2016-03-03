@@ -1,0 +1,29 @@
+#!/usr/bin/python
+
+from __future__ import print_function
+import os
+from suricatasc import *
+
+
+SOCKET_PATH = "/home/eric/builds/suricata/var/run/suricata/suricata-command.socket"
+
+sc = SuricataSC(SOCKET_PATH, verbose=False)
+
+sc.connect()
+
+DIRECTORY = '/home/eric/git/oisf/benches/'
+for pcap in os.listdir(DIRECTORY):
+    if os.path.isfile(os.path.join(DIRECTORY,pcap)) and pcap.endswith(".pcap"):
+        print(pcap)
+        outputdir = os.path.join(DIRECTORY, pcap + '.log')
+        try:
+            os.mkdir(outputdir)
+        except OSError:
+            os.unlink(os.path.join(outputdir, "eve.json"))
+            pass
+        (command, arguments) = sc.parse_command("pcap-file %s %s" % (os.path.join(DIRECTORY, pcap), outputdir));
+        res = sc.send_command(command, arguments)
+        print(json.dumps(res))
+
+sc.close()
+
