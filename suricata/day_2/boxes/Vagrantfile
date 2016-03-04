@@ -70,7 +70,7 @@ Vagrant.configure('2') do |config|
 
   # boxes .......................................................
   ip_teacher = NET  + (NET_START + 9).to_s
-  (9..STUDENTS).each do |studentnumber|
+  (1..STUDENTS).each do |studentnumber|
     if PVSPHERE
     #config.vm.provider :vsphere do |vsphere|
     #  vsphere.vm_base_path = VSPHERE_VM_PATH + 'Student_' + studentnumber.to_s

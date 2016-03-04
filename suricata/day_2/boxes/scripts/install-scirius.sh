@@ -19,7 +19,7 @@ service suricata stop
 # see https://github.com/StamusNetworks/scirius#installation-and-setup
 DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y wget python-pip python-dev git gcc > /dev/null 2>&1
 cd /tmp
-wget https://github.com/StamusNetworks/scirius/archive/master.tar.gz
+wget -4 -q https://github.com/StamusNetworks/scirius/archive/master.tar.gz > /dev/null 2>&1
 mkdir -p /opt/selks/sciriusdata
 cd /opt/selks
 tar zxf /tmp/master.tar.gz
@@ -56,7 +56,7 @@ python manage.py defaultruleset "Default SELKS ruleset" > /dev/null 2>&1
 python manage.py disablecategory "Default SELKS ruleset" stream-events > /dev/null 2>&1
 python manage.py addsuricata $(hostname) "Suricata on SELKS" /etc/suricata/rules "Default SELKS ruleset" > /dev/null 2>&1
 python manage.py updatesuricata > /dev/null 2>&1
-suricata -T -c /etc/suricata/suricata.yaml 
+suricata -T -c /etc/suricata/suricata.yaml
 # set u:p  to admin:password
 echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@localhost', 'admin')" | python manage.py shell
 python manage.py runserver 0.0.0.0:8000 > /var/log/scirius.log 2>&1 &
