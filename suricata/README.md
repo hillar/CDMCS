@@ -47,8 +47,6 @@
 * [Lua Output](/suricata/day_3/LuaOutput.md)
 * Extraction [file](/suricata/day_1/FileExtraction.md)
 * [TLS monitor](/suricata/day_1/TLSMonitor.md) , [DNS probe](/suricata/day_1/DNSProbe.md) , [flow probe](/suricata/day_1/FlowProbe.md)
-* [Internal counters](/suricata/day_3/DumpCounters.md)
-* [Converting logs to pcap](/suricata/day_3/Eve2Pcap.md)
 * [evil bit](/suricata/day_3/EvilBit.md)
 * [rule profiling](/suricata/day_1/RuleProfiling.md),
 * [pf_packet, af_ring, ..](/suricata/day_3/NICAccess.md)
@@ -56,6 +54,7 @@
 
 ## Day +1
 
-* 09:00 - 09:45
-* 10:00 - 10:45
-* 11:00 - 11:45 [pgp key signing, conctat excange, thanks, etc ...]()
+* 09:00 - 09:45 [Internal counters](/suricata/day_3/DumpCounters.md)
+* 10:00 - 10:45 [Converting logs to pcap](/suricata/day_3/Eve2Pcap.md)
+* 11:00 - 11:45 [pgp key signing, contact excange, thanks, etc ...]()
+*         12:00 The End
