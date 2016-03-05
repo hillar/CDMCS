@@ -6,4 +6,4 @@
 
 echo 'deb http://download.opensuse.org/repositories/network:/bro/xUbuntu_14.04/ /' >> /etc/apt/sources.list.d/bro.list
 apt-get update
-apt-get -y install bro
+apt-get -y --force-yes install bro
