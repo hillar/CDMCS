@@ -7,10 +7,8 @@ suricata/day_1/boxes/lastrun.txt
 suricata/day_2/boxes/.vagrant
 suricata/day_2/boxes/lastrun.txt
 suricata/day_intro/amstelredamme/.vagrant
-
 suricata/day_intro/dummy/.vagrant
-
 suricata/day_intro/empty/.vagrant
-
 bro/day_intro/empty/.vagrant
 bro/day_intro/empty/.vagrant
+bro/day_intro/brodello/.vagrant
