@@ -19,7 +19,7 @@ if [ "$(id -u)" != "0" ]; then
 fi
 
 ETH=$1
-IP=$(ifconfig eth1 2>/dev/null|grep 'inet addr'|cut -f2 -d':'|cut -f1 -d' ')
+IP=$(ifconfig $ETH 2>/dev/null|grep 'inet addr'|cut -f2 -d':'|cut -f1 -d' ')
 HOSTNAME=$(hostname -f)
 MASTER=$IP
 ELASTIC=$IP
@@ -129,7 +129,7 @@ echo 'deb http://download.opensuse.org/repositories/network:/bro/xUbuntu_14.04/ 
 apt-get update > /dev/null 2>&1
 apt-get -y --force-yes install bro > /dev/null 2>&1
 #interface=eth0
-sed -i -e 's,interface=eth0,interface=eth1,g' /opt/bro/etc/node.cfg
+sed -i -e 's,interface=eth0,interface='"$ETH"',g' /opt/bro/etc/node.cfg
 echo "192.168.10.0/24      Private IP space" > /opt/bro/etc/networks.cfg
 
 /opt/bro/bin/broctl deploy > /dev/null 2>&1
