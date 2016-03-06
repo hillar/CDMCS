@@ -18,6 +18,7 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
+ETH=$1
 IP=$(ifconfig eth1 2>/dev/null|grep 'inet addr'|cut -f2 -d':'|cut -f1 -d' ')
 HOSTNAME=$(hostname -f)
 MASTER=$IP
