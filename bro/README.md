@@ -3,7 +3,7 @@
 
  * 13:00 - 13:45 [Intro]() [vagrant]() [apt-get install]()
  * 14:00 - 14:45 [basic config]()
- * 15:00 - 15:45 [basic logging](/bro/day_intro/BasicScripting.md)
+ * 15:00 - 15:45 [basic logging](/bro/day_intro/BasicLogging.md)
  * 16:00 - 16:45 [basic scripting](/bro/day_intro/BasicScripting.md)
 
 ## Day 1 :: Single Box
