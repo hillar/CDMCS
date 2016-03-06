@@ -29,7 +29,7 @@ UNICASTHOSTS=$IP
 BIND=$IP
 
 # Telegraf
-echo "installing telegraf on ${IP} ${HOSTNAME} setting influxdb to ${MASTER}"
+echo "$(date) installing telegraf on ${IP} ${HOSTNAME} setting influxdb to ${MASTER}"
 
 TLGF=0.10.4.1
 INSTALL_DIR=/provision
@@ -83,7 +83,7 @@ DELIM
 fi
 
 # influxdb
-echo "installing influxdb on ${IP} ${HOSTNAME} setting bind to ${BIND}..."
+echo "$(date) installing influxdb on ${IP} ${HOSTNAME} setting bind to ${BIND}..."
 
 INSTALL_DIR=/provision
 
@@ -124,16 +124,20 @@ fi
 
 # Bro
 
+echo "$(date) installing bro"
 echo 'deb http://download.opensuse.org/repositories/network:/bro/xUbuntu_14.04/ /' >> /etc/apt/sources.list.d/bro.list
 apt-get update > /dev/null 2>&1
 apt-get -y --force-yes install bro > /dev/null 2>&1
 #interface=eth0
 sed -i -e 's,interface=eth0,interface=eth1,g' /opt/bro/etc/node.cfg
-/opt/bro/bin/broctl deploy
+echo "192.168.10.0/24      Private IP space" > /opt/bro/etc/networks.cfg
+
+/opt/bro/bin/broctl deploy > /dev/null 2>&1
+/opt/bro/bin/broctl status
 
 
 # elasticsearch
-echo "adding new node to cluster: ${CLUSTER} node: ${NAME} bind: ${IP} unicast host: ${UNICASTHOSTS} type: ${TYPE}"
+echo "$(date) installing elasticsearch cluster: ${CLUSTER} node: ${NAME} bind: ${IP} unicast host: ${UNICASTHOSTS}"
 INSTALL_DIR=/provision
 ES=2.2.0
 mkdir -p ${INSTALL_DIR}/elasticsearch
@@ -168,7 +172,7 @@ else
   service elasticsearch start
 fi
 # logstash
-echo "installing logstash on $IP $HOSTNAME setting elasticsearch on $ELASTIC"
+echo "$(date) installing logstash on $IP $HOSTNAME setting elasticsearch on $ELASTIC"
 
 #ELASTIC=$(ifconfig eth0 2>/dev/null|grep 'inet addr'|cut -f2 -d':'|cut -f1 -d' ')
 echo 'deb http://packages.elasticsearch.org/logstash/2.2/debian stable main' > /etc/apt/sources.list.d/logstash.list
@@ -199,11 +203,9 @@ cat > /etc/telegraf/telegraf.d/logstash.conf <<DELIM
   pid_file = "/var/run/logstash.pid"
 DELIM
 service telegraf restart > /dev/null 2>&1
-sudo -u logstash /opt/logstash/bin/logstash agent -f /etc/logstash/conf.d --configtest
-
 
 # Grafana
-echo "installing grafana on ${IP} ${HOSTNAME}"
+echo "$(date) installing grafana on ${IP} ${HOSTNAME}"
 
 INSTALL_DIR=/provision
 GRFN="2.6.0"
@@ -236,7 +238,7 @@ fi
 #Kibana
 KBN=4.4
 ELASTIC=$IP
-echo "installing kibana$KBN on $IP $HOSTNAME setting elastic to $ELASTIC"
+echo "$(date) installing kibana$KBN on $IP $HOSTNAME setting elastic to $ELASTIC"
 wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | apt-key add - > /dev/null 2>&1
 echo 'deb http://packages.elastic.co/kibana/'${KBN}'/debian stable main' > /etc/apt/sources.list.d/kibana.list
 apt-get update > /dev/null 2>&1
@@ -255,10 +257,12 @@ cat > /etc/telegraf/telegraf.d/kibana.conf <<DELIM
 DELIM
 service telegraf restart  > /dev/null 2>&1
 
+echo "$(date) done installing"
+
 #to have some traffic
 mkdir -p /opt/test
 cd /opt/test/
 wget -4 -q https://rules.emergingthreats.net/open/suricata/emerging.rules.tar.gz
 tar -xzf emerging.rules.tar.gz
 cd rules/
-grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" *.rules|rev|sort|uniq|rev|while read i; do wget -q -T 1 -t 1 $i; done 
+grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" *.rules|rev|sort|uniq|rev|while read i; do wget -q -T 1 -t 1 $i; done
