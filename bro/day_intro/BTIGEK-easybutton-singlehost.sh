@@ -254,3 +254,11 @@ cat > /etc/telegraf/telegraf.d/kibana.conf <<DELIM
   pid_file = "/var/run/kibana.pid"
 DELIM
 service telegraf restart  > /dev/null 2>&1
+
+#to have some traffic
+mkdir -p /opt/test
+cd /opt/test/
+wget -4 -q https://rules.emergingthreats.net/open/suricata/emerging.rules.tar.gz
+tar -xzf emerging.rules.tar.gz
+cd rules/
+grep -E -o "([0-9]{1,3}[\.]){3}[0-9]{1,3}" *.rules|rev|sort|uniq|rev|while read i; do wget -q -T 1 -t 1 $i; done 
