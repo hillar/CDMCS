@@ -179,6 +179,7 @@ echo 'deb http://packages.elasticsearch.org/logstash/2.2/debian stable main' > /
 apt-get update > /dev/null 2>&1
 apt-get -y --force-yes install logstash > /dev/null 2>&1
 /opt/logstash/bin/plugin install logstash-filter-translate > /dev/null 2>&1
+/opt/logstash/bin/plugin  install logstash-filter-de_dot
 #stealing from Tim Molter
 cd /etc/logstash/conf.d/
 wget -q https://raw.githubusercontent.com/timmolter/logstash-dfir/master/conf_files/bro/bro-conn_log.conf
