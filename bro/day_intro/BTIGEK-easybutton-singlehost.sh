@@ -136,15 +136,9 @@ echo "$BROPREF      Private IP space" > /opt/bro/etc/networks.cfg
 /opt/bro/bin/broctl deploy > /dev/null 2>&1
 /opt/bro/bin/broctl status
 
-<<<<<<< Updated upstream
+
 #Java
 apt-get install -y openjdk-7-jre-headless
-=======
-#fix this hack ;(
-chmod -R 777 /opt/bro/spool
-chmod -R 777 /opt/bro/logs
-
->>>>>>> Stashed changes
 
 # elasticsearch
 echo "$(date) installing elasticsearch cluster: ${CLUSTER} node: ${NAME} bind: ${IP} unicast host: ${UNICASTHOSTS}"
