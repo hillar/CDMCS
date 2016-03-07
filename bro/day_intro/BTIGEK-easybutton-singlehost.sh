@@ -124,19 +124,27 @@ fi
 
 # Bro
 
+BROPREF="$(echo $IP|cut -f1,2,3 -d".").0/24"
 echo "$(date) installing bro"
 echo 'deb http://download.opensuse.org/repositories/network:/bro/xUbuntu_14.04/ /' >> /etc/apt/sources.list.d/bro.list
 apt-get update > /dev/null 2>&1
 apt-get -y --force-yes install bro > /dev/null 2>&1
 #interface=eth0
 sed -i -e 's,interface=eth0,interface='"$ETH"',g' /opt/bro/etc/node.cfg
-echo "192.168.10.0/24      Private IP space" > /opt/bro/etc/networks.cfg
+echo "$BROPREF      Private IP space" > /opt/bro/etc/networks.cfg
 
 /opt/bro/bin/broctl deploy > /dev/null 2>&1
 /opt/bro/bin/broctl status
 
+<<<<<<< Updated upstream
 #Java
 apt-get install -y openjdk-7-jre-headless
+=======
+#fix this hack ;(
+chmod -R 777 /opt/bro/spool
+chmod -R 777 /opt/bro/logs
+
+>>>>>>> Stashed changes
 
 # elasticsearch
 echo "$(date) installing elasticsearch cluster: ${CLUSTER} node: ${NAME} bind: ${IP} unicast host: ${UNICASTHOSTS}"
@@ -195,10 +203,17 @@ wget -q https://raw.githubusercontent.com/timmolter/logstash-dfir/master/conf_fi
 wget -q https://raw.githubusercontent.com/timmolter/logstash-dfir/master/conf_files/bro/bro-x509_log.conf
 #  elasticsearch { host => localhost }
 sed -i -e 's,host => localhost,hosts => "'${ELASTIC}'"\n index => "bro-%{+YYYY.MM.dd.HH}",g' /etc/logstash/conf.d/*.conf
-sed -i -e '/date/i \ \ \ \ \de_dot{ }' /etc/logstash/conf.d/*.conf
-sed -i -e 's/id.orig_h/id_orig_h/g' -e 's/id.resp_h/id_resp_h/g' -e 's/id.orig_p/id_orig_p/g' -e 's/id.resp_p/id_resp_p/g' /etc/logstash/conf.d/*.conf
+#sed -i -e '/date/i \ \ \ \ \de_dot{ }' /etc/logstash/conf.d/*.conf
+#sed -i -e 's/id.orig_h/id_orig_h/g' -e 's/id.resp_h/id_resp_h/g' -e 's/id.orig_p/id_orig_p/g' -e 's/id.resp_p/id_resp_p/g' /etc/logstash/conf.d/*.conf
 #path => "/nsm/bro/logs/current/conn.log"
 sed -i -e 's,/nsm/bro/logs/current/,/opt/bro/logs/current/,g' /etc/logstash/conf.d/*.conf
+# filter {
+#  de_dot {
+#  }
+#}
+ls bro-*.conf | while read conf; do echo "filter { de_dot {}}" >> $conf; done
+
+
 sudo -u logstash /opt/logstash/bin/logstash agent -f /etc/logstash/conf.d --configtest
 
 adduser logstash bro
