@@ -136,6 +136,11 @@ echo "$BROPREF      Private IP space" > /opt/bro/etc/networks.cfg
 /opt/bro/bin/broctl deploy > /dev/null 2>&1
 /opt/bro/bin/broctl status
 
+cat > /etc/telegraf/telegraf.d/bro.conf <<DELIM
+[[inputs.procstat]]
+  exe = "bro"
+DELIM
+
 
 #Java
 apt-get install -y openjdk-7-jre-headless
