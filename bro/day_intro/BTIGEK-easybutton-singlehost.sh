@@ -135,6 +135,8 @@ echo "192.168.10.0/24      Private IP space" > /opt/bro/etc/networks.cfg
 /opt/bro/bin/broctl deploy > /dev/null 2>&1
 /opt/bro/bin/broctl status
 
+#Java
+apt-get install -y openjdk-7-jre-headless
 
 # elasticsearch
 echo "$(date) installing elasticsearch cluster: ${CLUSTER} node: ${NAME} bind: ${IP} unicast host: ${UNICASTHOSTS}"
@@ -196,8 +198,8 @@ sed -i -e 's,host => localhost,hosts => "'${ELASTIC}'"\n index => "bro-%{+YYYY.M
 #path => "/nsm/bro/logs/current/conn.log"
 sed -i -e 's,/nsm/bro/logs/current/,/opt/bro/logs/current/,g' /etc/logstash/conf.d/*.conf
 sudo -u logstash /opt/logstash/bin/logstash agent -f /etc/logstash/conf.d --configtest
-#fix this hack
-#chmod 777 /opt/bro/logs/current/*
+
+adduser logstash bro
 service logstash start > /dev/null 2>&1
 cat > /etc/telegraf/telegraf.d/logstash.conf <<DELIM
 [[inputs.procstat]]
