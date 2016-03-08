@@ -35,3 +35,14 @@ mkdir /tmp/logdir
 cd /tmp/logdir && /opt/bro/bin/bro -r <pcapfile> local
 tail *.log
 ```
+
+# Log types
+
+ * [conn](https://www.bro.org/sphinx/scripts/base/protocols/conn/main.bro.html)
+ * [dns](https://www.bro.org/sphinx/scripts/base/protocols/dns/main.bro.html)
+ * [http](https://www.bro.org/sphinx/scripts/base/protocols/http/main.bro.html)
+ * [tls](https://www.bro.org/sphinx/scripts/base/files/x509/main.bro.html)
+ * [smtp](https://www.bro.org/sphinx/scripts/base/protocols/smtp/main.bro.html)
+ * [notice](https://www.bro.org/sphinx/scripts/base/frameworks/notice/main.bro.html)
+ * [weird](https://www.bro.org/sphinx/scripts/base/frameworks/notice/weird.bro.html)
+ * [etc...](https://www.bro.org/sphinx/script-reference/scripts.html)
