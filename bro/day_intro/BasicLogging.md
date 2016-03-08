@@ -4,3 +4,34 @@
 
 
 https://www.bro.org/sphinx/logs/index.html
+
+# Daemon logs
+
+```
+grep log /opt/bro/etc/broctl.cfg
+```
+
+## Log archive
+
+```
+root@bro-empty:/opt/bro/etc# ls -la <LOGDIR>
+total 12
+drwxrws--- 3 root bro  4096 Mar  8 14:20 .
+drwxr-xr-x 8 root root 4096 Mar  8 14:01 ..
+drwxr-sr-x 2 root bro  4096 Mar  8 14:20 2016-03-08
+lrwxrwxrwx 1 root bro    18 Mar  8 14:17 current -> /opt/bro/spool/bro
+```
+
+## Actively written logs
+
+```
+ls -la /opt/bro/spool/bro
+```
+
+# Runtime
+
+```
+mkdir /tmp/logdir
+cd /tmp/logdir && /opt/bro/bin/bro -r <pcapfile> local
+tail *.log
+```
