@@ -16,6 +16,13 @@ You can verify with the following command.
 cat /etc/lsb-release
 ```
 
+# Add release key
+
+```
+wget http://download.opensuse.org/repositories/network:bro/xUbuntu_14.04/Release.key
+sudo apt-key add - < Release.key
+```
+
 # Update package lists
 
 ```
