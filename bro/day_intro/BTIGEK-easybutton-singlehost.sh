@@ -143,7 +143,7 @@ DELIM
 
 
 #Java
-apt-get install -y openjdk-7-jre-headless
+apt-get install -y openjdk-7-jre-headless > /dev/null 2>&1
 
 # elasticsearch
 echo "$(date) installing elasticsearch cluster: ${CLUSTER} node: ${NAME} bind: ${IP} unicast host: ${UNICASTHOSTS}"
@@ -188,7 +188,7 @@ echo 'deb http://packages.elasticsearch.org/logstash/2.2/debian stable main' > /
 apt-get update > /dev/null 2>&1
 apt-get -y --force-yes install logstash > /dev/null 2>&1
 /opt/logstash/bin/plugin install logstash-filter-translate > /dev/null 2>&1
-/opt/logstash/bin/plugin  install logstash-filter-de_dot
+/opt/logstash/bin/plugin  install logstash-filter-de_dot > /dev/null 2>&1
 #stealing from Tim Molter
 cd /etc/logstash/conf.d/
 wget -q https://raw.githubusercontent.com/timmolter/logstash-dfir/master/conf_files/bro/bro-conn_log.conf
@@ -250,6 +250,10 @@ cat > /etc/telegraf/telegraf.d/grafana.conf <<DELIM
   pid_file = "/var/run/grafana-server.pid"
 DELIM
   service telegraf restart  > /dev/null 2>&1
+  apt-get install sqlite > /dev/null 2>&1
+  sqlite3 /var/lib/grafana/grafana.db "INSERT INTO \"data_source\" VALUES(1,1,0,\"influxdb\",\"tt\",\"proxy\",\"http://192.168.11.112:8086\",\"admin\",\"admin\",\"telegraf\",0,\"\",\"\",1,\"{}\",\"2016-03-07 18:21:44\",\"2016-03-07 18:50:56\",0);"
+  sqlite3 /var/lib/grafana/grafana.db "INSERT INTO \"dashboard\" VALUES(1,5,'cpu-per-procs','cpu per procs','{\"annotations\":{\"list\":[]},\"editable\":true,\"hideControls\":false,\"id\":1,\"links\":[],\"originalTitle\":\"cpu per procs\",\"rows\":[{\"collapse\":false,\"editable\":true,\"height\":\"450px\",\"panels\":[{\"aliasColors\":{},\"bars\":false,\"datasource\":null,\"editable\":true,\"error\":false,\"fill\":1,\"grid\":{\"leftLogBase\":1,\"leftMax\":100,\"leftMin\":0,\"rightLogBase\":1,\"rightMax\":null,\"rightMin\":null,\"threshold1\":null,\"threshold1Color\":\"rgba(216, 200, 27, 0.27)\",\"threshold2\":null,\"threshold2Color\":\"rgba(234, 112, 112, 0.22)\"},\"id\":1,\"isNew\":true,\"leftYAxisLabel\":\"\",\"legend\":{\"alignAsTable\":true,\"avg\":true,\"current\":true,\"max\":true,\"min\":true,\"show\":true,\"total\":false,\"values\":true},\"lines\":true,\"linewidth\":1,\"links\":[],\"nullPointMode\":\"connected\",\"percentage\":false,\"pointradius\":5,\"points\":false,\"renderer\":\"flot\",\"rightYAxisLabel\":\"\",\"seriesOverrides\":[],\"span\":12,\"stack\":true,\"steppedLine\":false,\"targets\":[{\"alias\":\"\",\"dsType\":\"influxdb\",\"groupBy\":[{\"params\":[\"$interval\"],\"type\":\"time\"},{\"params\":[\"process_name\"],\"type\":\"tag\"},{\"params\":[\"null\"],\"type\":\"fill\"}],\"measurement\":\"procstat\",\"query\":\"SELECT max(\\"cpu_usage\\") FROM \\"procstat\\" WHERE $timeFilter GROUP BY time($interval), \\"process_name\\" fill(null)\",\"refId\":\"A\",\"resultFormat\":\"time_series\",\"select\":[[{\"params\":[\"cpu_usage\"],\"type\":\"field\"},{\"params\":[],\"type\":\"max\"}]],\"tags\":[]}],\"timeFrom\":null,\"timeShift\":null,\"title\":\"cpu\",\"tooltip\":{\"shared\":true,\"value_type\":\"cumulative\"},\"type\":\"graph\",\"x-axis\":true,\"y-axis\":true,\"y_formats\":[\"short\",\"short\"]}],\"title\":\"Row\"}],\"schemaVersion\":8,\"sharedCrosshair\":true,\"style\":\"dark\",\"tags\":[],\"templating\":{\"list\":[]},\"time\":{\"from\":\"now-6h\",\"to\":\"now\"},\"timepicker\":{\"refresh_intervals\":[\"5s\",\"10s\",\"30s\",\"1m\",\"5m\",\"15m\",\"30m\",\"1h\",\"2h\",\"1d\"],\"time_options\":[\"5m\",\"15m\",\"1h\",\"6h\",\"12h\",\"24h\",\"2d\",\"7d\",\"30d\"]},\"timezone\":\"browser\",\"title\":\"cpu per procs\",\"version\":5}',1,'2016-03-07 18:59:48','2016-03-07 19:33:15');"
+
   #sleep 1
   #service telegraf status
 fi
