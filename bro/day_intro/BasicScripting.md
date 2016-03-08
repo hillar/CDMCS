@@ -7,3 +7,10 @@ see
 * https://www.bro.org/sphinx/scripting/index.html
 * https://www.bro.org/sphinx/script-reference/index.html
 * http://try.bro.org/#/trybro?example=hello
+
+
+# Getting started with packaged scripts
+
+```
+find /opt/bro/ -type f -name 'local*'
+```
