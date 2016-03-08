@@ -37,6 +37,14 @@ cd /tmp/logdir && /opt/bro/bin/bro -r <pcapfile> local
 tail *.log
 ```
 
+# ASCII tools
+
+
+ ```
+/opt/bro/bin/bro-cut --help
+/opt/bro/bin/bro-cut service resp_bytes id.resp_h < /opt/bro/logs/current/conn.log
+ ```
+
 # Log types
 
  * [conn](https://www.bro.org/sphinx/scripts/base/protocols/conn/main.bro.html)
@@ -47,11 +55,3 @@ tail *.log
  * [notice](https://www.bro.org/sphinx/scripts/base/frameworks/notice/main.bro.html)
  * [weird](https://www.bro.org/sphinx/scripts/base/frameworks/notice/weird.bro.html)
  * [etc...](https://www.bro.org/sphinx/script-reference/scripts.html)
-
- # ASCII tools
-
-
- ```
-/opt/bro/bin/bro-cut --help
-/opt/bro/bin/bro-cut service resp_bytes id.resp_h < /opt/bro/logs/current/conn.log
- ```
