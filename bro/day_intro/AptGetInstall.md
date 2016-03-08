@@ -57,3 +57,47 @@ bro:
 ```
 /opt/bro/bin/broctl status
 ```
+
+# Update only
+
+```
+/opt/bro/bin/broctl install
+```
+
+# RTFM
+
+```
+root@bro-empty:/opt/bro/etc# /opt/bro/bin/broctl help
+
+BroControl Version 1.4
+
+  capstats [<nodes>] [<secs>]      - Report interface statistics with capstats
+  check [<nodes>]                  - Check configuration before installing it
+  cleanup [--all] [<nodes>]        - Delete working dirs (flush state) on nodes
+  config                           - Print broctl configuration
+  cron [--no-watch]                - Perform jobs intended to run from cron
+  cron enable|disable|?            - Enable/disable "cron" jobs
+  deploy                           - Check, install, and restart
+  df [<nodes>]                     - Print nodes' current disk usage
+  diag [<nodes>]                   - Output diagnostics for nodes
+  exec <shell cmd>                 - Execute shell command on all hosts
+  exit                             - Exit shell
+  install                          - Update broctl installation/configuration
+  netstats [<nodes>]               - Print nodes' current packet counters
+  nodes                            - Print node configuration
+  peerstatus [<nodes>]             - Print status of nodes' remote connections
+  print <id> [<nodes>]             - Print values of script variable at nodes
+  process <trace> [<op>] [-- <sc>] - Run Bro (with options and scripts) on trace
+  quit                             - Exit shell
+  restart [--clean] [<nodes>]      - Stop and then restart processing
+  scripts [-c] [<nodes>]           - List the Bro scripts the nodes will load
+  start [<nodes>]                  - Start processing
+  status [<nodes>]                 - Summarize node status
+  stop [<nodes>]                   - Stop processing
+  top [<nodes>]                    - Show Bro processes ala top
+  update [<nodes>]                 - Update configuration of nodes on the fly
+  
+Commands provided by plugins:
+
+  ps.bro [<nodes>]                 - Show Bro processes on nodes' systems
+```
