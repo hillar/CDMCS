@@ -11,3 +11,9 @@
 ## https://github.com/bro/bro
 
 > git clone --recursive git://git.bro.org/bro
+
+#### please see
+
+ * https://www.bro.org/
+ * https://www.bro.org/documentation/index.html
+ * https://www.bro.org/sphinx/scripting/
