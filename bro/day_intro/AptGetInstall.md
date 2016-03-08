@@ -1,3 +1,7 @@
+# Installing from repository
+
+ * https://www.bro.org/download/packages.html
+
 # Modify apt sources list file
 
 Remember to edit the following line to reflect your Ubuntu version. I.e. package compiled for 14.10 will not work on 14.04.
