@@ -34,3 +34,26 @@ apt-get update
 ```
 apt-get -y install bro
 ```
+
+# Verify APT package version
+
+```
+root@bro-empty:~# apt-cache policy bro
+bro:
+  Installed: 2.4.1-0
+  Candidate: 2.4.1-0
+  Version table:
+ *** 2.4.1-0 0
+        500 http://download.opensuse.org/repositories/network:/bro/xUbuntu_14.04/  Packages
+        100 /var/lib/dpkg/status
+```
+
+# Deploy scripts and verify daemon
+
+```
+/opt/bro/bin/broctl deploy
+```
+
+```
+/opt/bro/bin/broctl status
+```
