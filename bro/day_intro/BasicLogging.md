@@ -4,6 +4,7 @@
 
 
 https://www.bro.org/sphinx/logs/index.html
+https://www.bro.org/bro-workshop-2011/solutions/logs/
 
 # Daemon logs
 
@@ -46,3 +47,11 @@ tail *.log
  * [notice](https://www.bro.org/sphinx/scripts/base/frameworks/notice/main.bro.html)
  * [weird](https://www.bro.org/sphinx/scripts/base/frameworks/notice/weird.bro.html)
  * [etc...](https://www.bro.org/sphinx/script-reference/scripts.html)
+
+ # ASCII tools
+
+
+ ```
+/opt/bro/bin/bro-cut --help
+/opt/bro/bin/bro-cut service resp_bytes id.resp_h < /opt/bro/logs/current/conn.log
+ ```
