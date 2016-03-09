@@ -72,6 +72,7 @@ cat > /etc/telegraf/telegraf.d/common.conf <<DELIM
 [[inputs.diskio]]
 [[inputs.net]]
 [[inputs.netstat]]
+[[inputs.system]]
 DELIM
 cat > /etc/telegraf/telegraf.d/telegraf.conf <<DELIM
 [[inputs.procstat]]
@@ -268,6 +269,8 @@ DELIM
   rm grafana.db
   tar -xzf grafana.tar.gz
   service grafana-server start
+  # todo: fix perms
+  chmod 777 /var/run/grafana-server.pid
 
 fi
 
