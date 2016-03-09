@@ -58,6 +58,12 @@ git clone --recursive git://git.bro.org/bro
 
 ```
 make
+...
+make[1]: Leaving directory `/root/bro/build'
+
+real	15m11.303s
+user	13m46.980s
+sys	1m19.839s
 ```
 
 ```
