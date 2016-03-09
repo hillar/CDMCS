@@ -21,6 +21,26 @@ libmagic-dev \
 swig2.0 \
 ```
 
+### libcaf
+
+> Robin Sommer | 22 Jul 21:39 2015
+
+> Re: Build Errors - Libcaf
+
+> On Wed, Jul 22, 2015 at 12:06 -0700, anthony kasza wrote:
+>> I'm building Bro from source and am receiving cmake errors "Could NOT find
+>> Libcaf". Is this a requirement to build Bro now?
+
+>Yes, since last night. :)
+
+```
+wget https://github.com/actor-framework/actor-framework/archive/0.14.4.tar.gz
+tar -xzf 0.14.4.tar.gz
+cd actor-framework-0.14.4/
+./configure --no-examples
+make
+make install
+```
 
 ### get the source
 ```
