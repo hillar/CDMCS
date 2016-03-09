@@ -250,8 +250,8 @@ cat > /etc/telegraf/telegraf.d/grafana.conf <<DELIM
   pid_file = "/var/run/grafana-server.pid"
 DELIM
   service telegraf restart  > /dev/null 2>&1
-  apt-get -y install sqlite > /dev/null 2>&1
-  sqlite3 /var/lib/grafana/grafana.db "INSERT INTO \"data_source\" VALUES(1,1,0,\"influxdb\",\"telegraf\",\"proxy\",\"http://192.168.11.112:8086\",\"admin\",\"admin\",\"telegraf\",0,\"\",\"\",1,\"{}\",\"2016-03-07 18:21:44\",\"2016-03-07 18:50:56\",0);"
+  #apt-get -y install sqlite > /dev/null 2>&1
+  #sqlite3 /var/lib/grafana/grafana.db "INSERT INTO \"data_source\" VALUES(1,1,0,\"influxdb\",\"telegraf\",\"proxy\",\"http://192.168.11.112:8086\",\"admin\",\"admin\",\"telegraf\",0,\"\",\"\",1,\"{}\",\"2016-03-07 18:21:44\",\"2016-03-07 18:50:56\",0);"
   # sqlite3 /var/lib/grafana/grafana.db "INSERT INTO \"api_key\" VALUES(1,1,'kala','e704c6e5d7ce57589d2277e945ddd3d4153c4b736bbf2c2fd1461b7c833843026d42671a73542ae54fc408f913487054ef8b','Admin','2016-03-08 08:04:10','2016-03-08 08:04:10');"
   # see http://docs.grafana.org/reference/http_api/
   # {"k":"w0irgUoSXRXxAoLDJK749RhVHE2ZbAXN","n":"","brodello":1}
@@ -262,6 +262,13 @@ DELIM
   #curl -H "Content-Type: application/json" -H "Authorization: Bearer eyJrIjoiT29KbTV1aXRHWHRnM2dJdmNzc0dxeUdmMkdiNWpya2kiLCJuIjoia2FsYSIsImlkIjoxfQ==" http://192.168.11.112:3000//api/dashboards/db -d @p.json
   #sleep 1
   #service telegraf status
+  service grafana-server stop
+  cd /var/lib/grafana
+  wget -4 -q https://raw.githubusercontent.com/hillar/CDMCS/master/bro/day_intro/brodello/grafana.tar.gz > /dev/null 2>&1
+  rm grafana.db
+  tar -xzf grafana.tar.gz
+  service grafana-server start
+
 fi
 
 #Kibana
