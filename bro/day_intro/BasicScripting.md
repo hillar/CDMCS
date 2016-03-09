@@ -5,6 +5,7 @@
 see
 
 * https://www.bro.org/sphinx/scripting/index.html
+* https://www.bro.org/development/howtos/script-conventions.html
 * https://www.bro.org/sphinx/script-reference/index.html
 * http://try.bro.org/#/trybro?example=hello
 
