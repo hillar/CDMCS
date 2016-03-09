@@ -63,3 +63,8 @@ make
 ```
 sudo make install
 ```
+
+```
+/usr/local/bro/bin/bro -v
+version 2.4-313
+```
