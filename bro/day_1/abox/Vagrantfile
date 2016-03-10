@@ -1,5 +1,5 @@
 IP = "192.168.11.120"
-vm_box = 'ubu14'
+vm_box = 'ubu14s'
 
 Vagrant.configure('2') do |config|
   config.vm.define :source do |box|
