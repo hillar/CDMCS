@@ -2,7 +2,7 @@
 
 see https://www.bro.org/sphinx/install/install.html#installing-from-source
 
-### Dependencies
+## Dependencies
 
 ```
 apt-get install \
@@ -21,7 +21,7 @@ libmagic-dev \
 swig2.0 \
 ```
 
-### libcaf
+## libcaf
 
 > Robin Sommer | 22 Jul 21:39 2015
 
@@ -42,12 +42,12 @@ make
 make install
 ```
 
-### get the source
+## get the source
 ```
 git clone --recursive git://git.bro.org/bro
 ```
 
-### configure, make install
+## configure, make install
 
 ```
 ./configure
@@ -70,4 +70,25 @@ sudo make install
 ```
 /usr/local/bro/bin/bro -v
 version 2.4-313
+```
+
+# Cleaning up
+
+Following commands must be entered while inside the source code directory.
+
+```
+make clean
+```
+
+```
+make distclean
+```
+
+Bro has no make uninstall command :(
+
+# Creating a deb package
+
+```
+apt-get install checkinstall
+checkinstall --help
 ```
