@@ -50,6 +50,10 @@ git clone --recursive git://git.bro.org/bro
 ## configure, make install
 
 ```
+./configure --help
+```
+
+```
 ./configure
 ```
 
