@@ -4,6 +4,10 @@ This page assumes an existing logstash installation from elastic repository
 
 * https://www.elastic.co/guide/en/logstash/current/plugins-inputs-file.html
 * https://www.elastic.co/guide/en/logstash/current/plugins-outputs-elasticsearch.html
+* https://www.elastic.co/guide/en/logstash/current/plugins-filters-json.html
+* https://www.elastic.co/guide/en/elasticsearch/reference/current/breaking_20_mapping_changes.html
+* https://www.elastic.co/guide/en/logstash/current/plugins-filters-de_dot.html
+* https://www.elastic.co/guide/en/logstash/current/plugins-filters-mutate.html
 
 # Locate logstash configuration directory
 
@@ -80,5 +84,46 @@ output {
     hosts => "127.0.0.1"
     index => "bro-%{+YYYY.MM.dd.HH}"
   }
+}
+```
+
+# Opening the JSON
+
+```
+filter {
+  json {
+    source => "message"
+  }
+}
+```
+
+If statements are your friends...
+
+filter {
+  if type == "bro_log" {
+    json {
+      source => "message"
+    }
+  }
+}
+
+# Normalizing field names
+
+## Easy but expensive
+
+```
+de_dot {}
+```
+
+## Might be better
+
+```
+mutate {
+  gsub => [
+    "message", "id\.orig_h", "id_orig_h",
+    "message", "id\.resp_h", "id_resp_h",
+    "message", "id\.orig_p", "id_orig_p",
+    "message", "id\.resp_p", "id_resp_p"
+  ]
 }
 ```
