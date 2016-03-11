@@ -8,6 +8,7 @@ This page assumes an existing logstash installation from elastic repository
 * https://www.elastic.co/guide/en/elasticsearch/reference/current/breaking_20_mapping_changes.html
 * https://www.elastic.co/guide/en/logstash/current/plugins-filters-de_dot.html
 * https://www.elastic.co/guide/en/logstash/current/plugins-filters-mutate.html
+* https://www.elastic.co/guide/en/logstash/current/plugins-filters-date.html
 
 # Locate logstash configuration directory
 
@@ -126,4 +127,14 @@ mutate {
     "message", "id\.resp_p", "id_resp_p"
   ]
 }
+```
+
+# Timestamping for Kibana
+
+## Quick and dirty
+
+```
+  date {
+    match => [ "ts", "UNIX" ]
+  }
 ```
