@@ -10,7 +10,7 @@
 
  * 09:00 - 09:45 [build from source](/bro/day_1/BuildFromSource.md)
  * 10:00 - 10:45 [config]()
- * 11:00 - 11:45 [logging]()
+ * 11:00 - 11:45 [logging](/bro/day_1/AdvancedLogging.md)
 
 
  * 13:00 - 13:45 [script writing]()
