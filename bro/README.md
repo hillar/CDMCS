@@ -10,7 +10,7 @@
 
  * 09:00 - 09:45 [build from source](/bro/day_1/BuildFromSource.md)
  * 10:00 - 10:45 [config]()
- * 11:00 - 11:45 [CEE](/suricata/day_1/CEE.md),[logstash](/bro/day_1/AdvancedLoggingLogstash.md),[rsyslog](/bro/day_1/AdvancedLoggingRsyslog.md)
+ * 11:00 - 11:45 [logstash](/bro/day_1/AdvancedLoggingLogstash.md),[rsyslog](/bro/day_1/AdvancedLoggingRsyslog.md)
 
 
  * 13:00 - 13:45 [script writing]()
