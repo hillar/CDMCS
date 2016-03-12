@@ -1,0 +1,1 @@
+[Getting started with Rsyslog](/common/rsyslogBasics.md)
