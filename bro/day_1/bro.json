@@ -1,0 +1,87 @@
+{
+  "order" : 0,
+  "template" : "bro-*",
+  "settings" : {
+    "index.refresh_interval" : "60s",
+    "index.number_of_replicas" : "0",
+    "index.number_of_shards" : "2"
+  },
+  "mappings" : {
+    "_default_" : {
+      "properties" : {
+        "@version" : {
+          "index" : "not_analyzed",
+          "type" : "string"
+        },
+        "ts" : {
+          "type" : "date",
+          "format": "epoch_second"
+        },
+        "conn_state" : {
+          "index" : "not_analyzed",
+          "type" : "string"
+        },
+        "history" : {
+          "index" : "not_analyzed",
+          "type" : "string"
+        },
+        "id_orig_h" : {
+          "index" : "not_analyzed",
+          "type" : "string"
+        },
+        "id_resp_h" : {
+          "index" : "not_analyzed",
+          "type" : "string"
+        },
+        "id_orig_p" : {
+          "index" : "analyzed",
+          "type" : "integer"
+        },
+        "id_resp_p" : {
+          "index" : "analyzed",
+          "type" : "integer"
+        },
+        "local_orig" : {
+          "index" : "not_analyzed",
+          "type" : "string"
+        },
+        "local_resp" : {
+          "index" : "not_analyzed",
+          "type" : "string"
+        },
+        "missed_bytes" : {
+          "index" : "analyzed",
+          "type" : "integer"
+        },
+        "orig_ip_bytes" : {
+          "index" : "analyzed",
+          "type" : "integer"
+        },
+        "orig_pkts" : {
+          "index" : "analyzed",
+          "type" : "integer"
+        },
+        "proto" : {
+          "index" : "not_analyzed",
+          "type" : "string"
+        },
+        "resp_ip_bytes" : {
+          "index" : "analyzed",
+          "type" : "integer"
+        },
+        "resp_pkts" : {
+          "index" : "analyzed",
+          "type" : "integer"
+        },
+        "uid" : {
+          "index" : "not_analyzed",
+          "type" : "string"
+        }
+      },
+      "_all" : {
+        "enabled" : false
+      }
+    }
+  },
+  "aliases" : { }
+}
