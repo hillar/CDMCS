@@ -1,5 +1,8 @@
 [Getting started with Rsyslog](/common/rsyslogBasics.md)
 
+* http://www.rsyslog.com/doc/v8-stable/configuration/templates.html
+* http://www.rsyslog.com/doc/v8-stable/configuration/modules/imfile.html
+
 # Invoking file input module
 
 ```
