@@ -9,7 +9,7 @@
 ## Day 1 :: Single Box
 
  * 09:00 - 09:45 [build from source](/bro/day_1/BuildFromSource.md)
- * 10:00 - 10:45 [config]()
+ * 10:00 - 10:45 [config](/bro/day_1/Config.md)
  * 11:00 - 11:45 [Structured logging](/bro/day_1/AdvancedLogging0.md),[logstash](/bro/day_1/AdvancedLoggingLogstash.md),[rsyslog](/bro/day_1/AdvancedLoggingRsyslog.md)
 
 
