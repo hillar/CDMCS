@@ -22,8 +22,8 @@ if PVSPHERE
   # Errno::EMFILE: Too many open files @ rb_sysopen - /opt/vagrant/embedded/gems/gems/vagrant-1.8.1/templates/locales/providers_hyperv.yml
   # be carefull here ;)
   STUDENTS = 1
-  BROCOUNT = 1
-  ELACOUNT = 1
+  BROCOUNT = 4
+  ELACOUNT = 4
   NET = "10.242.11."
   NET_START = 0
 end
@@ -117,7 +117,7 @@ Vagrant.configure('2') do |config|
     # Bro
     (1..BROCOUNT).each do |boxno|
       name = 'student-'+ studentnumber.to_s+'-bro-worker-' + boxno.to_s
-      ip_bro_worker = NET  + (NET_START + studentnumber*10 + boxno).to_s
+      ip_bro_worker = NET  + (NET_START + studentnumber*10 + 1 + boxno).to_s
       File.open('lastrun.txt','a').puts ip_bro_worker +" "+name
       config.vm.define name do |box|
         box.vm.hostname = name
@@ -151,10 +151,38 @@ Vagrant.configure('2') do |config|
 
         #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; netstat -ntple"
       end # suri-x
-  end # suri loop
+  end # bro loop
+  # proxy
+  name = 'student-'+ studentnumber.to_s+'-bro-proxy'
+  ip_admin = NET  + (NET_START + studentnumber*10 +1).to_s
+  File.open('lastrun.txt','a').puts ip_admin +" "+name
+  config.vm.define name do |box|
+    box.vm.hostname = name
+    box.vm.network :private_network, ip: "#{ip_admin}"
+    if PVIRTUALBOX
+    box.vm.provider :virtualbox do |vb|
+     vb.customize ["modifyvm", :id, "--memory", "1024"]
+     vb.customize ["modifyvm", :id, "--cpus", "2"]
+    end
+    end
+    if PVSPHERE
+    box.vm.provider :vsphere do |vsphere|
+      vsphere.name = name
+      vsphere.memory_mb = 4 * 1024
+      vsphere.cpu_count = 4
+      vsphere.vm_base_path = VSPHERE_VM_PATH + 'Student_' + studentnumber.to_s
+    end
+    end
+    if PAZURE
+    box.vm.provider :azure do |azure|
+    end
+    end
+    box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_admin}"
+    box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_admin}"
+  end # proxy
 
   # admin
-  name = 'student-'+ studentnumber.to_s+'-admin'
+  name = 'student-'+ studentnumber.to_s+'-manager'
   ip_admin = NET  + (NET_START + studentnumber*10).to_s
   File.open('lastrun.txt','a').puts ip_admin +" "+name
   config.vm.define name do |box|
