@@ -32,7 +32,7 @@
 
 ## Day 3 :: Advanced usage
 
-* 09:00 - 11:45 [diving into nigthly alerts](/suricata/day_2/Kibana4.md)
+* 09:00 - 11:45 [diving into nigthly alerts](/common/Kibana4.md)
 
 
 
