@@ -14,8 +14,8 @@
           "type" : "string"
         },
         "ts" : {
+          "index" : "analyzed",
           "type" : "date",
-          "format": "epoch_second"
         },
         "conn_state" : {
           "index" : "not_analyzed",

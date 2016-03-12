@@ -138,3 +138,10 @@ mutate {
     match => [ "ts", "UNIX" ]
   }
 ```
+
+## Challenge - use Bro and Elasticsearch
+
+* https://www.bro.org/sphinx-git/scripts/base/init-bare.bro.html#type-JSON::TimestampFormat
+* https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-date-format.html
+* https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-templates.html
+* [Bro ES template](/bro/day_1/bro.json)
