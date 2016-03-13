@@ -28,6 +28,12 @@ chown -R bro:bro /opt/bro
 chmod 750 /opt/bro/.ssh
 ```
 
+## Configure SSH public key
+
+```
+echo "<master public key>" > /opt/bro/.ssh/authorized_keys
+```
+
 # Master
 
 ## Execute command as another user
@@ -64,4 +70,10 @@ Host 192.168.0.*
 
 ```
 ssh-keyscan 192.168.56.111 192.168.56.112 192.168.56.113 > /opt/bro/.ssh/known_hosts
+```
+
+### Deploy bro configuration
+
+```
+su - bro -s /bin/bash -c '/opt/bro/bin/broctl deploy'
 ```
