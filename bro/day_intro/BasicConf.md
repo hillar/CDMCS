@@ -61,5 +61,6 @@ To see help:
 * What is the current packet count of the node?
 * Find all Bro processes running.
 * What type is your Bro instance?
+* Print and examine the current broctl configuration
 * Stop Bro and check if it has stopped.
 
