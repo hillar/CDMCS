@@ -22,6 +22,7 @@
 # salt '*' cmd.run "echo \"`cat /opt/bro/.ssh/id_rsa.pub`\" >> /opt/bro/.ssh/authorized_keys"
 # salt '*' cmd.run 'chown -R bro:bro /opt/bro'
 # <vim /opt/bro/etc/node.cfg>
+# <accept ssh fingerprints or set up .ssh/config to insecure/autoaccept>
 # salt '*' cmd.run 'setcap "CAP_NET_RAW+eip" /opt/bro/bin/bro'
 # su - bro -s /bin/bash -c '/opt/bro/bin/broctl install'
 
