@@ -1,6 +1,7 @@
 # Single host configuration
 
-```
+See:
+* https://www.bro.org/sphinx/quickstart/index.html#a-minimal-starting-configuration
 
 # Home networks
 
@@ -22,6 +23,8 @@ grep 'interface' -B4 /opt/bro/etc/node.cfg
 
 * Clustered - also multithreading on a single host
 https://www.bro.org/sphinx-git/cluster/index.html#on-host-flow-balancing
+
+
 
 # Notifications, log rotation, directories
 
@@ -48,4 +51,13 @@ See notes from [basic config](/bro/day_intro/BasicConf.md)
 * What type is your Bro instance?
 * Try restarting the Bro instance.
 * Stop Bro and check if it has stopped.
+* Exit BroControl
 
+# Housekeeping tasks
+Insert the following entry into the crontab of the user running BroControl:
+```
+0-59/5 * * * * $PREFIX/bin/broctl cron
+```
+
+* Regular housekeeping tasks
+* Verifying that the process is running (restarting in case of abnormal termination) 
