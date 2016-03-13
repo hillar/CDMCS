@@ -22,7 +22,7 @@ if PVSPHERE
   # Errno::EMFILE: Too many open files @ rb_sysopen - /opt/vagrant/embedded/gems/gems/vagrant-1.8.1/templates/locales/providers_hyperv.yml
   # be carefull here ;)
   STUDENTS = 1
-  BROCOUNT = 1
+  BROCOUNT = 2
   ELACOUNT = 0
   NET = "10.242.11."
   NET_START = 0
@@ -212,13 +212,14 @@ Vagrant.configure('2') do |config|
     box.vm.provider :azure do |azure|
     end
     end
-    #box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_admin}"
-    #box.vm.provision "shell", path: "./scripts/install-influxdb.sh", args: "#{ip_admin}"
-    #box.vm.provision "shell", path: "./scripts/install-grafana.sh"
-    #box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip_admin} #{mname} #{'student-' + studentnumber.to_s} 0 '#{elas.join(",")}' master"
-    #box.vm.provision "shell", path: "./scripts/install-kibana4.sh", args: "#{ip_admin}"
     box.vm.provision "shell", path: "./scripts/install-salt-master.sh"
-    #box.vm.provision "shell", path: "./scripts/install-bro-master-and-workers.sh", args: "-bro- #{browrks.join(",")} #{ip_bro_proxy}"
+    box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_admin}"
+    box.vm.provision "shell", path: "./scripts/install-influxdb.sh", args: "#{ip_admin}"
+    box.vm.provision "shell", path: "./scripts/install-grafana.sh"
+    box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip_admin} #{mname} #{'student-' + studentnumber.to_s} 0 '#{elas.join(",")}' master"
+    box.vm.provision "shell", path: "./scripts/install-kibana4.sh", args: "#{ip_admin}"
+    box.vm.provision "shell", path: "./scripts/install-bro-master-and-workers.sh", args: "#{ip_admin} -bro- #{ip_bro_proxy} #{browrks.join(",")}"
+    #box.vm.provision "shell", path: "./scripts/install-logstash-for-bro-csv.sh", args: "#{ip_admin}"
     #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; netstat -ntple"
   end # admin
 #=end  #=begin
