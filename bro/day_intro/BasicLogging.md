@@ -45,6 +45,11 @@ tail *.log
 /opt/bro/bin/bro-cut service resp_bytes id.resp_h < /opt/bro/logs/current/conn.log
  ```
 
+Timestamps
+```
+bro-cut -d ts id.orig_h id.orig_p id.resp_h id.resp_p < /opt/bro/logs/current/conn.log
+```
+
 # Log types
 
  * [conn](https://www.bro.org/sphinx/scripts/base/protocols/conn/main.bro.html)

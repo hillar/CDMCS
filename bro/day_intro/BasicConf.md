@@ -37,4 +37,3 @@ grep 'interface' -B4 /opt/bro/etc/node.cfg
 vim /opt/bro/etc/broctl.cfg
 ```
 
-# Broccoli?
