@@ -2,6 +2,10 @@
 
 > These are the basic configuration changes to make for a minimal BroControl installation that will manage a single Bro instance on the localhost:
 
+```
+<PREFIX> - base directory for you installation
+```
+
 >In $PREFIX/etc/node.cfg, set the right interface to monitor.
 >In $PREFIX/etc/networks.cfg, comment out the default settings and add the networks that Bro will consider local to the monitored environment.
 >In $PREFIX/etc/broctl.cfg, change the MailTo email address to a desired recipient and the LogRotationInterval to a desired log archival frequency.
@@ -22,19 +26,19 @@ drwxr-xr-x 8 root root 4096 Mar  8 14:01 ..
 # Home networks
 
 ```
-cat /opt/bro/etc/networks.cfg
+cat <PREFIX>/etc/networks.cfg
 ```
 
 # Listening interface
 
 ```
-grep 'interface' -B4 /opt/bro/etc/node.cfg
+grep 'interface' -B4 <PREFIX>/etc/node.cfg
 ```
 
 # Notifications, log rotation, directories
 
 ```
-vim /opt/bro/etc/broctl.cfg
+vim <PREFIX>/etc/broctl.cfg
 ```
 
 ---
@@ -57,11 +61,7 @@ To see help:
 ```
 
 ## Tasks
-* Start a Bro instance and check if it is running.
-* Find out which nodes are running. Which interfaces are monitored?
-* What is the current packet count of the node?
-* Find all Bro processes running.
-* What type is your Bro instance?
 * Print and examine the current broctl configuration
-* Stop Bro and check if it has stopped.
+* Start a Bro instance and check if it is running.
+* See if there are any logs already being generated?
 
