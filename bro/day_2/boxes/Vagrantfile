@@ -156,11 +156,11 @@ Vagrant.configure('2') do |config|
   end # bro loop
   # proxy
 #=begin
-  name = 'student-'+ studentnumber.to_s+'-bro-proxy'
+  pname = 'student-'+ studentnumber.to_s+'-bro-proxy'
   ip_bro_proxy = NET  + (NET_START + studentnumber*10 +1).to_s
-  File.open('lastrun.txt','a').puts ip_bro_proxy  +" "+name
-  config.vm.define name do |box|
-    box.vm.hostname = name
+  File.open('lastrun.txt','a').puts ip_bro_proxy  +" "+pname
+  config.vm.define pname do |box|
+    box.vm.hostname = pname
     box.vm.network :private_network, ip: "#{ip_bro_proxy}"
     if PVIRTUALBOX
     box.vm.provider :virtualbox do |vb|
@@ -170,7 +170,7 @@ Vagrant.configure('2') do |config|
     end
     if PVSPHERE
     box.vm.provider :vsphere do |vsphere|
-      vsphere.name = name
+      vsphere.name = pname
       vsphere.memory_mb = 4 * 1024
       vsphere.cpu_count = 4
       vsphere.vm_base_path = VSPHERE_VM_PATH + 'Student_' + studentnumber.to_s
@@ -185,11 +185,11 @@ Vagrant.configure('2') do |config|
   end # proxy
 
   # manager
-  name = 'student-'+ studentnumber.to_s+'-manager'
+  mname = 'student-'+ studentnumber.to_s+'-manager'
   ip_admin = NET  + (NET_START + studentnumber*10).to_s
-  File.open('lastrun.txt','a').puts ip_admin +" "+name
-  config.vm.define name do |box|
-    box.vm.hostname = name
+  File.open('lastrun.txt','a').puts ip_admin +" "+mname
+  config.vm.define mname do |box|
+    box.vm.hostname = mname
     box.vm.network :private_network, ip: "#{ip_admin}"
     if PVIRTUALBOX
     box.vm.provider :virtualbox do |vb|
@@ -200,7 +200,7 @@ Vagrant.configure('2') do |config|
     if PVSPHERE
     box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_teacher}"
     box.vm.provider :vsphere do |vsphere|
-      vsphere.name = name
+      vsphere.name = mname
       vsphere.memory_mb = 4 * 1024
       vsphere.cpu_count = 4
       vsphere.vm_base_path = VSPHERE_VM_PATH + 'Student_' + studentnumber.to_s
