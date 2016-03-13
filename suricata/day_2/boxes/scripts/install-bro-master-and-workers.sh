@@ -6,9 +6,10 @@
 # ! depends on salt
 #
 # params :
-# $1 salt key pattern to match bro workers and proxyes
-# $2 workers ip list, sepatarated with comma
-# $3 proxyes ip list, sepatarated with comma
+# $1 manager ip
+# $2 salt key pattern to match bro workers and proxyes
+# $3 workers ip list, sepatarated with comma
+# $4 proxyes ip list, sepatarated with comma
 
 if [ "$(id -u)" != "0" ]; then
    echo "ERROR - This script must be run as root" 1>&2
@@ -16,14 +17,18 @@ if [ "$(id -u)" != "0" ]; then
 fi
 
 echo "installing bro with:"
-echo "pattern: $1"
-echo "workers: $2"
-echo "proxyes: $3"
+echo "manager: $1"
+echo "pattern: $2"
+echo "workers: $3"
+echo "proxyes: $4"
 echo "wait .."
 
-BROS=$1
-WORKERS=$2
-PROXYS=$3
+MANAGER=$1
+BROS=$2
+WORKERS=$3
+PROXYS=$4
+
+BROS="student-1-bro-worker-b"
 
 ## step-by-step (semi)manual version with salt
 ## taken from bash history, expect mistakes
@@ -50,7 +55,7 @@ PROXYS=$3
 echo "deb http://download.opensuse.org/repositories/network:/bro/xUbuntu_14.04/ /" >> /etc/apt/sources.list.d/bro.list
 wget -4 -q http://download.opensuse.org/repositories/network:bro/xUbuntu_14.04/Release.key
 apt-key add - < Release.key  > /dev/null 2>&1
-apt-get update  > /dev/null 2>&1
+apt-get -qq update  > /dev/null 2>&1
 apt-get -y install bro  > /dev/null 2>&1
 #prepare master key
 useradd bro -N  > /dev/null 2>&1
@@ -74,5 +79,43 @@ echo "$WORKERS" | sed 's/,/\n/g'|while read IP;
 do
    su - bro -s /bin/bash -c 'ssh $IP'
 done
+
+cat > /opt/bro/etc/node.cfg<<DELIM
+[manager]
+type=manager
+host=$MANAGER
+DELIM
+
+echo "$PROXYS" | sed 's/,/\n/g'|while read IP;
+do
+  echo "[proxy-$IP]" >> /opt/bro/etc/node.cfg
+  echo "type=proxy" >> /opt/bro/etc/node.cfg
+  echo "host=$IP" >> /opt/bro/etc/node.cfg
+done
+
+echo "$PROXYS" | sed 's/,/\n/g'|while read IP;
+do
+  echo "[worker-$IP]" >> /opt/bro/etc/node.cfg
+  echo "type=worker" >> /opt/bro/etc/node.cfg
+  echo "host=$IP" >> /opt/bro/etc/node.cfg
+done
+
+#[manager]
+#type=manager
+#host=host1
+#
+#[proxy-1]
+#type=proxy
+#host=host1
+#
+#[worker-1]
+#type=worker
+#host=host2
+#interface=eth0
+#
+#[worker-2]
+#type=worker
+#host=host3
+#interface=eth0
 
 #su - bro -s /bin/bash -c '/opt/bro/bin/broctl deploy'
