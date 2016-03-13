@@ -71,7 +71,7 @@ do
   echo "host=$IP" >> /opt/bro/etc/node.cfg
 done
 
-echo "$PROXYS" | sed 's/,/\n/g'|while read IP;
+echo "$WORKERS" | sed 's/,/\n/g'|while read IP;
 do
   echo "[worker-$IP]" >> /opt/bro/etc/node.cfg
   echo "type=worker" >> /opt/bro/etc/node.cfg
