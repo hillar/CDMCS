@@ -26,7 +26,7 @@
 * 11:00 - 11:45 [Basic Cluster Configuration](/bro/day_2/ClusterConf.md)
 
 
-* 13:00 - 13:45 [adding node]()
+* 13:00 - 13:45 [adding node](/bro/day_2/ClusterAddNode.md)
 * 14:00 - 14:45
 * 15:00 - 15:45
 * 16:00 - 16:45
@@ -35,11 +35,11 @@
 ## Day 3 :: Usage
 
 * 09:00 - 09:45 [digging into numbers]()
-* 10:00 - 10:45 [digging into text]()
+* 10:00 - 10:45 [digging into text](/common/Kibana4.md)
 * 11:00 - 11:45 []()
 
 
-* 13:00 - 13:45 [loading pcaps]()
+* 13:00 - 13:45 [loading pcaps](/bro/day_3/)
 * 14:00 - 14:45
 * 15:00 - 15:45
 * 16:00 - 16:45
