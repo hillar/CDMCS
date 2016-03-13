@@ -69,6 +69,7 @@ Timestamps
 /opt/bro/bin/bro-cut uid < /opt/bro/logs/current/conn.log
 ```
 
-# Task
+# Tasks
 
+ * Extract hour, minute and second values in human readable format from connection logs.
  * Find corresponding log entries for each unique identifier in connection log.
