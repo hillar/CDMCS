@@ -41,9 +41,10 @@ vim /opt/bro/etc/broctl.cfg
 # BroControl
 
 Start up BroControl from the bin directory
-´´´
+
+```
 <PREFIX>/bin/broctl
-´´´
+```
 
 The first time that you run BroControl, you must install the BroControl configuration
 ```
