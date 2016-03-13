@@ -37,3 +37,29 @@ grep 'interface' -B4 /opt/bro/etc/node.cfg
 vim /opt/bro/etc/broctl.cfg
 ```
 
+---
+# BroControl
+
+Start up BroControl from the bin directory
+´´´
+<PREFIX>/bin/broctl
+´´´
+
+The first time that you run BroControl, you must install the BroControl configuration
+```
+[BroControl] > install
+```
+
+To see help:
+```
+[BroControl] > help
+```
+
+## Tasks
+* Start a Bro instance and check if it is running.
+* Find out which nodes are running. Which interfaces are monitored?
+* What is the current packet count of the node?
+* Find all Bro processes running.
+* What type is your Bro instance?
+* Stop Bro and check if it has stopped.
+
