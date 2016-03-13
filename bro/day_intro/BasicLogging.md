@@ -67,3 +67,7 @@ Timestamps
  * [notice](https://www.bro.org/sphinx/scripts/base/frameworks/notice/main.bro.html)
  * [weird](https://www.bro.org/sphinx/scripts/base/frameworks/notice/weird.bro.html)
  * [etc...](https://www.bro.org/sphinx/script-reference/scripts.html)
+
+# Task
+
+ * Find corresponding log entries for each unique identifier in connection log.
