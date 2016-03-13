@@ -25,9 +25,3 @@
 # <accept ssh fingerprints or set up .ssh/config to insecure/autoaccept>
 # salt '*' cmd.run 'setcap "CAP_NET_RAW+eip" /opt/bro/bin/bro'
 # su - bro -s /bin/bash -c '/opt/bro/bin/broctl install'
-
-adduser bro --disabled-login
-mkdir /opt/bro/.ssh
-chown -R bro:bro /opt/bro
-ssh-keygen -t rsa -k /opt/bro/.ssh/id_rsa
-chown -R bro:bro /opt/bro
