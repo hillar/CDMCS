@@ -53,15 +53,13 @@ salt-key -A -y
 salt-key -L
 sleep 1
 salt "*$BROS*" test.ping
-echo "group:"
 salt "*$BROS*" cmd.run 'addgroup --system bro --quiet'
-echo "user:"
 salt "*$BROS*" cmd.run 'adduser --system --home /opt/bro --no-create-home --ingroup bro --disabled-password --shell /bin/bash bro'
-echo ".ssh:"
 salt "*$BROS*" cmd.run 'mkdir -p /opt/bro/.ssh'
 salt-cp "*$BROS*" /opt/bro/.ssh/id_rsa.pub /opt/bro/.ssh/bro-manager.pub
 salt "*$BROS*" cmd.run 'cat /opt/bro/.ssh/bro-manager.pub >> /opt/bro/.ssh/authorized_keys'
-echo "hosts:"
+#salt "*$BROS*" cmd.run 'setcap cap_net_raw,cap_net_admin=eip /opt/bro/bin/bro'
+#salt "*$BROS*" cmd.run 'setcap "CAP_NET_RAW+eip" /opt/bro/bin/bro'
 cat /etc/hosts | grep -v 127| grep $(hostname) > /opt/bro/hosts
 salt-cp "*$BROS*" /opt/bro/hosts /opt/bro/hosts
 salt "*$BROS*" cmd.run 'cat /opt/bro/hosts >> /etc/hosts'
@@ -84,9 +82,11 @@ do
   echo "[worker-$IP]" >> /opt/bro/etc/node.cfg
   echo "type=worker" >> /opt/bro/etc/node.cfg
   echo "host=$IP" >> /opt/bro/etc/node.cfg
+  echo "interface=eth1" >> /opt/bro/etc/node.cfg
 done
 chown -R bro:bro /opt/bro
 su - bro -s /bin/bash -c '/opt/bro/bin/broctl deploy'
-su - bro -s /bin/bash -c '/opt/bro/bin/broctl status'
-su - bro -s /bin/bash -c '/opt/bro/bin/broctl df'
+su - bro -s /bin/bash -c '/opt/bro/bin/broctl stop'
+salt "*$BROS*" cmd.run 'setcap "CAP_NET_RAW+eip" /opt/bro/bin/bro'
+su - bro -s /bin/bash -c '/opt/bro/bin/broctl start'
 echo "to start using bro use 'su - bro -s /bin/bash'"
