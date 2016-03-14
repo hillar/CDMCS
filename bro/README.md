@@ -1,10 +1,10 @@
 
 ## Day 0
 
- * 13:00 - 13:45 [Intro](/bro/day_intro/README.md) [vagrant](/bro/day_intro/BTIGEK-easybutton-singlehost.sh) [apt-get install](/bro/day_intro/AptGetInstall.md)
- * 14:00 - 14:45 [basic config](/bro/day_intro/BasicConf.md)
- * 15:00 - 15:45 [basic logging](/bro/day_intro/BasicLogging.md)
- * 16:00 - 16:45 [basic scripting](/bro/day_intro/BasicScripting.md)
+ * 13:00 - 13:45 [Intro](/bro/day_intro/README.md)  [apt-get install](/bro/day_intro/AptGetInstall.md)
+ * 14:00 - 14:45 [vagrant](/bro/day_intro/BTIGEK-easybutton-singlehost.sh)
+ * 15:00 - 15:45 [basic config](/bro/day_intro/BasicConf.md)
+ * 16:00 - 16:45 [basic logging](/bro/day_intro/BasicLogging.md)
 
 ## Day 1 :: Single Box
 
@@ -14,7 +14,7 @@
 
 
  * 13:00 - 13:45 [script loading]()
- * 14:00 - 14:45 [script writing]()
+ * 14:00 - 14:45 [script writing](/bro/day_intro/BasicScripting.md)
  * 15:00 - 15:45 [viewing output]()
  * 16:00 - 16:45
 
