@@ -32,7 +32,7 @@ wget -q https://raw.githubusercontent.com/timmolter/logstash-dfir/master/conf_fi
 wget -q https://raw.githubusercontent.com/timmolter/logstash-dfir/master/conf_files/bro/bro-weird_log.conf
 wget -q https://raw.githubusercontent.com/timmolter/logstash-dfir/master/conf_files/bro/bro-x509_log.conf
 #  elasticsearch { host => localhost }
-sed -i -e 's,host => localhost,hosts => "'${ELASTIC}'"\n index => "bro-%{+YYYY.MM.dd.HH}",g' /etc/logstash/conf.d/*.conf
+sed -i -e 's,host => localhost,hosts => "'${ELASTIC}'"\n index => "logstash-%{+YYYY.MM.dd.HH}",g' /etc/logstash/conf.d/*.conf
 sed -i -e '/date/i \ \ \ \ \de_dot{ }' /etc/logstash/conf.d/*.conf
 #sed -i -e 's/id.orig_h/id_orig_h/g' -e 's/id.resp_h/id_resp_h/g' -e 's/id.orig_p/id_orig_p/g' -e 's/id.resp_p/id_resp_p/g' /etc/logstash/conf.d/*.conf
 #path => "/nsm/bro/logs/current/conn.log"

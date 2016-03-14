@@ -91,3 +91,11 @@ salt "*$BROS*" cmd.run 'setcap "CAP_NET_RAW+eip" /opt/bro/bin/bro'
 su - bro -s /bin/bash -c '/opt/bro/bin/broctl start'
 su - bro -s /bin/bash -c '/opt/bro/bin/broctl status'
 echo "to start using bro use 'su - bro -s /bin/bash'"
+# tell telegraf there is bro
+cat > /etc/telegraf/telegraf.d/bro.conf <<DELIM
+[[inputs.procstat]]
+  exe = "bro"
+DELIM
+service telegraf restart > /dev/null 2>&1
+salt-cp "*$BROS*" /etc/telegraf/telegraf.d/bro.conf /etc/telegraf/telegraf.d/bro.conf
+salt "*$BROS*" service.restart telegraf

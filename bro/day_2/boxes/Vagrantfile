@@ -22,8 +22,8 @@ if PVSPHERE
   # Errno::EMFILE: Too many open files @ rb_sysopen - /opt/vagrant/embedded/gems/gems/vagrant-1.8.1/templates/locales/providers_hyperv.yml
   # be carefull here ;)
   STUDENTS = 1
-  BROCOUNT = 6
-  ELACOUNT = 2
+  BROCOUNT = 3
+  ELACOUNT = 3
   NET = "10.242.11."
   NET_START = 0
 end
