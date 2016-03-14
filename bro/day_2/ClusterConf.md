@@ -1,14 +1,15 @@
 # BRO cluster Configuration
 
-see https://www.bro.org/sphinx/cluster/index.html
+see:
 
-https://www.bro.org/sphinx-git/configuration/index.html
+* https://www.bro.org/sphinx/cluster/index.html
+* https://www.bro.org/sphinx-git/configuration/index.html
 
 ![main parts of cluster](https://www.bro.org/sphinx/_images/deployment.png)
 
 ## manager host configuration
 
-### <prefix>/etc/node.cfg
+### $PREFIX/etc/node.cfg
 ```
 [manager]
 type=manager
@@ -29,4 +30,11 @@ host=10.0.0.12
 interface=eth0
 ```
 
-### <prefix>/etc/broctl.cfg
+### BroControl
+```
+$PREFIX/etc/broctl.cfg
+```
+
+
+
+
