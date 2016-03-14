@@ -7,7 +7,24 @@
     "index.number_of_shards" : "2"
   },
   "mappings" : {
-    "_default_" : {
+    "_default_" : {      "dynamic_templates" : [ {
+        "string_fields" : {
+          "mapping" : {
+            "index" : "analyzed",
+            "omit_norms" : true,
+            "type" : "string",
+            "fields" : {
+              "raw" : {
+                "index" : "not_analyzed",
+                "ignore_above" : 256,
+                "type" : "string"
+              }
+            }
+          },
+          "match" : "*",
+          "match_mapping_type" : "string"
+        }
+      } ],
       "properties" : {
         "@version" : {
           "index" : "not_analyzed",
