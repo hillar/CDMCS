@@ -89,4 +89,5 @@ su - bro -s /bin/bash -c '/opt/bro/bin/broctl deploy'
 su - bro -s /bin/bash -c '/opt/bro/bin/broctl stop'
 salt "*$BROS*" cmd.run 'setcap "CAP_NET_RAW+eip" /opt/bro/bin/bro'
 su - bro -s /bin/bash -c '/opt/bro/bin/broctl start'
+su - bro -s /bin/bash -c '/opt/bro/bin/broctl status'
 echo "to start using bro use 'su - bro -s /bin/bash'"
