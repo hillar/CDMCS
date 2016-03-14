@@ -13,8 +13,8 @@
  * 11:00 - 11:45 [Structured logging](/bro/day_1/AdvancedLogging0.md),[logstash](/bro/day_1/AdvancedLoggingLogstash.md)
 
 
- * 13:00 - 13:45 [script writing]()
- * 14:00 - 14:45 [script loading]()
+ * 13:00 - 13:45 [script loading]()
+ * 14:00 - 14:45 [script writing]()
  * 15:00 - 15:45 [viewing output]()
  * 16:00 - 16:45
 
@@ -34,7 +34,7 @@
 
 ## Day 3 :: Usage
 
-* 09:00 - 09:45 [digging into numbers]()
+* 09:00 - 09:45 [digging into numbers](/common/Telegraf.md)
 * 10:00 - 10:45 [digging into text](/common/Kibana4.md)
 * 11:00 - 11:45 []()
 
