@@ -14,7 +14,7 @@
 
 
  * 13:00 - 13:45 [script loading](/bro/day_1/LoadScript.md)
- * 14:00 - 14:45 [script writing](/bro/day_intro/BasicScripting.md)
+ * 14:00 - 14:45 [intro to](/bro/day_intro/BasicScripting.md) [script writing](/bro/day_intro/Scripting.md) 
  * 15:00 - 15:45 [viewing output]()
  * 16:00 - 16:45
 

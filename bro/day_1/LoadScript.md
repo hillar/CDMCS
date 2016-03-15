@@ -1,6 +1,6 @@
 # Load a scripts
 
-> ./bro -r some.pcap some_nice_script.bro
+see 
 
 *  https://www.bro.org/sphinx/quickstart/#telling-bro-which-scripts-to-load
 
