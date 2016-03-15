@@ -144,4 +144,5 @@ mutate {
 * https://www.bro.org/sphinx-git/scripts/base/init-bare.bro.html#type-JSON::TimestampFormat
 * https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-date-format.html
 * https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-templates.html
-* [Bro ES template](/bro/day_1/bro.json)
+* [Bro ES template - with syntax error](/bro/day_1/bro.json)
+* [Bro ES template - working](/bro/day_1/bro2.json)
