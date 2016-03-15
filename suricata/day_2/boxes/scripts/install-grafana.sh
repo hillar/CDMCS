@@ -26,12 +26,16 @@ if [ ! -f "grafana_${GRFN}_amd64.deb" ]; then
   echo "$(date) ${HOSTNAME} $0[$$]: {grafana: {status:WARNING, msg: missing grafana_${GRFN}_amd64.deb}"
   #exit -1
 else
+  #rm /var/lib/grafana/grafana.db
   apt-get install -y adduser libfontconfig > /dev/null 2>&1
   echo -e "Y"|dpkg -i grafana_${GRFN}_amd64.deb > /dev/null 2>&1
   update-rc.d grafana-server defaults 95 10 > /dev/null 2>&1
   sed -i -e 's,domain = localhost,domain = '${IP}',g' /etc/grafana/grafana.ini
   service grafana-server start > /dev/null 2>&1
-  #sleep 1
+  sleep 1
+  apt-get -y install sqlite > /dev/null 2>&1
+  sqlite3 /var/lib/grafana/grafana.db "INSERT INTO \"data_source\" VALUES(1,1,0,\"influxdb\",\"telegraf\",\"proxy\",\"http://$IP:8086\",\"admin\",\"admin\",\"telegraf\",0,\"\",\"\",1,\"{}\",\"2016-03-07 18:21:44\",\"2016-03-07 18:50:56\",0);"
+
   #service grafana-server status
   #service telegraf stop  > /dev/null 2>&1
 cat > /etc/telegraf/telegraf.d/grafana.conf <<DELIM

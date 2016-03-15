@@ -21,8 +21,8 @@ end
 if PVSPHERE
   # Errno::EMFILE: Too many open files @ rb_sysopen - /opt/vagrant/embedded/gems/gems/vagrant-1.8.1/templates/locales/providers_hyperv.yml
   # be carefull here ;)
-  STUDENTS = 1
-  BROCOUNT = 3
+  STUDENTS = 10
+  BROCOUNT = 1
   ELACOUNT = 3
   NET = "10.242.11."
   NET_START = 0
@@ -72,7 +72,7 @@ Vagrant.configure('2') do |config|
 
   # boxes .......................................................
   ip_teacher = NET  + (NET_START + 9).to_s
-  (1..STUDENTS).each do |studentnumber|
+  (10..STUDENTS).each do |studentnumber|
     if PVSPHERE
     #config.vm.provider :vsphere do |vsphere|
     #  vsphere.vm_base_path = VSPHERE_VM_PATH + 'Student_' + studentnumber.to_s

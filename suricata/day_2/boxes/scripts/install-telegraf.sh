@@ -57,6 +57,7 @@ cat > /etc/telegraf/telegraf.d/common.conf <<DELIM
 [[inputs.diskio]]
 [[inputs.net]]
 [[inputs.netstat]]
+[[inputs.system]]
 DELIM
 cat > /etc/telegraf/telegraf.d/telegraf.conf <<DELIM
 [[inputs.procstat]]

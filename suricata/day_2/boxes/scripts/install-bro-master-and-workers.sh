@@ -49,21 +49,21 @@ do
 done
 
 #distribute to nodes via salt
-salt-key -A -y
+salt-key -A -y > /dev/null 2>&1
 salt-key -L
 sleep 1
-salt "*$BROS*" test.ping
-salt "*$BROS*" cmd.run 'addgroup --system bro --quiet'
-salt "*$BROS*" cmd.run 'adduser --system --home /opt/bro --no-create-home --ingroup bro --disabled-password --shell /bin/bash bro'
-salt "*$BROS*" cmd.run 'mkdir -p /opt/bro/.ssh'
-salt-cp "*$BROS*" /opt/bro/.ssh/id_rsa.pub /opt/bro/.ssh/bro-manager.pub
-salt "*$BROS*" cmd.run 'cat /opt/bro/.ssh/bro-manager.pub >> /opt/bro/.ssh/authorized_keys'
+salt "*$BROS*" test.ping > /dev/null 2>&1
+salt "*$BROS*" cmd.run 'addgroup --system bro --quiet' > /dev/null 2>&1
+salt "*$BROS*" cmd.run 'adduser --system --home /opt/bro --no-create-home --ingroup bro --disabled-password --shell /bin/bash bro' > /dev/null 2>&1
+salt "*$BROS*" cmd.run 'mkdir -p /opt/bro/.ssh' > /dev/null 2>&1
+salt-cp "*$BROS*" /opt/bro/.ssh/id_rsa.pub /opt/bro/.ssh/bro-manager.pub > /dev/null 2>&1
+salt "*$BROS*" cmd.run 'cat /opt/bro/.ssh/bro-manager.pub >> /opt/bro/.ssh/authorized_keys' > /dev/null 2>&1
 #salt "*$BROS*" cmd.run 'setcap cap_net_raw,cap_net_admin=eip /opt/bro/bin/bro'
 #salt "*$BROS*" cmd.run 'setcap "CAP_NET_RAW+eip" /opt/bro/bin/bro'
 cat /etc/hosts | grep -v 127| grep $(hostname) > /opt/bro/hosts
-salt-cp "*$BROS*" /opt/bro/hosts /opt/bro/hosts
-salt "*$BROS*" cmd.run 'cat /opt/bro/hosts >> /etc/hosts'
-salt "*$BROS*" cmd.run 'chown -R bro:bro /opt/bro;'
+salt-cp "*$BROS*" /opt/bro/hosts /opt/bro/hosts > /dev/null 2>&1
+salt "*$BROS*" cmd.run 'cat /opt/bro/hosts >> /etc/hosts' > /dev/null 2>&1
+salt "*$BROS*" cmd.run 'chown -R bro:bro /opt/bro;' > /dev/null 2>&1
 
 # create node.cfg
 cat > /opt/bro/etc/node.cfg<<DELIM
@@ -85,10 +85,11 @@ do
   echo "interface=eth1" >> /opt/bro/etc/node.cfg
 done
 chown -R bro:bro /opt/bro
-su - bro -s /bin/bash -c '/opt/bro/bin/broctl deploy'
-su - bro -s /bin/bash -c '/opt/bro/bin/broctl stop'
+su - bro -s /bin/bash -c '/opt/bro/bin/broctl deploy' > /dev/null 2>&1
+su - bro -s /bin/bash -c '/opt/bro/bin/broctl stop' > /dev/null 2>&1
 salt "*$BROS*" cmd.run 'setcap "CAP_NET_RAW+eip" /opt/bro/bin/bro'
-su - bro -s /bin/bash -c '/opt/bro/bin/broctl start'
+su - bro -s /bin/bash -c '/opt/bro/bin/broctl start' > /dev/null 2>&1
+sleep 3
 su - bro -s /bin/bash -c '/opt/bro/bin/broctl status'
 echo "to start using bro use 'su - bro -s /bin/bash'"
 # tell telegraf there is bro
@@ -97,5 +98,7 @@ cat > /etc/telegraf/telegraf.d/bro.conf <<DELIM
   exe = "bro"
 DELIM
 service telegraf restart > /dev/null 2>&1
-salt-cp "*$BROS*" /etc/telegraf/telegraf.d/bro.conf /etc/telegraf/telegraf.d/bro.conf
-salt "*$BROS*" service.restart telegraf
+salt-cp "*$BROS*" /etc/telegraf/telegraf.d/bro.conf /etc/telegraf/telegraf.d/bro.conf > /dev/null 2>&1
+salt "*$BROS*" service.restart telegraf > /dev/null 2>&1
+
+su - bro -s /bin/bash -c '/opt/bro/bin/broctl stop' > /dev/null 2>&1
