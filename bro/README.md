@@ -14,15 +14,15 @@
 
 
  * 13:00 - 13:45 [script loading](/bro/day_1/LoadScript.md)
- * 14:00 - 14:45 [intro to](/bro/day_intro/BasicScripting.md) [script writing](/bro/day_intro/Scripting.md) 
+ * 14:00 - 14:45 [intro to](/bro/day_intro/BasicScripting.md) [script writing](/bro/day_intro/Scripting.md)
  * 15:00 - 15:45 [viewing output]()
  * 16:00 - 16:45
 
 
 ## Day 2 :: Cluster
 
-* 09:00 - 09:45 [intro](/bro/day_2/README.md),[Metrix](/bro/day_2/SetUpMetrics.md),[Elastic](/bro/day_2/SetUpElastic.md), [Minions](/bro/day_2/SetUpMinions.md), [Master](/bro/day_2/SetUpMaster.md)
-* 10:00 - 10:45 [Cluster Basics](/bro/day_2/ClusterBasics.md)
+* 09:00 - 09:45 [intro](/bro/day_2/ClusterBasics.md),[Metrix](/suricata/day_2/SetUpMetrics.md),[Elastic](/suricata/day_2/SetUpElastic.md), [Minions](/suricata/day_2/SetUpMinions.md), [Master](/suricata/day_2/SetUpMaster.md)
+* 10:00 - 10:45 [manager](/bro/day_2/Manager.md)
 * 11:00 - 11:45 [Basic Cluster Configuration](/bro/day_2/ClusterConf.md)
 
 
