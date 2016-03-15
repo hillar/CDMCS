@@ -30,7 +30,7 @@
         "ts" : {
           "index" : "analyzed",
           "type" : "date",
-          "format": "epoch_second"
+          "format": "epoch_millis"
         },
         "@version" : {
           "index" : "not_analyzed",
