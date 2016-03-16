@@ -6,7 +6,7 @@ see: https://github.com/PingTrip/broctl-setcap
 
 ## B: Workaround
 
-Run all these commands after deploy
+Run all these commands after deploy or make into a "delpoy" script for yourself
 
 ```
 su - bro -s /bin/bash -c '/opt/bro/bin/broctl deploy'
