@@ -19,6 +19,7 @@ global addresses: set[addr];
 
 event bro_init() {
 	# get an example list from https://rules.emergingthreats.net/open/suricata/rules/compromised-ips.txt
+	# remember to insert the table header into the file: #fields<TAB>ip
         Input::add_table([$source="/usr/local/bro/share/bro/site/compromised-ips.txt",$name="addresses",$idx=Idx,$destination=addresses]);
 }
 
