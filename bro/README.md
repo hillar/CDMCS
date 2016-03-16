@@ -21,13 +21,13 @@
 
 ## Day 2 :: Cluster
 
-* 09:00 - 09:45 [intro](/bro/day_2/ClusterBasics.md),[Metrix](/suricata/day_2/SetUpMetrics.md),[Elastic](/suricata/day_2/SetUpElastic.md), [Minions](/suricata/day_2/SetUpMinions.md), [Master](/suricata/day_2/SetUpMaster.md)
+* 09:00 - 09:45 [intro](/bro/day_2/ClusterBasics.md),[Metrix](/suricata/day_2/SetUpMetrics.md),[Elastic](/suricata/day_2/SetUpElastic.md), [Minions](/suricata/day_2/SetUpMinions.md), [Master](/suricata/day_2/SetUpMaster.md), [and script](/bro/day_2/boxes/Vagrantfile)
 * 10:00 - 10:45 [manager](/bro/day_2/Manager.md)
 * 11:00 - 11:45 [Basic Cluster Configuration](/bro/day_2/ClusterConf.md)
 
 
 * 13:00 - 13:45 [adding node](/bro/day_2/ClusterAddNode.md)
-* 14:00 - 14:45
+* 14:00 - 14:45 [housekeeping](/bro/day_2/Cron.md)
 * 15:00 - 15:45
 * 16:00 - 16:45
 
