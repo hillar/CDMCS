@@ -34,6 +34,12 @@ No scripts were sent to other instances? Explanation:
 
 Scripts are part of 'installation', so you need to run 'install' instead of 'update'.
 
+```
+...
+su - bro -s /bin/bash -c 'bin/broctl install'
+...
+```
+
 ----
 
 > BROS="worker"
