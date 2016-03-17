@@ -10,6 +10,9 @@
 1. su - bro -s /bin/bash -c 'bin/broctl check'
 1. su - bro -s /bin/bash -c 'bin/broctl update'
 1. su - bro -s /bin/bash -c 'bin/broctl status'
+
+
+
 1. mkdir /opt/bro/share/bro/site/customscripts
 1. cd /opt/bro/share/bro/site/customscripts
 1. wget ....
@@ -21,6 +24,11 @@
 1. su - bro -s /bin/bash -c 'bin/broctl scripts' | grep customscripts
 1. go to 1
 
+> update                  - Update configuration of nodes on the fly
+
+> install                          - Update broctl installation/configuration
+
+----
 
 > BROS="worker"
 > salt "\*$BROS\*" cmd.run 'setcap "CAP_NET_RAW+eip" /opt/bro/bin/bro'
