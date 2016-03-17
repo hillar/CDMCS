@@ -1,6 +1,6 @@
 # load your custom script to cluster
 
-> Local policy scripts are located in share/bro/site. In the stand-alone setup, a single file called local.bro gets loaded automatically. In the cluster setup, the same local.bro gets loaded, followed by one of three other files: local-manager.bro, local-worker.bro, and local-proxy.bro are loaded by the manager, workers, and proxy, respectively.
+> Local policy scripts are located in share/bro/site. In the stand-alone setup, a single file called local.bro gets loaded automatically. In the cluster setup, the same local.bro gets loaded, followed by one of three other files: *local-manager.bro, local-worker.bro*, and *local-proxy.bro* are loaded by the manager, workers, and proxy, respectively.
 
 
 1. su - bro -s /bin/bash -c 'bin/broctl start'
