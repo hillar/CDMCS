@@ -26,21 +26,20 @@
 * 11:00 - 11:45 [Basic Cluster Configuration](/bro/day_2/ClusterConf.md)
 
 
-* 13:00 - 13:45 [adding node](/bro/day_2/ClusterAddNode.md)
-* 14:00 - 14:45 [housekeeping](/bro/day_2/Cron.md)
-* 15:00 - 15:45
-* 16:00 - 16:45
+
+* 13:00 - 15:45 [adding node](/bro/day_2/ClusterAddNode.md)
+* 16:00 - 16:45 [housekeeping](/bro/day_2/Cron.md)
 
 
 ## Day 3 :: Usage
 
 * 09:00 - 09:45 [digging into numbers](/common/Telegraf.md)
 * 10:00 - 10:45 [digging into text](/common/Kibana4.md)
-* 11:00 - 11:45 []()
+* 11:00 - 11:45 [loading pcaps](/bro/day_3/LoadPcaps.md)
 
 
-* 13:00 - 13:45 [loading pcaps](/bro/day_3/LoadPcaps.md)
-* 14:00 - 14:45
+* 13:00 - 13:45 [loading csv](/bro/day_3/csv2elasticsearch.md)
+* 14:00 - 14:45 [loading scripts to cluster](/bro/day_3/scripts2cluster.md)
 * 15:00 - 15:45
 * 16:00 - 16:45
 
