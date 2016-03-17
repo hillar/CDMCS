@@ -10,10 +10,17 @@
 1. su - bro -s /bin/bash -c 'bin/broctl check'
 1. su - bro -s /bin/bash -c 'bin/broctl update'
 1. su - bro -s /bin/bash -c 'bin/broctl status'
-1. mkdir /opt/bro/customscripts
-1. cd /opt/bro/customscripts
+1. mkdir /opt/bro/share/bro/site/customscripts
+1. cd /opt/bro/share/bro/site/customscripts
 1. wget ....
 1. vi /opt/bro/share/bro/site/local.bro
 1. su - bro -s /bin/bash -c 'bin/broctl check'
 1. su - bro -s /bin/bash -c 'bin/broctl update'
 1. su - bro -s /bin/bash -c 'bin/broctl status'
+1. su - bro -s /bin/bash -c 'bin/broctl scripts'
+1. su - bro -s /bin/bash -c 'bin/broctl scripts' | grep customscripts
+1. go to 1
+
+
+> BROS="worker"
+> salt "*worker*" cmd.run 'setcap "CAP_NET_RAW+eip" /opt/bro/bin/bro'
