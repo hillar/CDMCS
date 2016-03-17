@@ -23,4 +23,4 @@
 
 
 > BROS="worker"
-> salt "\*worker\*" cmd.run 'setcap "CAP_NET_RAW+eip" /opt/bro/bin/bro'
+> salt "\*$BROS\*" cmd.run 'setcap "CAP_NET_RAW+eip" /opt/bro/bin/bro'
