@@ -19,7 +19,7 @@ if PVIRTUALBOX
   NET_START = 0
 end
 if PVSPHERE
-  STUDENTS = 18
+  STUDENTS = 1
   SURICOUNT = 2
   ELACOUNT = 0
   NET = "10.242.11."
@@ -83,7 +83,7 @@ Vagrant.configure('2') do |config|
     end
 
     # suricata
-    (2..SURICOUNT).each do |boxno|
+    (1..SURICOUNT).each do |boxno|
       name = 'student-'+ studentnumber.to_s+'-suricata-' + boxno.to_s
       ip_suricata = NET  + (NET_START + studentnumber*10 + boxno).to_s
       File.open('lastrun.txt','a').puts ip_suricata +" "+name
