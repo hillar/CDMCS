@@ -1,10 +1,10 @@
 
 ## Day 0
 
- * [Intro]()
- * [easy button single host install]()
- * [basic config]()
- * [viewer basics]()
+ * 13:00 - 13:45 [Intro]()
+ * 14:00 - 14:45 [easy button single host install]()
+ * 15:00 - 15:45 [basic config]()
+ * 16:00 - 16:45 [viewer basics]()
 
 ## Day 1 :: Single Box
 
