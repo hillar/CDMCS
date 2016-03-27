@@ -47,10 +47,30 @@ if [ ! -f "${MLCH}.tar.gz" ]; then
     echo "$(date) ${NAME} $0[$$]: {moloch: {status:ERROR, msg: missing {MLCH}.tar.gz}"
     exit -1
 else
-  if [! -d ${MLCH} ]; then
+  if [ ! -d "moloch-${MLCH}" ]; then
     tar -xzf ${MLCH}.tar.gz
   fi
-  cd ${MLCH}
-  echo -en "\n\n\n\n"
-  fi
+  cd "moloch-${MLCH}"
+  #sed passwordSecret
+  apt-get update -qq
+  sed -i -e 's,passwordSecret,#passwordSecret,g'  single-host/etc/config.ini.template
+  echo -en "\n\n\n\n\n\n\n\nINIT\nINIT\n" | ./easybutton-singlehost.sh
+  sleep 1
+fi
+
+#VSRoom
+VSRM="default"
+mkdir -p ${INSTALL_DIR}/vsroom
+cd ${INSTALL_DIR}/vsroom
+if [ ! -f "${VSRM}.tar.gz" ]; then
+  wget -q -4 https://bitbucket.org/hillar/vsroom-experiments/get/${VSRM}.tar.gz
+fi
+if [ ! -f "${VSRM}.tar.gz" ]; then
+  echo "$(date) ${NAME} $0[$$]: {vsroom: {status:Warning, msg: missing {VSRM}.tar.gz}"
+else
+  rm -rf hillar-vsroom-experiments-*
+  tar -xzf default.tar.gz
+  vsrdefault=$(ls | grep "hillar-vsroom-experiments-")
+  cd $vsrdefault/vsr/
+  cp -r javascript /data/moloch/viewer/public/vsroom
 fi
