@@ -42,6 +42,8 @@ else
   service elasticsearch stop > /dev/null 2>&1
   /usr/share/elasticsearch/bin/plugin install mobz/elasticsearch-head 2>&1 > /dev/null
   echo "# generated ${date} by $0" > /etc/elasticsearch/elasticsearch.yml
+
+  echo "path.data: /srv" >> /etc/elasticsearch/elasticsearch.yml
   echo "cluster.name: ${CLUSTER}" >> /etc/elasticsearch/elasticsearch.yml
   echo "node.name: ${NAME} " >> /etc/elasticsearch/elasticsearch.yml
   echo "node.max_local_storage_nodes: 1 " >> /etc/elasticsearch/elasticsearch.yml
