@@ -27,7 +27,7 @@ echo "adding new node to cluster: ${CLUSTER} node: ${NAME} bind: ${IP} unicast h
 
 INSTALL_DIR=/provision
 
-ES=2.2.0
+ES=2.3.2
 
 mkdir -p ${INSTALL_DIR}/elasticsearch
 cd ${INSTALL_DIR}/elasticsearch

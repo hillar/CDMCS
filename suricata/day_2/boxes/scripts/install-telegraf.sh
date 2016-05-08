@@ -16,7 +16,8 @@ HOSTNAME=$(hostname -f)
 
 echo "installing telegraf on ${IP} ${HOSTNAME} setting influxdb to ${MASTER}"
 
-TLGF=0.10.4.1
+TLGF=0.12.1
+
 INSTALL_DIR=/provision
 
 mkdir -p ${INSTALL_DIR}/telegraf

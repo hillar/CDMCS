@@ -23,7 +23,7 @@ if PVSPHERE
   # be carefull here ;)
   STUDENTS = 1
   BROCOUNT = 0
-  ELACOUNT = 3
+  ELACOUNT = 10
   NET = "10.242.11."
   NET_START = 0
 end
@@ -58,7 +58,7 @@ Vagrant.configure('2') do |config|
     config.vm.box = "vsphere"
     vsphere.host = VSPHERE_HOST
     vsphere.compute_resource_name = VSPHERE_CLUSTER
-    vsphere.template_name = VSPHERE_TEMPLATE_PATH + 'mmela1'
+    vsphere.template_name = VSPHERE_TEMPLATE_PATH + 'mtemplate-ls-xio-1tb'
     vsphere.customization_spec_name = 'linux_1nics'
     vsphere.user = VSPHERE_USER
     vsphere.password = VSPHERE_PASSWORD
@@ -87,9 +87,11 @@ Vagrant.configure('2') do |config|
       elas.push(ip)
     end
     (1..ELACOUNT).each do |boxno|
-      name = 'elasticsearch-'+ studentnumber.to_s+'-master-' + LETTER[boxno]
+      name = 'es-'+ studentnumber.to_s+'-master-' + LETTER[boxno]
       ip = NET  + (NET_START + studentnumber*10 + 10 - boxno).to_s
       File.open('lastrun.txt','a').puts ip+" "+name
+
+      print ip+" "+name+"\n"
       config.vm.define name do |box|
         box.vm.hostname = name
         box.vm.network :private_network, ip: "#{ip}"
@@ -102,7 +104,7 @@ Vagrant.configure('2') do |config|
         if PVSPHERE
         box.vm.provider :vsphere do |vsphere|
           vsphere.name = name
-          vsphere.memory_mb = 4 * 1024
+          vsphere.memory_mb = 2 * 1024
           vsphere.cpu_count = 2
           vsphere.vm_base_path = VSPHERE_VM_PATH + 'Student_' + studentnumber.to_s
         end
@@ -117,8 +119,8 @@ Vagrant.configure('2') do |config|
         #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; sleep 3; netstat -ntple"
       end # ela-x
     end # ela loop
-    (1..3).each do |boxno|
-      name = 'elasticsearch-'+ studentnumber.to_s+'-client-' + LETTER[boxno]
+    (1..ELACOUNT).each do |boxno|
+      name = 'es-'+ studentnumber.to_s+'-client-' + LETTER[boxno]
       ip = NET  + (NET_START + studentnumber*20 + 10 - boxno).to_s
       File.open('lastrun.txt','a').puts ip+" "+name
       config.vm.define name do |box|
@@ -133,7 +135,7 @@ Vagrant.configure('2') do |config|
         if PVSPHERE
         box.vm.provider :vsphere do |vsphere|
           vsphere.name = name
-          vsphere.memory_mb = 4 * 1024
+          vsphere.memory_mb = 2 * 1024
           vsphere.cpu_count = 2
           vsphere.vm_base_path = VSPHERE_VM_PATH + 'Student_' + studentnumber.to_s
         end
@@ -148,8 +150,8 @@ Vagrant.configure('2') do |config|
         #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; sleep 3; netstat -ntple"
       end # ela-x
     end # ela loop
-    (1..10).each do |boxno|
-      name = 'elasticsearch-'+ studentnumber.to_s+'-data-' + LETTER[boxno]
+    (1..ELACOUNT).each do |boxno|
+      name = 'es-'+ studentnumber.to_s+'-data-' + LETTER[boxno]
       ip = NET  + (NET_START + studentnumber*30 + 10 - boxno).to_s
       File.open('lastrun.txt','a').puts ip+" "+name
       config.vm.define name do |box|
@@ -176,6 +178,38 @@ Vagrant.configure('2') do |config|
         box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_admin}"
         box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_admin}"
         box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip} #{name} #{'student-' + studentnumber.to_s} #{boxno} '#{elas.join(",")}' data"
+        #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; sleep 3; netstat -ntple"
+      end # ela-x
+    end # ela loop
+    (1..ELACOUNT).each do |boxno|
+      name = 'molo-'+ studentnumber.to_s+'-' + LETTER[boxno]
+      ip = NET  + (NET_START + studentnumber*50 + 10 - boxno).to_s
+      File.open('lastrun.txt','a').puts ip+" "+name
+      config.vm.define name do |box|
+        box.vm.hostname = name
+        box.vm.network :private_network, ip: "#{ip}"
+        if PVIRTUALBOX
+        box.vm.provider :virtualbox do |vb|
+         vb.customize ["modifyvm", :id, "--memory", "1024"]
+         vb.customize ["modifyvm", :id, "--cpus", "2"]
+        end
+        end
+        if PVSPHERE
+        box.vm.provider :vsphere do |vsphere|
+          vsphere.name = name
+          vsphere.memory_mb = 8 * 1024
+          vsphere.cpu_count = 4
+          vsphere.template_name = VSPHERE_TEMPLATE_PATH + 'mtemplate-ccdcoe-xio-1tb'
+          vsphere.vm_base_path = VSPHERE_VM_PATH + 'Student_' + studentnumber.to_s
+        end
+        end
+        if PAZURE
+        box.vm.provider :azure do |azure|
+        end
+        end
+        box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_admin}"
+        box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_admin}"
+        #box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip} #{name} #{'student-' + studentnumber.to_s} #{boxno} '#{elas.join(",")}' data"
         #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; sleep 3; netstat -ntple"
       end # ela-x
     end # ela loop
