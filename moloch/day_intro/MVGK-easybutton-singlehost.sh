@@ -78,7 +78,7 @@ fi
 # Telegraf
 echo "$(date) installing telegraf on ${IP} ${HOSTNAME} setting influxdb to ${MASTER}"
 
-TLGF=0.10.4.1
+TLGF=0.12.1
 INSTALL_DIR=/provision
 
 mkdir -p ${INSTALL_DIR}/telegraf
@@ -134,19 +134,19 @@ fi
 echo "$(date) installing influxdb on ${IP} ${HOSTNAME} setting bind to ${BIND}..."
 
 INSTALL_DIR=/provision
-
-INFLX="0.10.1"
+#wget https://dl.influxdata.com/influxdb/releases/influxdb_0.13.0~rc1_amd64.deb
+INFLX="0.13.0~rc1"
 
 mkdir -p ${INSTALL_DIR}/influxdb
 cd ${INSTALL_DIR}/influxdb
-if [ ! -f "influxdb_${INFLX}-1_amd64.deb" ]; then
-   wget -q https://s3.amazonaws.com/influxdb/influxdb_${INFLX}-1_amd64.deb > /dev/null 2>&1
+if [ ! -f "influxdb_${INFLX}_amd64.deb" ]; then
+   wget -q https://dl.influxdata.com/influxdb/releases/influxdb_${INFLX}_amd64.deb > /dev/null 2>&1
 fi
-if [ ! -f "influxdb_${INFLX}-1_amd64.deb" ]; then
-  echo "$(date) ${NAME} $0[$$]: {influxdb: {status:ERROR, msg: missing influxdb_${INFLX}-1_amd64.deb}"
+if [ ! -f "influxdb_${INFLX}_amd64.deb" ]; then
+  echo "$(date) ${NAME} $0[$$]: {influxdb: {status:ERROR, msg: missing influxdb_${INFLX}_amd64.deb}"
   exit -1
 else
-  echo -e "Y"|dpkg -i influxdb_${INFLX}-1_amd64.deb > /dev/null 2>&1
+  echo -e "Y"|dpkg -i influxdb_${INFLX}_amd64.deb > /dev/null 2>&1
   service influxdb start > /dev/null 2>&1
   sleep 1
   service influxdb status
@@ -173,7 +173,8 @@ fi
 echo "$(date) installing grafana on ${IP} ${HOSTNAME}"
 
 INSTALL_DIR=/provision
-GRFN="2.6.0"
+#https://grafanarel.s3.amazonaws.com/builds/grafana_3.0.0-beta71462173753_amd64.deb
+GRFN="3.0.0-beta71462173753"
 mkdir -p ${INSTALL_DIR}/grafana
 cd ${INSTALL_DIR}/grafana
 if [ ! -f "grafana_${GRFN}_amd64.deb" ]; then
