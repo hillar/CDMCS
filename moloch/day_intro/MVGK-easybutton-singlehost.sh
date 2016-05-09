@@ -65,7 +65,7 @@ else
   echo "node.master: true" >> /etc/elasticsearch/elasticsearch.yml
   echo "node.data: true" >> /etc/elasticsearch/elasticsearch.yml
   echo "http.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
-
+fi
   service elasticsearch start
 
 echo "installing Moloch + .... on $IP"
