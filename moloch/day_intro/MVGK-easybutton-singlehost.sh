@@ -27,6 +27,47 @@ CLUSTER=$HOSTNAME
 UNICASTHOSTS=$IP
 BIND=$IP
 
+echo "adding new node to cluster: ${CLUSTER} node: ${NAME} bind: ${IP} unicast host: ${UNICASTHOSTS} type: ${TYPE}"
+
+INSTALL_DIR=/provision
+
+ES=2.3.2
+
+mkdir -p ${INSTALL_DIR}/elasticsearch
+cd ${INSTALL_DIR}/elasticsearch
+if [ ! -f "elasticsearch-${ES}.deb" ]; then
+  wget -4 -q https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-${ES}.deb
+fi
+if [ ! -f "elasticsearch-${ES}.deb" ]; then
+    echo "$(date) ${NAME} $0[$$]: {elastic: {status:ERROR, msg: missing elasticsearch-${ES}.deb}"
+    exit -1
+else
+  echo -e "Y" | dpkg -i elasticsearch-${ES}.deb  > /dev/null 2>&1
+  service elasticsearch stop > /dev/null 2>&1
+  /usr/share/elasticsearch/bin/plugin install mobz/elasticsearch-head 2>&1 > /dev/null
+  echo "# generated ${date} by $0" > /etc/elasticsearch/elasticsearch.yml
+
+  echo "path.data: /srv" >> /etc/elasticsearch/elasticsearch.yml
+  echo "cluster.name: ${CLUSTER}" >> /etc/elasticsearch/elasticsearch.yml
+  echo "node.name: ${NAME} " >> /etc/elasticsearch/elasticsearch.yml
+  echo "node.max_local_storage_nodes: 1 " >> /etc/elasticsearch/elasticsearch.yml
+  echo "index.number_of_replicas: 0 " >> /etc/elasticsearch/elasticsearch.yml
+  echo "index.fielddata.cache: node " >> /etc/elasticsearch/elasticsearch.yml
+  echo "indices.fielddata.cache.size: 40% " >> /etc/elasticsearch/elasticsearch.yml
+  echo "http.compression: true " >> /etc/elasticsearch/elasticsearch.yml
+  echo "bootstrap.mlockall: true " >> /etc/elasticsearch/elasticsearch.yml
+  echo "network.host: 0.0.0.0" >> /etc/elasticsearch/elasticsearch.yml
+  echo "# split brain here ;( " >> /etc/elasticsearch/elasticsearch.yml
+  echo "discovery.zen.minimum_master_nodes: 1" >> /etc/elasticsearch/elasticsearch.yml
+  echo "discovery.zen.ping.multicast.enabled: false" >> /etc/elasticsearch/elasticsearch.yml
+  echo 'discovery.zen.ping.unicast.hosts: ['${UNICASTHOSTS}']' >> /etc/elasticsearch/elasticsearch.yml
+
+  echo "node.master: true" >> /etc/elasticsearch/elasticsearch.yml
+  echo "node.data: true" >> /etc/elasticsearch/elasticsearch.yml
+  echo "http.enabled: true" >> /etc/elasticsearch/elasticsearch.yml
+
+  service elasticsearch start
+
 echo "installing Moloch + .... on $IP"
 
 #https://github.com/aol/moloch/archive/master.tar.gz
