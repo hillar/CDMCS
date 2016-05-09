@@ -4,7 +4,7 @@ vm_box = 'ubu14'
 Vagrant.configure('2') do |config|
   config.vm.define :single do |box|
     box.vm.box = vm_box
-    box.vm.synced_folder ".", "/vagrant", disabled: false
+    #box.vm.synced_folder ".", "/vagrant", disabled: false
     box.vm.network :private_network, ip: "#{IP}"
     box.vm.hostname = 'single'
     box.vm.provision :shell, :path => "./my-custom-install.sh", args: "first_arg second_arg"
