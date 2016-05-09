@@ -42,6 +42,8 @@ if [ ! -f "elasticsearch-${ES}.deb" ]; then
     echo "$(date) ${NAME} $0[$$]: {elastic: {status:ERROR, msg: missing elasticsearch-${ES}.deb}"
     exit -1
 else
+  mkdir -p /srv/Moloch
+  chmod -R 777 /srv
   echo -e "Y" | dpkg -i elasticsearch-${ES}.deb  > /dev/null 2>&1
   service elasticsearch stop > /dev/null 2>&1
   /usr/share/elasticsearch/bin/plugin install mobz/elasticsearch-head 2>&1 > /dev/null
