@@ -16,14 +16,15 @@ HOSTNAME=$(hostname -f)
 
 echo "installing telegraf on ${IP} ${HOSTNAME} setting influxdb to ${MASTER}"
 
+#http://get.influxdb.org/telegraf/telegraf_0.12.1-1_amd64.deb
 TLGF=0.12.1
 
-INSTALL_DIR=/provision
+INSTALL_DIR=/var/cache/wget
 
-mkdir -p ${INSTALL_DIR}/telegraf
-cd ${INSTALL_DIR}/telegraf
+mkdir -p ${INSTALL_DIR}
+cd ${INSTALL_DIR}
 if [ ! -f "telegraf_${TLGF}-1_amd64.deb" ]; then
-    wget -4 -q wget http://get.influxdb.org/telegraf/telegraf_${TLGF}-1_amd64.deb
+    wget -N -P /var/cache/wget -4  -q http://get.influxdb.org/telegraf/telegraf_${TLGF}-1_amd64.deb
 fi
 if [ ! -f "telegraf_${TLGF}-1_amd64.deb" ]; then
     echo "$(date) ${NAME} $0[$$]: {telegraf: {status:ERROR, msg: missing telegraf_${TLGF}_amd64.deb}"

@@ -6,6 +6,7 @@ ECount = 1
 
 NET = "192.168.11."
 NET_START = 20
+ip_admin = "192.168.11.41"
 
 vm_box = 'ubu14'
 
@@ -15,6 +16,18 @@ elamasters = []
   ip = NET  + (NET_START + 10 + no).to_s
   elamasters.push(ip)
 end
+captures = []
+(1..MCount).each do |no|
+  ip = NET  + (NET_START + 20 + no).to_s
+  name = 'moloch-' + no.to_s
+  captures.push(ip+";"+name)
+end
+viewers = []
+(1..VCount).each do |no|
+  ip = NET  + (NET_START + 20 + no).to_s
+  name = 'viewer-' + no.to_s
+  viewers.push(ip+";"+name)
+end
 
 # log ip's and names
 time = Time.now
@@ -22,7 +35,19 @@ File.open('lastrun.txt','w').puts "# " + time.inspect
 File.open('lastrun.txt','a').puts " "
 
 Vagrant.configure('2') do |config|
-
+  config.vm.box = "ubu14"
+  if Vagrant.has_plugin?("vagrant-cachier")
+    config.cache.scope = :box
+    config.cache.synced_folder_opts = {
+      type: :nfs,
+      mount_options: ['rw', 'vers=3', 'tcp', 'nolock']
+    }
+    config.cache.enable :generic, {
+    "wget" => { cache_dir: "/var/cache/wget" },
+    }
+  else
+    puts "please do 'vagrant plugin install vagrant-cachier'"
+  end
   (1..ECount).each do |boxno|
       name = 'elastic-' + boxno.to_s
       ip = NET  + (NET_START + 30 + boxno).to_s
@@ -34,10 +59,9 @@ Vagrant.configure('2') do |config|
          vb.customize ["modifyvm", :id, "--memory", "1024"]
          vb.customize ["modifyvm", :id, "--cpus", "2"]
         end
-        #box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_admin}"
-        #box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_admin}"
-        #box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip} #{name} #{'student-' + studentnumber.to_s} #{boxno} '#{elas.join(",")}' data"
-        #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; sleep 3; netstat -ntple"
+        box.vm.provision "shell", path: "./boxes/scripts/install-salt-minion.sh", args: "#{ip_admin}"
+        box.vm.provision "shell", path: "./boxes/scripts/install-telegraf.sh", args: "#{ip_admin}"
+        box.vm.provision "shell", path: "./boxes/scripts/install-elastic.sh", args: "#{ip} #{name} #{'my-first-elastic-cluster'} #{boxno} '#{elamasters.join(",")}' data"
       end
   end # molo loop
   (1..MCount).each do |boxno|
@@ -51,10 +75,10 @@ Vagrant.configure('2') do |config|
          vb.customize ["modifyvm", :id, "--memory", "1024"]
          vb.customize ["modifyvm", :id, "--cpus", "2"]
         end
-        #box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_admin}"
-        #box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_admin}"
-        #box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip} #{name} #{'student-' + studentnumber.to_s} #{boxno} '#{elas.join(",")}' data"
-        #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; sleep 3; netstat -ntple"
+        box.vm.provision "shell", path: "./boxes/scripts/install-salt-minion.sh", args: "#{ip_admin}"
+        box.vm.provision "shell", path: "./boxes/scripts/install-telegraf.sh", args: "#{ip_admin}"
+        box.vm.provision "shell", path: "./boxes/scripts/install-elastic.sh", args: "#{ip} #{name} #{'my-first-elastic-cluster'} #{boxno} '#{elamasters.join(",")}' master"
+        #box.vm.provision "shell", path: "./boxes/scripts/install-moloch-capture.sh"
       end
   end # molo loop
   (1..VCount).each do |boxno|
@@ -68,10 +92,17 @@ Vagrant.configure('2') do |config|
          vb.customize ["modifyvm", :id, "--memory", "1024"]
          vb.customize ["modifyvm", :id, "--cpus", "1"]
         end
-        #box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_admin}"
-        #box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_admin}"
-        #box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip} #{name} #{'student-' + studentnumber.to_s} #{boxno} '#{elas.join(",")}' data"
-        #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; sleep 3; netstat -ntple"
+        box.vm.provision "shell", path: "./boxes/scripts/install-salt-minion.sh", args: "#{ip_admin}"
+        box.vm.provision "shell", path: "./boxes/scripts/install-telegraf.sh", args: "#{ip_admin}"
+        box.vm.provision "shell", path: "./boxes/scripts/install-elastic.sh", args: "#{ip} #{name} #{'my-first-elastic-cluster'} #{boxno} '#{elamasters.join(",")}' client"
+        if ip == ip_admin
+          box.vm.provision "shell", path: "./boxes/scripts/install-influxdb.sh", args: "#{ip_admin}"
+          box.vm.provision "shell", path: "./boxes/scripts/install-salt-master.sh", args: "#{ip_admin}"
+          box.vm.provision "shell", path: "./boxes/scripts/install-grafana.sh", args: "#{ip_admin}"
+          box.vm.provision "shell", path: "./boxes/scripts/install-moloch.sh", args: "'#{captures.join(",")}' '#{viewers.join(",")}'"
+          puts "master box is "+ name + " " + ip
+        end
+        #box.vm.provision "shell", path: "./boxes/scripts/install-moloch-viewer.sh"
       end
   end # viever loop
 end

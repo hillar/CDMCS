@@ -22,17 +22,18 @@ CLUSTER=$3
 COUNTER=$4
 UNICASTHOSTS=$5
 TYPE=$6 #master,client or data(default)
+DATAPATH="/srv"
 
 echo "adding new node to cluster: ${CLUSTER} node: ${NAME} bind: ${IP} unicast host: ${UNICASTHOSTS} type: ${TYPE}"
 
-INSTALL_DIR=/provision
+INSTALL_DIR=/var/cache/wget
 
 ES=2.3.2
 
-mkdir -p ${INSTALL_DIR}/elasticsearch
-cd ${INSTALL_DIR}/elasticsearch
+mkdir -p ${INSTALL_DIR}
+cd ${INSTALL_DIR}
 if [ ! -f "elasticsearch-${ES}.deb" ]; then
-  wget -4 -q https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-${ES}.deb
+  wget -N -P /var/cache/wget -4 -q https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-${ES}.deb
 fi
 if [ ! -f "elasticsearch-${ES}.deb" ]; then
     echo "$(date) ${NAME} $0[$$]: {elastic: {status:ERROR, msg: missing elasticsearch-${ES}.deb}"
@@ -42,8 +43,9 @@ else
   service elasticsearch stop > /dev/null 2>&1
   /usr/share/elasticsearch/bin/plugin install mobz/elasticsearch-head 2>&1 > /dev/null
   echo "# generated ${date} by $0" > /etc/elasticsearch/elasticsearch.yml
-
-  echo "path.data: /srv" >> /etc/elasticsearch/elasticsearch.yml
+  mkdir -p $DATAPATH
+  chown elasticsearch $DATAPATH
+  echo "path.data: ${DATAPATH}" >> /etc/elasticsearch/elasticsearch.yml
   echo "cluster.name: ${CLUSTER}" >> /etc/elasticsearch/elasticsearch.yml
   echo "node.name: ${NAME} " >> /etc/elasticsearch/elasticsearch.yml
   echo "node.max_local_storage_nodes: 1 " >> /etc/elasticsearch/elasticsearch.yml

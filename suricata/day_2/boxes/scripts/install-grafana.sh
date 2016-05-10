@@ -15,12 +15,14 @@ HOSTNAME=$(hostname -f)
 
 echo "installing grafana on ${IP} ${HOSTNAME}"
 
-INSTALL_DIR=/provision
-GRFN="2.6.0"
-mkdir -p ${INSTALL_DIR}/grafana
-cd ${INSTALL_DIR}/grafana
+INSTALL_DIR=/var/cache/wget
+
+#https://grafanarel.s3.amazonaws.com/builds/grafana_3.0.0-beta71462173753_amd64.deb
+GRFN="3.0.0-beta71462173753"
+mkdir -p ${INSTALL_DIR}
+cd ${INSTALL_DIR}
 if [ ! -f "grafana_${GRFN}_amd64.deb" ]; then
-  wget -4 -q https://grafanarel.s3.amazonaws.com/builds/grafana_${GRFN}_amd64.deb
+  wget -N -P /var/cache/wget -4 -q https://grafanarel.s3.amazonaws.com/builds/grafana_${GRFN}_amd64.deb
 fi
 if [ ! -f "grafana_${GRFN}_amd64.deb" ]; then
   echo "$(date) ${HOSTNAME} $0[$$]: {grafana: {status:WARNING, msg: missing grafana_${GRFN}_amd64.deb}"
