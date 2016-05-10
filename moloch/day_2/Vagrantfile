@@ -1,0 +1,77 @@
+MCount = 2
+VCount = 1
+ECount = 1
+
+
+
+NET = "192.168.11."
+NET_START = 20
+
+vm_box = 'ubu14'
+
+#prepare ela master nodes list
+elamasters = []
+(1..MCount).each do |no|
+  ip = NET  + (NET_START + 10 + no).to_s
+  elamasters.push(ip)
+end
+
+# log ip's and names
+time = Time.now
+File.open('lastrun.txt','w').puts "# " + time.inspect
+File.open('lastrun.txt','a').puts " "
+
+Vagrant.configure('2') do |config|
+
+  (1..ECount).each do |boxno|
+      name = 'elastic-' + boxno.to_s
+      ip = NET  + (NET_START + 30 + boxno).to_s
+      File.open('lastrun.txt','a').puts ip+" "+name
+      config.vm.define name do |box|
+        box.vm.hostname = name
+        box.vm.network :private_network, ip: "#{ip}"
+        box.vm.provider :virtualbox do |vb|
+         vb.customize ["modifyvm", :id, "--memory", "1024"]
+         vb.customize ["modifyvm", :id, "--cpus", "2"]
+        end
+        #box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_admin}"
+        #box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_admin}"
+        #box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip} #{name} #{'student-' + studentnumber.to_s} #{boxno} '#{elas.join(",")}' data"
+        #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; sleep 3; netstat -ntple"
+      end
+  end # molo loop
+  (1..MCount).each do |boxno|
+      name = 'moloch-' + boxno.to_s
+      ip = NET  + (NET_START + 10 + boxno).to_s
+      File.open('lastrun.txt','a').puts ip+" "+name
+      config.vm.define name do |box|
+        box.vm.hostname = name
+        box.vm.network :private_network, ip: "#{ip}"
+        box.vm.provider :virtualbox do |vb|
+         vb.customize ["modifyvm", :id, "--memory", "1024"]
+         vb.customize ["modifyvm", :id, "--cpus", "2"]
+        end
+        #box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_admin}"
+        #box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_admin}"
+        #box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip} #{name} #{'student-' + studentnumber.to_s} #{boxno} '#{elas.join(",")}' data"
+        #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; sleep 3; netstat -ntple"
+      end
+  end # molo loop
+  (1..VCount).each do |boxno|
+      name = 'viewer-' + boxno.to_s
+      ip = NET  + (NET_START + 20 + boxno).to_s
+      File.open('lastrun.txt','a').puts ip+" "+name
+      config.vm.define name do |box|
+        box.vm.hostname = name
+        box.vm.network :private_network, ip: "#{ip}"
+        box.vm.provider :virtualbox do |vb|
+         vb.customize ["modifyvm", :id, "--memory", "1024"]
+         vb.customize ["modifyvm", :id, "--cpus", "1"]
+        end
+        #box.vm.provision "shell", path: "./scripts/install-salt-minion.sh", args: "#{ip_admin}"
+        #box.vm.provision "shell", path: "./scripts/install-telegraf.sh", args: "#{ip_admin}"
+        #box.vm.provision "shell", path: "./scripts/install-elastic.sh", args: "#{ip} #{name} #{'student-' + studentnumber.to_s} #{boxno} '#{elas.join(",")}' data"
+        #box.vm.provision "shell", inline: "ifconfig; ping -c 1 www.ee; sleep 3; netstat -ntple"
+      end
+  end # viever loop
+end
