@@ -26,8 +26,8 @@ tar -xzf /var/cache/wget/master.tar.gz
 cd moloch-master/
 apt-get -y install nodejs npm > /dev/null 2>&1
 echo "compiling moloch from source... "
-sed 'wget '
-sed -i -e 's,wget,wget -N -P /var/cache/wget -4 -q,g' easybutton-build.sh
+
+sed -i -e 's,wget http,wget -N -P /var/cache/wget -4 -q http,g' easybutton-build.sh
 ./easybutton-build.sh --dir /opt/moloch > /dev/null 2>&1
 make install > /dev/null 2>&1
 
