@@ -1,4 +1,4 @@
-MCount = 2
+MCount = 1
 VCount = 1
 ECount = 1
 
@@ -6,7 +6,8 @@ ECount = 1
 
 NET = "192.168.11."
 NET_START = 20
-ip_admin = "192.168.11.41"
+#ip_admin = "192.168.11.41"
+ip_admin = NET  + (NET_START + 20 + 1).to_s
 
 vm_box = 'ubu14'
 
@@ -18,7 +19,7 @@ elamasters = []
 end
 captures = []
 (1..MCount).each do |no|
-  ip = NET  + (NET_START + 20 + no).to_s
+  ip = NET  + (NET_START + 10 + no).to_s
   name = 'moloch-' + no.to_s
   captures.push(ip+";"+name)
 end
@@ -38,10 +39,10 @@ Vagrant.configure('2') do |config|
   config.vm.box = "ubu14"
   if Vagrant.has_plugin?("vagrant-cachier")
     config.cache.scope = :box
-    config.cache.synced_folder_opts = {
-      type: :nfs,
-      mount_options: ['rw', 'vers=3', 'tcp', 'nolock']
-    }
+    #config.cache.synced_folder_opts = {
+    #  type: :nfs,
+    #  mount_options: ['rw', 'vers=3', 'tcp', 'nolock']
+    #}
     config.cache.enable :generic, {
     "wget" => { cache_dir: "/var/cache/wget" },
     }
@@ -56,7 +57,7 @@ Vagrant.configure('2') do |config|
         box.vm.hostname = name
         box.vm.network :private_network, ip: "#{ip}"
         box.vm.provider :virtualbox do |vb|
-         vb.customize ["modifyvm", :id, "--memory", "1024"]
+         vb.customize ["modifyvm", :id, "--memory", "2048"]
          vb.customize ["modifyvm", :id, "--cpus", "2"]
         end
         box.vm.provision "shell", path: "./boxes/scripts/install-salt-minion.sh", args: "#{ip_admin}"
@@ -72,7 +73,7 @@ Vagrant.configure('2') do |config|
         box.vm.hostname = name
         box.vm.network :private_network, ip: "#{ip}"
         box.vm.provider :virtualbox do |vb|
-         vb.customize ["modifyvm", :id, "--memory", "1024"]
+         vb.customize ["modifyvm", :id, "--memory", "2048"]
          vb.customize ["modifyvm", :id, "--cpus", "2"]
         end
         box.vm.provision "shell", path: "./boxes/scripts/install-salt-minion.sh", args: "#{ip_admin}"
@@ -89,17 +90,18 @@ Vagrant.configure('2') do |config|
         box.vm.hostname = name
         box.vm.network :private_network, ip: "#{ip}"
         box.vm.provider :virtualbox do |vb|
-         vb.customize ["modifyvm", :id, "--memory", "1024"]
+         vb.customize ["modifyvm", :id, "--memory", "2048"]
          vb.customize ["modifyvm", :id, "--cpus", "1"]
         end
         box.vm.provision "shell", path: "./boxes/scripts/install-salt-minion.sh", args: "#{ip_admin}"
         box.vm.provision "shell", path: "./boxes/scripts/install-telegraf.sh", args: "#{ip_admin}"
         box.vm.provision "shell", path: "./boxes/scripts/install-elastic.sh", args: "#{ip} #{name} #{'my-first-elastic-cluster'} #{boxno} '#{elamasters.join(",")}' client"
-        if ip == ip_admin
+        if boxno == 1
           box.vm.provision "shell", path: "./boxes/scripts/install-influxdb.sh", args: "#{ip_admin}"
           box.vm.provision "shell", path: "./boxes/scripts/install-salt-master.sh", args: "#{ip_admin}"
           box.vm.provision "shell", path: "./boxes/scripts/install-grafana.sh", args: "#{ip_admin}"
-          box.vm.provision "shell", path: "./boxes/scripts/install-moloch.sh", args: "'#{captures.join(",")}' '#{viewers.join(",")}'"
+          box.vm.provision "shell", path: "./boxes/scripts/install-moloch.sh", args: "'#{ip}' '#{captures.join(",")}' '#{viewers.join(",")}'"
+          box.vm.provision "shell", inline: "netstat -ntple; echo 'done'"
           puts "master box is "+ name + " " + ip
         end
         #box.vm.provision "shell", path: "./boxes/scripts/install-moloch-viewer.sh"
