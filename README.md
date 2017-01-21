@@ -1,3 +1,5 @@
+> * moving to https://github.com/ccdcoe/CDMCS
+
 # Cyber Defence Monitoring Course Suite (CDMCS)
 
 ![sAYCyber!](/saynomore.png)
